@@ -653,8 +653,13 @@ export default function StudioScene({ records }: { records: Records }) {
     [ready, setReady] = useState(false),
     [failed, setFailed] = useState(false);
   
+  const shouldSkipIntro = typeof window !== "undefined" && (
+    sessionStorage.getItem('skipIntro') === 'true' ||
+    matchMedia("(prefers-reduced-motion: reduce)").matches
+  );
+
   const [introState, setIntroState] = useState<"loading" | "revealing" | "holding" | "docking" | "complete">(
-    () => typeof window !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches ? "complete" : "loading"
+    () => shouldSkipIntro ? "complete" : "loading"
   );
   
   const containerRef = useRef<HTMLDivElement>(null);
@@ -723,46 +728,47 @@ export default function StudioScene({ records }: { records: Records }) {
       tl.add(() => {
         setIntroState("docking");
         
-        const iris = document.createElement('div');
-        iris.style.position = 'fixed';
-        iris.style.left = '50%';
-        iris.style.top = '50%';
-        iris.style.transform = 'translate(-50%, -50%)';
-        iris.style.borderRadius = '50%';
-        iris.style.boxShadow = '0 0 0 3000px #101412';
-        iris.style.zIndex = '2147483647';
-        // Start massive (hole covers the screen)
-        iris.style.width = '3000px';
-        iris.style.height = '3000px';
-        document.body.appendChild(iris);
-        
-        // Animate Iris Close
-        gsap.to(iris, {
-          width: 0,
-          height: 0,
-          duration: 1.0,
-          ease: "power3.inOut",
+        const baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;';
+        const left = document.createElement('div');
+        left.style.cssText = baseStyle + 'left:0;width:0;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
+        const right = document.createElement('div');
+        right.style.cssText = baseStyle + 'right:0;width:0;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
+        document.body.appendChild(left);
+        document.body.appendChild(right);
+
+        // Doors close → snap layout → doors open
+        gsap.to([left, right], {
+          width: '50vw',
+          duration: 0.85,
+          ease: 'power4.inOut',
           onComplete: () => {
-             // Screen is completely black now. Snap the layout!
-             if (containerRef.current) containerRef.current.style.cssText = '';
-             const canvas = containerRef.current?.querySelector('.studio-canvas') as HTMLElement;
-             if (canvas) canvas.style.cssText = '';
-             setIntroState("complete");
-             
-             // Wait for R3F to resize internally
-             setTimeout(() => {
-               // Animate Iris Open
-               gsap.to(iris, {
-                 width: 3000,
-                 height: 3000,
-                 duration: 1.0,
-                 ease: "power3.inOut",
-                 onComplete: () => iris.remove()
-               });
-             }, 150);
+            // Screen fully covered — snap the layout
+            if (containerRef.current) containerRef.current.style.cssText = '';
+            const canvas = containerRef.current?.querySelector('.studio-canvas') as HTMLElement;
+            if (canvas) canvas.style.cssText = '';
+            setIntroState("complete");
+            sessionStorage.setItem('skipIntro', 'true');
+
+            setTimeout(() => {
+              gsap.to([left, right], {
+                width: 0,
+                duration: 0.85,
+                ease: 'power4.inOut',
+                onComplete: () => { left.remove(); right.remove(); }
+              });
+            }, 100);
           }
         });
       });
+    }
+
+    // If we skipped the intro (returning visitor), still clean up the loader
+    if (introState === "complete" && shouldSkipIntro) {
+      const loader = document.getElementById("global-intro-loader");
+      if (loader) {
+        loader.style.opacity = "0";
+        setTimeout(() => loader.remove(), 100);
+      }
     }
   }, [introState, ready, failed]);
   const readyCallback = useRef(() => setReady(true)).current,

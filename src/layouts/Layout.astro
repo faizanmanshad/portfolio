@@ -75,11 +75,44 @@ const resolvedMode: "explore" | "index" =
         }
         var mode = sessionStorage.getItem("portfolioMode") || "explore";
         document.documentElement.setAttribute("data-active-mode", mode);
+        
+        // Check if this is an internal navigation or a reload
+        const navType = performance.getEntriesByType('navigation')[0]?.type;
+        const isReload = navType === 'reload';
+        const isInternal = document.referrer.startsWith(window.location.origin);
+        const isHomePage = path === '/' || path === '/index.html';
+        
+        // Always replay the 3D intro if user reloads or directly visits the home page
+        if (isHomePage && (isReload || !isInternal)) {
+          sessionStorage.removeItem('skipIntro');
+        }
+        // If they landed directly on a sub-page (not from our site), skip the intro for nav clarity
+        if (!isInternal && !isHomePage) {
+          sessionStorage.setItem('skipIntro', 'true');
+        }
       })();
     </script>
   </head>
 
   <body data-mode={resolvedMode}>
+    <script is:inline>
+      (function() {
+        var path = window.location.pathname;
+        var isHomePage = path === '/' || path === '/index.html';
+        var skipIntro = sessionStorage.getItem('skipIntro') === 'true';
+        if (!isHomePage || (isHomePage && skipIntro)) {
+          var baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;';
+          var left = document.createElement('div');
+          left.id = 'pre-door-left';
+          left.style.cssText = baseStyle + 'left:0;width:50vw;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
+          var right = document.createElement('div');
+          right.id = 'pre-door-right';
+          right.style.cssText = baseStyle + 'right:0;width:50vw;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
+          document.body.appendChild(left);
+          document.body.appendChild(right);
+        }
+      })();
+    </script>
     <!-- Skip to main content (accessibility) -->
     <a href="#main-content" class="skip-link">
       Skip to content
@@ -87,16 +120,12 @@ const resolvedMode: "explore" | "index" =
 
     <!-- Custom Cursor -->
     <Cursor />
-    
-    {currentPath !== '/' && currentPath !== '/index.html' && (
-      <div id="page-load-iris" style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 50%; box-shadow: 0 0 0 4000px #101412; z-index: 2147483647; width: 0px; height: 0px; pointer-events: none;"></div>
-    )}
 
     <!-- Compact fixed navigation -->
     <Nav currentPath={currentPath} mode={resolvedMode} />
 
-    <!-- Page content -->
-    <div id="main-content" tabindex="-1">
+    <!-- Page content (Hidden initially, revealed after Iris wipe) -->
+    <div id="main-content" tabindex="-1" style="opacity: 0;">
       <slot />
     </div>
 
@@ -130,25 +159,65 @@ const resolvedMode: "explore" | "index" =
       
       // Global Scroll Reveal Animations
       const revealElements = document.querySelectorAll(
-        '.practice-card, .principle-grid > div, .register-row, .research-copy, .section-heading, .studio-footer > div, .cv-section, .gsap-stagger-item, .cv-index-list'
+        '.practice-card, .principle-grid > div, .register-row, .research-copy, .section-heading, .studio-footer > div, .index-row, .index-title, .index-deck, .cv-index-list > li'
       );
       
-      // Initially hide elements to prevent flicker during Iris transition
-      gsap.set(revealElements, { y: 30, opacity: 0 });
+      const isExplorePage = window.location.pathname === '/' || window.location.pathname === '/index.html';
+      
+      // Initially hide elements to prevent flicker during transition
+      revealElements.forEach((el) => {
+        if (isExplorePage) {
+          gsap.set(el, { y: 40, opacity: 0, filter: "blur(8px)" });
+        } else {
+          // Academic / Subpages: only hide elements below the fold so top text is instantly ready when doors open
+          const rect = el.getBoundingClientRect();
+          if (rect.top > window.innerHeight * 0.8) {
+            gsap.set(el, { y: 40, skewY: 5, opacity: 0, filter: "blur(8px)" });
+          }
+        }
+      });
       
       function initScrollReveals() {
-        revealElements.forEach((el) => {
-          gsap.to(el, { 
-            y: 0, 
-            opacity: 1, 
-            duration: 1.4, 
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: el,
-              start: "top 95%",
-              toggleActions: "play none none none"
-            }
-          });
+        // First fade in the main content container
+        gsap.to('#main-content', { 
+          opacity: 1, 
+          duration: 0.8, 
+          ease: "power2.out",
+          onComplete: () => {
+            // Then trigger the scroll reveals for individual elements
+            revealElements.forEach((el) => {
+              if (isExplorePage) {
+                gsap.to(el, { 
+                  y: 0, 
+                  opacity: 1, 
+                  filter: "blur(0px)",
+                  duration: 1.2, // smoother
+                  ease: "power3.out",
+                  clearProps: "filter", // FIX BLURRY TEXT
+                  scrollTrigger: {
+                    trigger: el,
+                    start: "top 95%",
+                    toggleActions: "play none none none"
+                  }
+                });
+              } else {
+                gsap.to(el, { 
+                  y: 0, 
+                  skewY: 0,
+                  opacity: 1, 
+                  filter: "blur(0px)",
+                  duration: 1.0, 
+                  ease: "power3.out",
+                  clearProps: "transform,filter",
+                  scrollTrigger: {
+                    trigger: el,
+                    start: "top 95%",
+                    toggleActions: "play none none none"
+                  }
+                });
+              }
+            });
+          }
         });
       }
 
@@ -213,62 +282,89 @@ const resolvedMode: "explore" | "index" =
           });
         });
       }
-      // Iris Page Transition Logic
+
+      // Helper: create a split-door transition pair with orange accent gradient
+      function createDoorPanels() {
+        const baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;';
+        const left = document.createElement('div');
+        left.style.cssText = baseStyle + 'left:0;width:0;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
+        const right = document.createElement('div');
+        right.style.cssText = baseStyle + 'right:0;width:0;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
+        document.body.appendChild(left);
+        document.body.appendChild(right);
+        return { left, right };
+      }
+
+      // Door Close: panels slide in from edges to meet in center
+      function doorClose(onComplete: (panels: { left: HTMLElement, right: HTMLElement }) => void) {
+        const panels = createDoorPanels();
+        gsap.to([panels.left, panels.right], {
+          width: '50vw',
+          duration: 0.85,
+          ease: 'power4.inOut',
+          onComplete: () => onComplete(panels)
+        });
+      }
+
+      // Door Open: panels slide back out to edges
+      function doorOpen(existingPanels?: { left: HTMLElement, right: HTMLElement }, onComplete?: () => void) {
+        let panels = existingPanels;
+        if (!panels) {
+          let left = document.getElementById('pre-door-left') as HTMLElement;
+          let right = document.getElementById('pre-door-right') as HTMLElement;
+          
+          if (!left || !right) {
+            const baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;';
+            left = document.createElement('div');
+            left.style.cssText = baseStyle + 'left:0;width:50vw;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
+            right = document.createElement('div');
+            right.style.cssText = baseStyle + 'right:0;width:50vw;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
+            document.body.appendChild(left);
+            document.body.appendChild(right);
+          }
+          panels = { left, right };
+        }
+        
+        gsap.to([panels.left, panels.right], {
+          width: 0,
+          duration: 0.85,
+          ease: 'power4.inOut',
+          onComplete: () => { 
+            panels!.left.remove(); 
+            panels!.right.remove(); 
+            if (onComplete) onComplete(); 
+          }
+        });
+      }
+
+      // Page Navigation: close doors, then navigate
       document.addEventListener('click', (e) => {
         const link = (e.target as HTMLElement).closest('a');
         if (link && link.href && link.hostname === window.location.hostname && link.target !== '_blank') {
-          // Ignore anchor links on the same page
           const currentUrl = new URL(window.location.href);
           const targetUrl = new URL(link.href);
           if (currentUrl.pathname === targetUrl.pathname && targetUrl.hash) return;
-          
           e.preventDefault();
-          
-          const iris = document.createElement('div');
-          iris.style.position = 'fixed';
-          iris.style.left = '50%';
-          iris.style.top = '50%';
-          iris.style.transform = 'translate(-50%, -50%)';
-          iris.style.borderRadius = '50%';
-          iris.style.boxShadow = '0 0 0 4000px #101412'; // Extra large to ensure it covers screens
-          iris.style.zIndex = '2147483647';
-          iris.style.width = '4000px';
-          iris.style.height = '4000px';
-          iris.style.pointerEvents = 'none';
-          document.body.appendChild(iris);
-          
-          gsap.to(iris, {
-            width: 0,
-            height: 0,
-            duration: 1.0,
-            ease: "power3.inOut",
-            onComplete: () => {
-              window.location.href = link.href;
-            }
-          });
+          doorClose(() => { window.location.href = link.href; });
         }
       });
-      
-      // On page load, animate iris opening (except on home page which has 3D intro)
+
+      // Page Load: decide which reveal to use
       const currentPath = window.location.pathname;
-      if (currentPath !== '/' && currentPath !== '/index.html') {
-          const iris = document.getElementById('page-load-iris');
-          if (iris) {
-            gsap.to(iris, {
-              width: 4000,
-              height: 4000,
-              duration: 1.0,
-              ease: "power3.inOut",
-              onComplete: () => {
-                iris.remove();
-                initScrollReveals(); // Start scroll animations ONLY after wipe is complete
-              }
-            });
-          } else {
-            initScrollReveals();
-          }
+      const isHomePage = currentPath === '/' || currentPath === '/index.html';
+      const skipIntro = sessionStorage.getItem('skipIntro') === 'true';
+
+      if (!isHomePage) {
+          // All sub-pages: doors start closed on new page, then open
+          doorOpen();
+          initScrollReveals();
+      } else if (isHomePage && skipIntro) {
+          // Returning visitor to home page
+          doorOpen();
+          initScrollReveals();
       } else {
-          // On the home page, the 3D model takes over the intro, so initialize immediately
+          // First-ever visit to home page: 3D model handles the intro sequence
+          gsap.to('#main-content', { opacity: 1, duration: 0.1 });
           initScrollReveals();
       }
     </script>

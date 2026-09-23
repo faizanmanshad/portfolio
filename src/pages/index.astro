@@ -42,6 +42,11 @@ const records = {
 >
   <div id="global-intro-loader" style="position: fixed; inset: 0; z-index: 2147483647; background: #101412; display: flex; align-items: center; justify-content: center; transition: opacity 0.4s ease-in-out;">
     <p style="color: #8b9586; font: 9px var(--font-mono); letter-spacing: 0.15em;">SETTING OUT THE STUDIO...</p>
+    <script is:inline>
+      if (sessionStorage.getItem('skipIntro') === 'true') {
+        document.getElementById('global-intro-loader').style.display = 'none';
+      }
+    </script>
   </div>
   <main class="studio-page">
     <section
