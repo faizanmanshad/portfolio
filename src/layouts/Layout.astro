@@ -145,7 +145,6 @@ const resolvedMode: "explore" | "index" =
         gestureOrientation: "vertical",
         smoothWheel: true,
         wheelMultiplier: 1,
-        touchMultiplier: 2,
         infinite: false,
       });
 
@@ -167,12 +166,12 @@ const resolvedMode: "explore" | "index" =
       // Initially hide elements to prevent flicker during transition
       revealElements.forEach((el) => {
         if (isExplorePage) {
-          gsap.set(el, { y: 40, opacity: 0, filter: "blur(8px)" });
+          gsap.set(el, { y: 40, opacity: 0 });
         } else {
           // Academic / Subpages: only hide elements below the fold so top text is instantly ready when doors open
           const rect = el.getBoundingClientRect();
           if (rect.top > window.innerHeight * 0.8) {
-            gsap.set(el, { y: 40, skewY: 5, opacity: 0, filter: "blur(8px)" });
+            gsap.set(el, { y: 40, skewY: 5, opacity: 0 });
           }
         }
       });
@@ -190,10 +189,8 @@ const resolvedMode: "explore" | "index" =
                 gsap.to(el, { 
                   y: 0, 
                   opacity: 1, 
-                  filter: "blur(0px)",
                   duration: 1.2, // smoother
                   ease: "power3.out",
-                  clearProps: "filter", // FIX BLURRY TEXT
                   scrollTrigger: {
                     trigger: el,
                     start: "top 95%",
@@ -205,10 +202,9 @@ const resolvedMode: "explore" | "index" =
                   y: 0, 
                   skewY: 0,
                   opacity: 1, 
-                  filter: "blur(0px)",
                   duration: 1.0, 
                   ease: "power3.out",
-                  clearProps: "transform,filter",
+                  clearProps: "transform",
                   scrollTrigger: {
                     trigger: el,
                     start: "top 95%",
@@ -223,7 +219,8 @@ const resolvedMode: "explore" | "index" =
 
       // Global Custom Cursor Logic
       const cursor = document.getElementById("custom-cursor");
-      if (cursor) {
+      const hasHover = window.matchMedia('(hover: hover)').matches;
+      if (cursor && hasHover) {
         // Show cursor when mouse moves
         document.addEventListener(
           "mousemove",

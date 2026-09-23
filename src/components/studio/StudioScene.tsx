@@ -807,7 +807,7 @@ export default function StudioScene({ records }: { records: Records }) {
               orthographic
               camera={{ position: [7.8, 6, 9.5], zoom: 70, near: 0.1, far: 70 }}
               shadows="percentage"
-              dpr={[1, 1.5]}
+              dpr={typeof window !== "undefined" && window.innerWidth < 768 ? 1 : [1, 1.5]}
               frameloop="demand"
               gl={{ antialias: true, alpha: true }}
               onCreated={({ gl, camera, size }) => {
