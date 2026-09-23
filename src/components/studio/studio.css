@@ -1,41 +1,236 @@
-.studio-interactive { position: relative; width: 100%; height: 100%; }
-.studio-canvas { position: absolute; inset: 0 0 108px; cursor: grab; touch-action: pan-y; }
-.studio-canvas:active { cursor: grabbing; }
-.studio-canvas canvas { touch-action: pan-y !important; }
-.studio-tools, .studio-topics { position: absolute; left: 7%; right: 3%; display: flex; align-items: center; justify-content: space-between; gap: 12px; font: 10px var(--font-mono); }
-.studio-tools { bottom: 57px; border-bottom: 1px solid #ffffff16; padding-bottom: 16px; }
-.studio-tools > div { display: flex; gap: 3px; padding: 3px; border: 1px solid #ffffff22; border-radius: 4px; background: #151817; }
-.studio-tools button, .studio-topics button { font: inherit; color: #aaa99e; background: transparent; border: 0; padding: 8px 11px; cursor: pointer; text-transform: capitalize; }
-.studio-tools button[aria-pressed=true] { color: #f1e9d9; background: #343831; border-radius: 2px; }
-.studio-tools button:hover, .studio-topics button:hover { color: #ef965f; }
-.studio-tools button:disabled { opacity: .35; cursor: default; }
-.studio-topics { bottom: 13px; justify-content: flex-start; gap: 24px; }
-.studio-topics button { padding: 8px 0; }
-.studio-topics button span { color: #e97939; margin-right: 8px; }
-.studio-topics button[aria-pressed=true] { color: #f0e8d9; }
-.model-hotspot { position: relative; display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #ffb57c; border-radius: 50%; background: #dc6828; color: #fff5e7; box-shadow: 0 0 0 5px #e979391a; cursor: pointer; font: 10px var(--font-mono); }
-.model-hotspot:hover, .model-hotspot:focus-visible { background: #ff9b58; box-shadow: 0 0 0 9px #e9793925; }
-.hotspot-label { display: none; position: absolute; top: -34px; left: 50%; transform: translateX(-50%); padding: 6px 10px; background: #161b18ed; color: #f4e8d4; white-space: nowrap; border: 1px solid #e9793940; border-radius: 3px; pointer-events: none; }
-.model-hotspot:hover .hotspot-label, .model-hotspot:focus-visible .hotspot-label { display: block; }
-.model-story { position: absolute; right: 5%; top: 15%; width: min(310px, 85%); background: #191e1af5; backdrop-filter: blur(18px); border: 1px solid #746d585c; box-shadow: 0 20px 50px #0006; padding: 25px; z-index: 35; border-radius: 5px; }
-.model-story .label { font-size: 9px; color: #e99761; padding-right: 25px; }
-.model-story h2 { font-size: 23px; letter-spacing: -.04em; }
-.model-story > p:not(.label) { color: #b4b6aa; font-size: 12px; line-height: 1.8; }
-.model-story a { display: flex; justify-content: space-between; font: 10px var(--font-mono); padding-top: 16px; border-top: 1px solid #ffffff18; }
-.close-story { position: absolute; right: 12px; top: 10px; border: 0; background: transparent; color: #d7d2c4; font-size: 24px; cursor: pointer; }
-.model-loading { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
-.model-loading img { width: 90%; opacity: .65; }
-.model-loading span { font: 10px var(--font-mono); color: #bbb4a5; }
-@media(max-width: 700px) {
- .studio-canvas { inset: 0 0 125px; }
- .studio-tools { left: 16px; right: 16px; bottom: 68px; }
- .studio-topics { left: 16px; right: 16px; gap: 0; justify-content: space-between; flex-wrap: wrap; bottom: 15px; }
- .studio-topics button { font-size: 9px; }
- .reset-view span { display: none; }
- .studio-tools button { padding: 9px; }
- .model-story { top: 5%; }
- .model-hotspot { width: 32px; height: 32px; }
+.studio-interactive {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
-.studio-tools .rotation-buttons { border: none; background: transparent; margin-left: auto; gap: 0; }
-.studio-tools .rotation-buttons button { font-size: 16px; padding: 6px 8px; }
-@media (min-width: 701px) and (max-width: 1000px) { .reset-view span { display: none; } .studio-tools, .studio-topics { font-size: 8px; } .studio-topics { gap: 12px; } .studio-tools button { padding: 7px; } }
+.studio-canvas {
+  position: absolute;
+  inset: 0 0 108px;
+  cursor: grab;
+  touch-action: pan-y;
+}
+.studio-canvas:active {
+  cursor: grabbing;
+}
+.studio-canvas canvas {
+  touch-action: pan-y !important;
+}
+.studio-tools,
+.studio-topics {
+  position: absolute;
+  left: 7%;
+  right: 3%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font: 10px var(--font-mono);
+}
+.studio-tools {
+  bottom: 57px;
+  border-bottom: 1px solid #ffffff16;
+  padding-bottom: 16px;
+}
+.studio-tools > div {
+  display: flex;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid #ffffff22;
+  border-radius: 4px;
+  background: #151817;
+}
+.studio-tools button,
+.studio-topics button {
+  font: inherit;
+  color: #aaa99e;
+  background: transparent;
+  border: 0;
+  padding: 8px 11px;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+.studio-tools button[aria-pressed="true"] {
+  color: #f1e9d9;
+  background: #343831;
+  border-radius: 2px;
+}
+.studio-tools button:hover,
+.studio-topics button:hover {
+  color: #ef965f;
+}
+.studio-tools button:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.studio-topics {
+  bottom: 13px;
+  justify-content: flex-start;
+  gap: 24px;
+}
+.studio-topics button {
+  padding: 8px 0;
+}
+.studio-topics button span {
+  color: #e97939;
+  margin-right: 8px;
+}
+.studio-topics button[aria-pressed="true"] {
+  color: #f0e8d9;
+}
+.model-hotspot {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ffb57c;
+  border-radius: 50%;
+  background: #dc6828;
+  color: #fff5e7;
+  box-shadow: 0 0 0 5px #e979391a;
+  cursor: pointer;
+  font: 10px var(--font-mono);
+}
+.model-hotspot:hover,
+.model-hotspot:focus-visible {
+  background: #ff9b58;
+  box-shadow: 0 0 0 9px #e9793925;
+}
+.hotspot-label {
+  display: none;
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 10px;
+  background: #161b18ed;
+  color: #f4e8d4;
+  white-space: nowrap;
+  border: 1px solid #e9793940;
+  border-radius: 3px;
+  pointer-events: none;
+}
+.model-hotspot:hover .hotspot-label,
+.model-hotspot:focus-visible .hotspot-label {
+  display: block;
+}
+.model-story {
+  position: absolute;
+  right: 5%;
+  top: 15%;
+  width: min(310px, 85%);
+  background: #191e1af5;
+  backdrop-filter: blur(18px);
+  border: 1px solid #746d585c;
+  box-shadow: 0 20px 50px #0006;
+  padding: 25px;
+  z-index: 35;
+  border-radius: 5px;
+}
+.model-story .label {
+  font-size: 9px;
+  color: #e99761;
+  padding-right: 25px;
+}
+.model-story h2 {
+  font-size: 23px;
+  letter-spacing: -0.04em;
+}
+.model-story > p:not(.label) {
+  color: #b4b6aa;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.model-story a {
+  display: flex;
+  justify-content: space-between;
+  font: 10px var(--font-mono);
+  padding-top: 16px;
+  border-top: 1px solid #ffffff18;
+}
+.close-story {
+  position: absolute;
+  right: 12px;
+  top: 10px;
+  border: 0;
+  background: transparent;
+  color: #d7d2c4;
+  font-size: 24px;
+  cursor: pointer;
+}
+.model-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+.model-loading img {
+  width: 90%;
+  opacity: 0.65;
+}
+.model-loading span {
+  font: 10px var(--font-mono);
+  color: #bbb4a5;
+}
+@media (max-width: 700px) {
+  .studio-canvas {
+    inset: 0 0 125px;
+  }
+  .studio-tools {
+    left: 16px;
+    right: 16px;
+    bottom: 68px;
+  }
+  .studio-topics {
+    left: 16px;
+    right: 16px;
+    gap: 0;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    bottom: 15px;
+  }
+  .studio-topics button {
+    font-size: 9px;
+  }
+  .reset-view span {
+    display: none;
+  }
+  .studio-tools button {
+    padding: 9px;
+  }
+  .model-story {
+    top: 5%;
+  }
+  .model-hotspot {
+    width: 32px;
+    height: 32px;
+  }
+}
+.studio-tools .rotation-buttons {
+  border: none;
+  background: transparent;
+  margin-left: auto;
+  gap: 0;
+}
+.studio-tools .rotation-buttons button {
+  font-size: 16px;
+  padding: 6px 8px;
+}
+@media (min-width: 701px) and (max-width: 1000px) {
+  .reset-view span {
+    display: none;
+  }
+  .studio-tools,
+  .studio-topics {
+    font-size: 8px;
+  }
+  .studio-topics {
+    gap: 12px;
+  }
+  .studio-tools button {
+    padding: 7px;
+  }
+}

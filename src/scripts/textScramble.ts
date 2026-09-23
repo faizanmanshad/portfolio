@@ -4,7 +4,7 @@ export class TextScramble {
   private queue: Array<{ from: string, to: string, start: number, end: number, char?: string }>;
   private frameRequest: number;
   private frame: number;
-  private resolve: (value?: unknown) => void;
+  private resolve: () => void;
   
   constructor(el: HTMLElement) {
     this.el = el;

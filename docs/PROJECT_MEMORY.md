@@ -1,5 +1,15 @@
 # Project Memory
 
+## Active implementation — Interactive studio (2026-09-23)
+- User approved a stylized engineering studio concept, superseding the script-name hero below.
+- Active homepage: src/pages/index.astro; interactive scene: src/components/studio/StudioScene.tsx; styles: studio.css.
+- One procedural pavilion and truss bridge with drag/keyboard/button rotation, three display modes, hotspots, real content links, and scroll separation.
+- Strong architectural name with outline inspection effect. Graphite/mineral/orange palette, original illustrations for work/research sections.
+- Contact page populated from portfolio email. Academic is unchanged and has a recorded degree-date conflict for later review.
+- Read docs/STUDIO_SOURCE_NOTES.md for the deliberately limited scholarship-folder review.
+- Earlier hero/terrain files remain as unused iteration history; they are no longer imported by the homepage.
+
+
 ## Latest implementation — 2026-09-23 hero refinement
 - Explore name now uses rounded Pacifico script geometry, warm studio highlights, and gentle reversible scroll depth/rotation.
 - Supporting statement is smaller with stable three-line layout and smooth sequential character reveal; duplicate text is fixed.

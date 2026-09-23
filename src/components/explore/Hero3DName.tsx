@@ -5,7 +5,9 @@ import * as THREE from 'three';
 import outlines from '../../assets/hero/name-outlines.json';
 
 // Baked, kerned Pacifico outlines: no font fetch or parser at runtime.
-function makeWord(commands: typeof outlines[number]['commands']) {
+type OutlineCommand = { type: string; x?: number; y?: number; x1?: number; y1?: number; x2?: number; y2?: number };
+
+function makeWord(commands: OutlineCommand[]) {
   const path = new THREE.ShapePath();
   for (const c of commands) {
     if (c.type === 'M') path.moveTo(c.x!, -c.y!);
@@ -14,7 +16,7 @@ function makeWord(commands: typeof outlines[number]['commands']) {
     if (c.type === 'Q') path.quadraticCurveTo(c.x1!, -c.y1!, c.x!, -c.y!);
     if (c.type === 'Z') path.currentPath?.closePath();
   }
-  const geometry = new THREE.ExtrudeGeometry(path.toShapes(false), {
+  const geometry = new THREE.ExtrudeGeometry(path.toShapes(), {
     depth: 0.025, bevelEnabled: true, bevelSize: 0.07, bevelOffset: -0.045,
     bevelThickness: 0.11, bevelSegments: 8, steps: 1, curveSegments: 16,
   });

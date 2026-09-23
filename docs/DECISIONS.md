@@ -51,3 +51,13 @@ Decision: Use the facts provided in section 11 of the master specification (`FAI
 Why: Allows unblocking development and getting the basic structure and routing in place.
 Alternatives considered: Block development and wait for user to provide files.
 Consequences: Initial content may be incomplete and will need to be updated once the full source files are provided.
+
+## 2026-09-23 — Interactive engineering studio
+User approved a stylized architectural studio concept and authorized implementation, replacing the earlier 3D script-lettering direction.
+- Homepage uses architectural sans-serif lettering with a pointer-following outline reveal.
+- One original procedural pavilion and truss bridge, with matte materials, softened edges, planting, stairs, furnishings and people. No FBX supplied or required; no external model files or generated-image screenshot used as the live scene.
+- Orbit drag, arrow-key and button rotation, reset, assembled/exploded/blueprint modes, reversible scroll separation, numbered hotspots and matching ordinary buttons.
+- Three content topics connect to existing portfolio records. Static sections below cover work, research, projects and navigation onward.
+- Demand rendering; no continuous idle loop. Local SVG loading/error drawing; semantic content survives missing JavaScript. Reduced-motion disables scroll separation and transition damping.
+- Academic content/layout left for its separate phase. Contact stub replaced with the email supplied in the BIM portfolio.
+- Source review is documented in STUDIO_SOURCE_NOTES.md. Raw evidence remains untouched.

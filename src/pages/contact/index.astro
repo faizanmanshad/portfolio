@@ -1,9 +1,72 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout>
-  <main>
-    <h1>Contact</h1>
+<Layout
+  title="Contact | Faizan Manshad"
+  description="Get in touch with Faizan Manshad about civil engineering, BIM, digital construction, or research."
+>
+  <main class="contact-page container">
+    <p class="label">LET'S CONNECT</p>
+    <h1>
+      Good work starts
+      <br />
+      with a conversation.
+    </h1>
+    <p class="contact-intro">
+      For conversations about civil engineering, BIM, digital construction, and
+      research.
+    </p>
+    <a class="email" href="mailto:faizanmanshad@gmail.com">
+      faizanmanshad@gmail.com <span>↗</span>
+    </a>
+    <div class="contact-links">
+      <a href="/">BACK TO THE STUDIO ↗</a>
+      <a href="/academic/">ACADEMIC CV ↗</a>
+    </div>
   </main>
 </Layout>
+<style>
+  .contact-page {
+    padding-top: 170px;
+    padding-bottom: 100px;
+    max-width: 1150px;
+  }
+  .label {
+    color: var(--c-accent);
+    margin-bottom: 40px;
+  }
+  h1 {
+    font-size: clamp(42px, 6vw, 80px);
+    letter-spacing: -0.045em;
+  }
+  .contact-intro {
+    color: #a1a396;
+    max-width: 460px;
+    margin: 30px 0 55px;
+  }
+  .email {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    font-size: clamp(17px, 3vw, 34px);
+    border-bottom: 1px solid #ffffff33;
+    padding-bottom: 22px;
+    max-width: 710px;
+  }
+  .email span {
+    color: var(--c-accent);
+  }
+  .contact-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    margin-top: 60px;
+    font: 10px var(--font-mono);
+  }
+  @media (max-width: 600px) {
+    .contact-page {
+      padding-top: 125px;
+    }
+  }
+</style>
