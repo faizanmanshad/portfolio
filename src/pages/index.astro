@@ -9,7 +9,7 @@ const urbana = experience.find(item => item.id === 'urbana')!;
 const openspace = experience.find(item => item.id === 'openspace')!;
 const ar = research.find(item => item.id === 'bim-to-ar')!;
 const records = {
-  structure: { title: 'From drawing to structure', label: 'Structures & BIM', description: 'Architectural and structural modelling, engineering drawings, and the details that connect a design to its construction.', href: '/projects/' },
+  structure: { title: 'From drawing to structure', label: 'Structures & BIM', description: 'Architectural and structural modelling, engineering drawings, and the details that connect a design to its construction.', href: '/portfolio/projects/' },
   practice: { title: openspace.data.shortTitle || openspace.data.title, label: 'Digital construction', description: openspace.data.summary || '', href: `/experience/${openspace.id}/` },
   research: { title: ar.data.shortTitle || ar.data.title, label: 'Research & AR', description: ar.data.summary || '', href: `/research/${ar.id}/` },
 };
@@ -34,7 +34,7 @@ const records = {
       <div class="studio-model">
         <span class="model-coordinate" aria-hidden="true">PERSPECTIVE / 01</span>
         <StudioScene records={records} client:load>
-          <div slot="fallback" class="studio-static"><img src="/images/studio-fallback.svg" alt="Isometric architectural drawing of a pavilion and bridge"/><p class="label">STRUCTURES / CONSTRUCTION / RESEARCH</p></div>
+          <div slot="fallback" class="studio-static"><img src="/portfolio/images/studio-fallback.svg" alt="Isometric architectural drawing of a pavilion and bridge"/><p class="label">STRUCTURES / CONSTRUCTION / RESEARCH</p></div>
         </StudioScene>
       </div>
       <div class="studio-caption"><span><i></i> THE STUDIO — ONE MODEL, MANY STORIES</span><span>DRAG TO ROTATE · SELECT A DETAIL</span></div>
@@ -51,13 +51,13 @@ const records = {
     </section>
 
     <section class="selected-work" id="selected-work">
-      <div class="section-heading"><div><p class="section-kicker">02 / SELECTED PRACTICE</p><h2>From the model.<br/><span>Into the real world.</span></h2></div><a href="/work/" class="text-link">ALL EXPERIENCE ↗</a></div>
+      <div class="section-heading"><div><p class="section-kicker">02 / SELECTED PRACTICE</p><h2>From the model.<br/><span>Into the real world.</span></h2></div><a href="/portfolio/work/" class="text-link">ALL EXPERIENCE ↗</a></div>
       <div class="practice-grid">
-        <a class="practice-card" href={`/experience/${urbana.id}/`}>
+        <a class="practice-card" href={`/portfolio/experience/${urbana.id}/`}>
           <div class="practice-art bridge-art" aria-hidden="true"><svg viewBox="0 0 600 330" fill="none"><path d="M70 240 210 140 530 180 390 280Z" fill="#252e2a"/><g stroke="#c6c1a7" stroke-width="3"><path d="M85 205 405 245 520 161 200 121Z M85 140 405 180 520 96 200 56Z M85 140V205 M405 180V245 M520 96V161 M200 56V121 M85 140 149 213 213 156 277 229 341 172 405 245 M200 56 264 129 328 72 392 145 456 88 520 161"/></g><path d="m85 140 320 40" stroke="#e97939" stroke-width="5"/><g stroke="#888c7d" stroke-width="2"><path d="M149 148 264 64 M213 156 328 72 M277 164 392 80 M341 172 456 88"/></g><circle cx="405" cy="180" r="7" fill="#e97939"/></svg><span class="drawing-caption">MODULAR INFRASTRUCTURE / STUDY</span></div>
           <div class="practice-meta"><span>01 / BIM & DETAILING</span><span>{urbana.data.dateDisplay}</span></div><h3>{urbana.data.shortTitle} <span>↗</span></h3><p>{urbana.data.summary}</p><span class="practice-role">{urbana.data.role}</span>
         </a>
-        <a class="practice-card" href={`/experience/${openspace.id}/`}>
+        <a class="practice-card" href={`/portfolio/experience/${openspace.id}/`}>
           <div class="practice-art capture-art" aria-hidden="true"><div class="capture-grid"></div><div class="capture-ring ring-one"></div><div class="capture-ring ring-two"></div><div class="capture-cross"></div><div class="capture-target">360°<span>SITE → INFORMATION</span></div><span class="drawing-caption">REALITY CAPTURE / PROGRESS</span></div>
           <div class="practice-meta"><span>02 / DIGITAL CONSTRUCTION</span><span>{openspace.data.dateDisplay}</span></div><h3>{openspace.data.shortTitle} <span>↗</span></h3><p>{openspace.data.summary}</p><span class="practice-role">{openspace.data.role}</span>
         </a>
@@ -65,13 +65,13 @@ const records = {
     </section>
 
     <section class="research-feature">
-      <div class="research-copy"><p class="section-kicker">03 / EXPERIMENTAL THINKING</p><h2>What if the model<br/>could leave<br/><em>the screen?</em></h2><p>{ar.data.summary}</p><a class="text-link" href={`/research/${ar.id}/`}>EXPLORE BIM TO AR ↗</a><span class="research-status">FYP RESEARCH / SSRN PREPRINT</span></div>
-      <a href={`/research/${ar.id}/`} class="research-art" aria-label="Explore BIM to augmented reality research"><div class="ar-frame"><span class="ar-scanline"></span><div class="ar-building"><i></i><i></i><i></i><i></i></div><span class="ar-label">MODEL PLACED<br/>PHYSICAL + DIGITAL</span></div><span class="ar-coordinate">MARKER / GROUND PLANE / LOCATION</span></a>
+      <div class="research-copy"><p class="section-kicker">03 / EXPERIMENTAL THINKING</p><h2>What if the model<br/>could leave<br/><em>the screen?</em></h2><p>{ar.data.summary}</p><a class="text-link" href={`/portfolio/research/${ar.id}/`}>EXPLORE BIM TO AR ↗</a><span class="research-status">FYP RESEARCH / SSRN PREPRINT</span></div>
+      <a href={`/portfolio/research/${ar.id}/`} class="research-art" aria-label="Explore BIM to augmented reality research"><div class="ar-frame"><span class="ar-scanline"></span><div class="ar-building"><i></i><i></i><i></i><i></i></div><span class="ar-label">MODEL PLACED<br/>PHYSICAL + DIGITAL</span></div><span class="ar-coordinate">MARKER / GROUND PLANE / LOCATION</span></a>
     </section>
 
-    <section class="project-register"><div class="section-heading"><div><p class="section-kicker">04 / THE DRAWING REGISTER</p><h2>Further explorations.</h2></div><a class="text-link" href="/projects/">ALL PROJECTS ↗</a></div>{projects.map((item,i) => <a class="register-row" href={`/projects/${item.id}/`}><span class="register-number">0{i + 1}</span><h3>{item.data.title}</h3><span class="register-domain">{item.data.domains.join(' / ')}</span><span>↗</span></a>)}</section>
+    <section class="project-register"><div class="section-heading"><div><p class="section-kicker">04 / THE DRAWING REGISTER</p><h2>Further explorations.</h2></div><a class="text-link" href="/portfolio/projects/">ALL PROJECTS ↗</a></div>{projects.map((item,i) => <a class="register-row" href={`/portfolio/projects/${item.id}/`}><span class="register-number">0{i + 1}</span><h3>{item.data.title}</h3><span class="register-domain">{item.data.domains.join(' / ')}</span><span>↗</span></a>)}</section>
 
-    <footer class="studio-footer"><p class="section-kicker">PEOPLE. STRUCTURES. POSSIBILITIES.</p><h2>Always curious.<br/><span>Always building.</span></h2><div><a href="/about/">THE PERSON BEHIND THE WORK ↗</a><a href="/contact/">LET'S CONNECT ↗</a><a href="/academic/">ACADEMIC CV ↗</a></div><p class="footer-colophon">FAIZAN MANSHAD <span>CIVIL ENGINEERING / BIM / RESEARCH</span></p></footer>
+    <footer class="studio-footer"><p class="section-kicker">PEOPLE. STRUCTURES. POSSIBILITIES.</p><h2>Always curious.<br/><span>Always building.</span></h2><div><a href="/portfolio/about/">THE PERSON BEHIND THE WORK ↗</a><a href="/portfolio/contact/">LET'S CONNECT ↗</a><a href="/portfolio/academic/">ACADEMIC CV ↗</a></div><p class="footer-colophon">FAIZAN MANSHAD <span>CIVIL ENGINEERING / BIM / RESEARCH</span></p></footer>
   </main>
 </Layout>
 <script>
