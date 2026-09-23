@@ -87,6 +87,10 @@ const resolvedMode: "explore" | "index" =
 
     <!-- Custom Cursor -->
     <Cursor />
+    
+    {currentPath !== '/' && currentPath !== '/index.html' && (
+      <div id="page-load-iris" style="position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); border-radius: 50%; box-shadow: 0 0 0 4000px #101412; z-index: 2147483647; width: 0px; height: 0px; pointer-events: none;"></div>
+    )}
 
     <!-- Compact fixed navigation -->
     <Nav currentPath={currentPath} mode={resolvedMode} />
@@ -94,17 +98,6 @@ const resolvedMode: "explore" | "index" =
     <!-- Page content -->
     <div id="main-content" tabindex="-1">
       <slot />
-
-      {currentPath !== "/" && !currentPath.startsWith("/academic") && (
-        <div class="back-mode-container container">
-          <a href="/" class="back-mode-btn link-explore">
-            <span aria-hidden="true">&larr;</span> Back to Explore section
-          </a>
-          <a href="/academic/" class="back-mode-btn link-academic">
-            <span aria-hidden="true">&larr;</span> Back to Academic section
-          </a>
-        </div>
-      )}
     </div>
 
     <!-- Initialize Lenis and GSAP globally -->
@@ -134,6 +127,30 @@ const resolvedMode: "explore" | "index" =
         lenis.raf(time * 1000);
       });
       gsap.ticker.lagSmoothing(0);
+      
+      // Global Scroll Reveal Animations
+      const revealElements = document.querySelectorAll(
+        '.practice-card, .principle-grid > div, .register-row, .research-copy, .section-heading, .studio-footer > div, .cv-section, .gsap-stagger-item, .cv-index-list'
+      );
+      
+      // Initially hide elements to prevent flicker during Iris transition
+      gsap.set(revealElements, { y: 30, opacity: 0 });
+      
+      function initScrollReveals() {
+        revealElements.forEach((el) => {
+          gsap.to(el, { 
+            y: 0, 
+            opacity: 1, 
+            duration: 1.4, 
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 95%",
+              toggleActions: "play none none none"
+            }
+          });
+        });
+      }
 
       // Global Custom Cursor Logic
       const cursor = document.getElementById("custom-cursor");
@@ -196,58 +213,64 @@ const resolvedMode: "explore" | "index" =
           });
         });
       }
+      // Iris Page Transition Logic
+      document.addEventListener('click', (e) => {
+        const link = (e.target as HTMLElement).closest('a');
+        if (link && link.href && link.hostname === window.location.hostname && link.target !== '_blank') {
+          // Ignore anchor links on the same page
+          const currentUrl = new URL(window.location.href);
+          const targetUrl = new URL(link.href);
+          if (currentUrl.pathname === targetUrl.pathname && targetUrl.hash) return;
+          
+          e.preventDefault();
+          
+          const iris = document.createElement('div');
+          iris.style.position = 'fixed';
+          iris.style.left = '50%';
+          iris.style.top = '50%';
+          iris.style.transform = 'translate(-50%, -50%)';
+          iris.style.borderRadius = '50%';
+          iris.style.boxShadow = '0 0 0 4000px #101412'; // Extra large to ensure it covers screens
+          iris.style.zIndex = '2147483647';
+          iris.style.width = '4000px';
+          iris.style.height = '4000px';
+          iris.style.pointerEvents = 'none';
+          document.body.appendChild(iris);
+          
+          gsap.to(iris, {
+            width: 0,
+            height: 0,
+            duration: 1.0,
+            ease: "power3.inOut",
+            onComplete: () => {
+              window.location.href = link.href;
+            }
+          });
+        }
+      });
+      
+      // On page load, animate iris opening (except on home page which has 3D intro)
+      const currentPath = window.location.pathname;
+      if (currentPath !== '/' && currentPath !== '/index.html') {
+          const iris = document.getElementById('page-load-iris');
+          if (iris) {
+            gsap.to(iris, {
+              width: 4000,
+              height: 4000,
+              duration: 1.0,
+              ease: "power3.inOut",
+              onComplete: () => {
+                iris.remove();
+                initScrollReveals(); // Start scroll animations ONLY after wipe is complete
+              }
+            });
+          } else {
+            initScrollReveals();
+          }
+      } else {
+          // On the home page, the 3D model takes over the intro, so initialize immediately
+          initScrollReveals();
+      }
     </script>
-    <style>
-      .back-mode-container {
-        padding-top: var(--s-16);
-        padding-bottom: var(--s-16);
-        text-align: center;
-        display: flex;
-        justify-content: center;
-      }
-
-      .link-explore,
-      .link-academic {
-        display: none;
-      }
-
-      html[data-active-mode="explore"] .link-explore {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--s-2);
-      }
-
-      html[data-active-mode="academic"] .link-academic {
-        display: inline-flex;
-        align-items: center;
-        gap: var(--s-2);
-      }
-
-      .back-mode-btn {
-        font-family: var(--font-mono);
-        font-size: var(--text-sm);
-        letter-spacing: var(--tracking-label);
-        text-transform: uppercase;
-        color: var(--c-explore-muted);
-        transition: color var(--t-micro) var(--ease-out);
-        padding: var(--s-2) var(--s-4);
-        border: 1px solid var(--c-border);
-        border-radius: 999px;
-      }
-
-      html[data-active-mode="academic"] .back-mode-btn {
-        color: var(--c-index-muted);
-      }
-
-      .back-mode-btn:hover {
-        color: var(--c-text);
-        border-color: var(--c-text);
-      }
-
-      html[data-active-mode="academic"] .back-mode-btn:hover {
-        color: var(--c-index-text);
-        border-color: var(--c-index-text);
-      }
-    </style>
   </body>
 </html>

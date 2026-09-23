@@ -719,36 +719,49 @@ export default function StudioScene({ records }: { records: Records }) {
       tl.add(() => setIntroState("holding"));
       tl.to({}, { duration: 0.4 });
 
-      // 3. Docking (Curtain Wipe)
+      // 3. Docking (Iris Wipe)
       tl.add(() => {
         setIntroState("docking");
         
-        const curtain = document.createElement('div');
-        curtain.style.position = 'fixed';
-        curtain.style.inset = '0';
-        curtain.style.backgroundColor = '#101412';
-        curtain.style.zIndex = '2147483647';
-        curtain.style.opacity = '0';
-        curtain.style.transition = 'opacity 0.4s ease-in-out';
-        document.body.appendChild(curtain);
+        const iris = document.createElement('div');
+        iris.style.position = 'fixed';
+        iris.style.left = '50%';
+        iris.style.top = '50%';
+        iris.style.transform = 'translate(-50%, -50%)';
+        iris.style.borderRadius = '50%';
+        iris.style.boxShadow = '0 0 0 3000px #101412';
+        iris.style.zIndex = '2147483647';
+        // Start massive (hole covers the screen)
+        iris.style.width = '3000px';
+        iris.style.height = '3000px';
+        document.body.appendChild(iris);
         
-        // Force reflow
-        void curtain.offsetWidth;
-        curtain.style.opacity = '1';
-        
-        setTimeout(() => {
-           // Screen is completely black now. Snap the layout!
-           if (containerRef.current) containerRef.current.style.cssText = '';
-           const canvas = containerRef.current?.querySelector('.studio-canvas') as HTMLElement;
-           if (canvas) canvas.style.cssText = '';
-           setIntroState("complete");
-           
-           // Wait for R3F to resize internally
-           setTimeout(() => {
-             curtain.style.opacity = '0';
-             setTimeout(() => curtain.remove(), 400);
-           }, 150);
-        }, 400);
+        // Animate Iris Close
+        gsap.to(iris, {
+          width: 0,
+          height: 0,
+          duration: 1.0,
+          ease: "power3.inOut",
+          onComplete: () => {
+             // Screen is completely black now. Snap the layout!
+             if (containerRef.current) containerRef.current.style.cssText = '';
+             const canvas = containerRef.current?.querySelector('.studio-canvas') as HTMLElement;
+             if (canvas) canvas.style.cssText = '';
+             setIntroState("complete");
+             
+             // Wait for R3F to resize internally
+             setTimeout(() => {
+               // Animate Iris Open
+               gsap.to(iris, {
+                 width: 3000,
+                 height: 3000,
+                 duration: 1.0,
+                 ease: "power3.inOut",
+                 onComplete: () => iris.remove()
+               });
+             }, 150);
+          }
+        });
       });
     }
   }, [introState, ready, failed]);
