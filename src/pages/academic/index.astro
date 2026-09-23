@@ -1,207 +1,751 @@
 ---
-/**
- * /academic/ — Curriculum Vitae mode
- * Detailed CV format with sections for education, experience, research, projects, and skills.
- */
-import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import IndexList from '../../components/index/IndexList.astro';
-import IndexRow from '../../components/index/IndexRow.astro';
-
-const projects = (await getCollection('projects')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
-const experience = (await getCollection('experience')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
-const research = (await getCollection('research')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
-const recognition = (await getCollection('recognition')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+const sort = (items: any[]) =>
+  items.sort((a, b) => (a.data.priority ?? 99) - (b.data.priority ?? 99));
+const experience = sort(await getCollection("experience"));
+const projects = sort(await getCollection("projects"));
+const recognition = sort(await getCollection("recognition"));
+const journey = sort(await getCollection("journey"));
+const research = sort(await getCollection("research"));
+const sections = [
+  "Profile",
+  "Education",
+  "Research",
+  "Practice",
+  "Projects",
+  "Recognition",
+  "Community",
+];
+const groups = [
+  {
+    id: "practice",
+    number: "03",
+    title: "Professional practice",
+    link: "/work/",
+    label: "All experience",
+    items: experience,
+  },
+  {
+    id: "projects",
+    number: "04",
+    title: "Selected projects",
+    link: "/projects/",
+    label: "All projects",
+    items: projects,
+  },
+  {
+    id: "recognition",
+    number: "05",
+    title: "Recognition & activities",
+    link: "/recognition/",
+    label: "Full recognition record",
+    items: recognition,
+  },
+  {
+    id: "community",
+    number: "06",
+    title: "Beyond the drawing board",
+    link: "/about/",
+    label: "More about me",
+    items: journey,
+  },
+];
 ---
 
 <Layout
-  title="Curriculum Vitae | Faizan Manshad"
-  description="Curriculum Vitae of Faizan Manshad, detailing education, professional experience, research, projects, and skills."
+  title="Academic Profile | Faizan Manshad"
+  description="Education, research, professional practice and selected projects by Faizan Manshad, in one academic profile."
 >
-  <main class="index-page container gsap-stagger-parent">
-    <header class="index-header">
-      <div class="index-header-meta">
-        <p class="label index-label gsap-stagger-item">CURRICULUM VITAE</p>
+  <main class="dossier">
+    <aside class="dossier-index" aria-label="Academic sections">
+      <div class="mobile-section-picker">
+        <label for="academic-section">JUMP TO SECTION</label>
+        <select id="academic-section">
+          {sections.map((name, i) => <option value={name.toLowerCase()}>{String(i).padStart(2, "0")} / {name}</option>)}
+        </select>
       </div>
-      <h1 class="index-title gsap-stagger-item">Faizan Manshad</h1>
-      <p class="index-deck gsap-stagger-item">
-        A comprehensive repository of my education, professional work, research, and engineering practice, curated for scholarship and academic review.
+      <p class="eyebrow">ON THIS PAGE</p>
+      <nav>
+        {sections.map((name, i) => (
+          <a href={`#${name.toLowerCase()}`} data-section-link>
+            <span>{String(i).padStart(2, "0")}</span>
+            {name}
+          </a>
+        ))}
+      </nav>
+      <p class="index-note">
+        CIVIL ENGINEERING
+        <br />
+        WITH A DIGITAL
+        <br />
+        PERSPECTIVE.
       </p>
-    </header>
-
-    <section class="cv-section">
-      <header class="index-header cv-section-header">
-        <h2 class="index-title gsap-stagger-item">Education</h2>
+    </aside>
+    <div class="dossier-content">
+      <header id="profile" class="profile" data-academic-section>
+        <div>
+          <p class="eyebrow">ACADEMIC PROFILE / FAIZAN MANSHAD</p>
+          <h1>
+            Faizan Manshad<span>.</span>
+          </h1>
+          <p class="profile-deck">
+            Civil engineering,
+            <br />
+            informed by digital practice.
+          </p>
+          <p class="muted intro">
+            Exploring the connections between building information modelling,
+            construction technology, and augmented reality.
+          </p>
+          <div class="profile-actions">
+            <a class="primary-action" href="/contact/">
+              Get in touch <span>↗</span>
+            </a>
+            <a href="/about/">About me ↗</a>
+          </div>
+        </div>
+        <figure class="profile-drawing">
+          <img
+            src="/images/studio-fallback.svg"
+            alt="Illustrative architectural model of a pavilion and bridge"
+          />
+          <figcaption>STRUCTURES / INFORMATION / IDEAS</figcaption>
+        </figure>
       </header>
-      <div class="index-columns gsap-stagger-item">
-        <span class="col-head col-head--year label">YEAR</span>
-        <span class="col-head col-head--title label">DEGREE</span>
-        <span class="col-head col-head--domain label">INSTITUTION</span>
-        <span class="col-head col-head--context label">LOCATION</span>
-      </div>
-      <ul class="cv-index-list gsap-stagger-item">
-        <IndexRow 
-          year="2021 — Present" 
-          title="Bachelor of Science in Civil Engineering" 
-          domain="COMSATS University Islamabad" 
-          role="Islamabad, PK" 
-        />
-      </ul>
-    </section>
-
-    <section class="cv-section">
-      <header class="index-header cv-section-header">
-        <h2 class="index-title gsap-stagger-item">Professional Experience</h2>
-      </header>
-      <div class="index-columns gsap-stagger-item">
-        <span class="col-head col-head--year label">YEAR</span>
-        <span class="col-head col-head--title label">ROLE</span>
-        <span class="col-head col-head--domain label">ORGANIZATION</span>
-        <span class="col-head col-head--context label">LOCATION / TYPE</span>
-      </div>
-      <div class="gsap-stagger-item">
-        <IndexList items={experience} />
-      </div>
-    </section>
-
-    <section class="cv-section">
-      <header class="index-header cv-section-header">
-        <h2 class="index-title gsap-stagger-item">Research & Publications</h2>
-      </header>
-      <div class="index-columns gsap-stagger-item">
-        <span class="col-head col-head--year label">YEAR</span>
-        <span class="col-head col-head--title label">TITLE</span>
-        <span class="col-head col-head--domain label">DOMAIN</span>
-        <span class="col-head col-head--context label">CONTEXT</span>
-      </div>
-      <div class="gsap-stagger-item">
-        <IndexList items={research} />
-      </div>
-    </section>
-
-    <section class="cv-section">
-      <header class="index-header cv-section-header">
-        <h2 class="index-title gsap-stagger-item">Academic & Professional Projects</h2>
-      </header>
-      <div class="index-columns gsap-stagger-item">
-        <span class="col-head col-head--year label">YEAR</span>
-        <span class="col-head col-head--title label">TITLE</span>
-        <span class="col-head col-head--domain label">DOMAIN</span>
-        <span class="col-head col-head--context label">CONTEXT</span>
-      </div>
-      <div class="gsap-stagger-item">
-        <IndexList items={projects} />
-      </div>
-    </section>
-
-    <section class="cv-section">
-      <header class="index-header cv-section-header">
-        <h2 class="index-title gsap-stagger-item">Technical Skills & Certifications</h2>
-      </header>
-      <div class="index-columns gsap-stagger-item">
-        <span class="col-head col-head--year label">STATUS</span>
-        <span class="col-head col-head--title label">SKILL / CERTIFICATE</span>
-        <span class="col-head col-head--domain label">CATEGORY</span>
-        <span class="col-head col-head--context label">ISSUER</span>
-      </div>
-      <ul class="cv-index-list gsap-stagger-item">
-        <IndexRow year="Certified" title="Revit Architecture, Structure & MEP" domain="BIM Modeling" role="Autodesk" />
-        <IndexRow year="Certified" title="AutoCAD" domain="Drafting & Design" role="Autodesk" />
-        <IndexRow year="Proficient" title="Enscape & Lumion" domain="3D Rendering" role="Visualization" />
-        <IndexRow year="Proficient" title="ETABS" domain="Structural Analysis" role="Engineering" />
-      </ul>
-    </section>
-
-    <section class="cv-section">
-      <header class="index-header cv-section-header">
-        <h2 class="index-title gsap-stagger-item">Community & Recognition</h2>
-      </header>
-      <div class="index-columns gsap-stagger-item">
-        <span class="col-head col-head--year label">YEAR</span>
-        <span class="col-head col-head--title label">TITLE</span>
-        <span class="col-head col-head--domain label">DOMAIN</span>
-        <span class="col-head col-head--context label">CONTEXT</span>
-      </div>
-      <div class="gsap-stagger-item">
-        <IndexList items={recognition} />
-      </div>
-    </section>
-
+      <section id="education" data-academic-section>
+        <div class="section-top" data-academic-reveal>
+          <h2>
+            <span>01 /</span> Education
+          </h2>
+        </div>
+        <div class="education-record" data-academic-reveal>
+          <div>
+            <h3>BS Civil Engineering</h3>
+            <p class="muted">COMSATS University Islamabad</p>
+          </div>
+          <span class="eyebrow">ENGINEERING / BUILT ENVIRONMENT</span>
+        </div>
+        <div class="interests" data-academic-reveal>
+          <p class="eyebrow">AREAS OF INTEREST</p>
+          <p>
+            BIM workflows <span> / </span> Digital construction <span> / </span>{" "}
+            Augmented reality
+          </p>
+        </div>
+      </section>
+      <section id="research" data-academic-section>
+        <div class="section-top" data-academic-reveal>
+          <h2>
+            <span>02 /</span> Selected research
+          </h2>
+          <a href="/research/">Research archive ↗</a>
+        </div>
+        {research.map((item) => (
+          <article class="research-feature" data-academic-reveal>
+            <a
+              href={`/research/${item.id}/`}
+              class="research-visual"
+              aria-label="Read BIM to AR research"
+            >
+              <div class="model-lines" aria-hidden="true">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+              </div>
+              <div class="ar-frame" aria-hidden="true">
+                <span>AR</span>
+                <i></i>
+              </div>
+              <span class="diagram-label">MODEL → SPATIAL EXPERIENCE</span>
+            </a>
+            <div>
+              <p class="eyebrow accent">
+                SSRN PREPRINT / {item.data.dateDisplay}
+              </p>
+              <h3>
+                <a href={`/research/${item.id}/`}>BIM to Augmented Reality</a>
+              </h3>
+              <p class="muted">{item.data.summary}</p>
+              <p class="research-role">{item.data.role} · Final Year Project</p>
+              <div class="research-actions">
+                <a href={`/research/${item.id}/`}>Read study ↗</a>
+                {item.data.links?.map(
+                  (link: { url: string; label: string }) => (
+                    <a href={link.url} target="_blank" rel="noreferrer">
+                      View preprint ↗
+                    </a>
+                  ),
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </section>
+      {groups.map((group) => (
+        <section id={group.id} data-academic-section>
+          <div class="section-top" data-academic-reveal>
+            <h2>
+              <span>{group.number} /</span> {group.title}
+            </h2>
+            <a href={group.link}>{group.label} ↗</a>
+          </div>
+          <div class="record-list">
+            {group.items.map((item) => (
+              <a
+                class="dossier-record"
+                data-academic-reveal
+                href={`/${item.collection}/${item.id}/`}
+              >
+                <span class="record-date">{item.data.dateDisplay}</span>
+                <div>
+                  <h3>
+                    {item.data.organization && group.id === "practice"
+                      ? item.data.organization
+                      : item.data.shortTitle || item.data.title}
+                  </h3>
+                  <p class="muted">
+                    {group.id === "practice"
+                      ? `${item.data.role}. ${item.data.summary || ""}`
+                      : item.data.summary ||
+                        item.data.domains?.join(" / ") ||
+                        item.data.type}
+                  </p>
+                </div>
+                <span class="record-arrow" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+      <footer class="academic-end" data-academic-reveal>
+        <p class="eyebrow">CONTINUE THE CONVERSATION</p>
+        <h2>
+          Ideas become stronger
+          <br />
+          when shared.
+        </h2>
+        <a href="/contact/">Let’s connect ↗</a>
+      </footer>
+    </div>
   </main>
 </Layout>
-
 <script>
-  import { gsap } from 'gsap';
-  // Astro script modules execute after the DOM is parsed.
-  gsap.fromTo('.gsap-stagger-item', 
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.2 }
+  const reveals = document.querySelectorAll<HTMLElement>(
+    "[data-academic-reveal]",
   );
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) =>
+        entry.target.classList.toggle("is-visible", entry.isIntersecting),
+      );
+    },
+    { threshold: 0, rootMargin: "0px 0px -35px 0px" },
+  );
+  function configureMotion() {
+    reveals.forEach((el) => {
+      revealObserver.unobserve(el);
+      el.classList.remove("reveal-ready", "is-visible");
+      if (!reduced.matches) {
+        el.classList.add("reveal-ready");
+        revealObserver.observe(el);
+      }
+    });
+  }
+  configureMotion();
+  reduced.addEventListener("change", configureMotion);
+  const sections = [
+    ...document.querySelectorAll<HTMLElement>("[data-academic-section]"),
+  ];
+  const links = [
+    ...document.querySelectorAll<HTMLAnchorElement>("[data-section-link]"),
+  ];
+  let ticking = false;
+  const sectionPicker = document.querySelector<HTMLSelectElement>("#academic-section");
+  sectionPicker?.addEventListener("change", () => {
+    const target = document.getElementById(sectionPicker.value);
+    if (!target) return;
+    history.replaceState(history.state, "", `#${target.id}`);
+    target.scrollIntoView({ behavior: reduced.matches ? "instant" : "smooth", block: "start" });
+  });
+  function updateIndex() {
+    let active = sections[0]?.id;
+    sections.forEach((section) => {
+      if (section.getBoundingClientRect().top <= 180) active = section.id;
+    });
+    links.forEach((link) => {
+      if (link.hash === `#${active}`)
+        link.setAttribute("aria-current", "location");
+      else link.removeAttribute("aria-current");
+    });
+    if (sectionPicker && active) sectionPicker.value = active;
+    ticking = false;
+  }
+  addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateIndex);
+      }
+    },
+    { passive: true },
+  );
+  updateIndex();
 </script>
-
 <style>
-  .index-page {
-    /* Nav clearance */
-    padding-top: calc(var(--nav-h) + var(--s-16));
-    padding-bottom: var(--s-24);
-    color: var(--c-text);
-  }
-
-  .index-header {
-    margin-bottom: var(--s-16);
-    max-width: 640px;
-  }
-
-  .cv-section {
-    padding-top: var(--s-16);
-    border-top: 1px solid var(--c-border);
-    margin-top: var(--s-16);
-  }
-
-  .cv-section-header {
-    margin-bottom: var(--s-8);
-  }
-
-  .index-label {
-    color: var(--c-accent);
-    margin-bottom: var(--s-4);
-  }
-
-  .index-title {
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    font-weight: 500;
-    margin-bottom: var(--s-4);
-    color: var(--c-text);
-  }
-
-  .index-deck {
-    font-size: var(--text-md);
-    color: var(--c-muted);
-    line-height: var(--leading-relaxed);
-  }
-
-  /* Column headers — matching IndexRow grid */
-  .index-columns {
+  .mobile-section-picker { display: none; }
+  .dossier {
+    max-width: 1440px;
+    margin: auto;
+    padding: 120px 5vw 60px;
     display: grid;
-    grid-template-columns: 80px 3fr 2fr 3fr;
-    gap: var(--s-4);
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--c-border);
-    color: var(--c-muted);
-    font-size: var(--text-xs);
-    letter-spacing: var(--tracking-label);
+    grid-template-columns: 170px minmax(0, 1fr);
+    gap: 55px;
+    color: #ede8e1;
   }
-
-  .cv-index-list {
-    list-style: none;
-    padding: 0;
-    margin: var(--s-8) 0;
+  .dossier-index {
+    position: sticky;
+    top: 105px;
+    height: calc(100vh - 150px);
+    border-right: 1px solid #ffffff1c;
+    padding-right: 24px;
+    display: flex;
+    flex-direction: column;
   }
-
-  @media (max-width: 768px) {
-    .index-columns {
+  .eyebrow {
+    font: 10px/1.7 var(--font-mono);
+    letter-spacing: 0.1em;
+    color: #a1a79e;
+  }
+  .dossier-index nav {
+    display: grid;
+    gap: 7px;
+    margin-top: 28px;
+  }
+  .dossier-index a {
+    font-size: 13px;
+    padding: 10px 0 10px 10px;
+    border-left: 2px solid transparent;
+    display: flex;
+    gap: 14px;
+  }
+  .dossier-index a span {
+    font: 11px var(--font-mono);
+    color: #a1a79e;
+  }
+  .dossier-index a[aria-current] {
+    border-color: #e85c1a;
+    color: #fff;
+  }
+  .index-note {
+    margin-top: auto;
+    font: 10px/1.8 var(--font-mono);
+    color: #a1a79e;
+    letter-spacing: 0.1em;
+  }
+  .profile {
+    scroll-margin-top: 110px;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 25px;
+    padding: 8px 0 65px;
+    align-items: center;
+  }
+  .profile h1 {
+    font-size: clamp(36px, 4.2vw, 65px);
+    letter-spacing: -0.05em;
+    line-height: 1.1;
+    margin: 25px 0;
+  }
+  .profile h1 span {
+    color: #e85c1a;
+  }
+  .profile-deck {
+    font-size: clamp(21px, 2vw, 28px);
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+  }
+  .muted {
+    color: #aeb3ac;
+    font-size: 15px;
+    line-height: 1.75;
+  }
+  .intro {
+    margin-top: 19px;
+    max-width: 440px;
+  }
+  .profile-actions {
+    display: flex;
+    align-items: center;
+    gap: 27px;
+    margin-top: 30px;
+    font-size: 13px;
+  }
+  .primary-action {
+    background: #e85c1a;
+    color: #101412;
+    padding: 15px 19px;
+    display: flex;
+    gap: 32px;
+  }
+  .profile-drawing {
+    border: 1px solid #ffffff20;
+    background: radial-gradient(ellipse at center, #28322b66, transparent);
+    margin: 0;
+    padding: 20px 5px;
+  }
+  .profile-drawing img {
+    width: 100%;
+    height: 230px;
+    object-fit: contain;
+  }
+  .profile-drawing figcaption {
+    text-align: center;
+    font: 8px var(--font-mono);
+    color: #a1a79e;
+    letter-spacing: 0.1em;
+    padding: 12px 0;
+  }
+  section {
+    scroll-margin-top: 115px;
+    padding-bottom: 48px;
+  }
+  .section-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 20px;
+    padding: 21px 0;
+    border-top: 1px solid #ffffff38;
+  }
+  .section-top h2 {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .section-top h2 span {
+    font: 12px var(--font-mono);
+    color: #a1a79e;
+    margin-right: 13px;
+  }
+  .section-top > a {
+    font-size: 11px;
+    color: #c6c9c1;
+  }
+  .education-record {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    padding: 9px 0 26px;
+  }
+  h3 {
+    font-size: 21px;
+    line-height: 1.35;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+  }
+  .education-record p {
+    margin-top: 7px;
+  }
+  .interests {
+    border-top: 1px solid #ffffff12;
+    padding-top: 18px;
+    display: flex;
+    gap: 25px;
+    align-items: baseline;
+  }
+  .interests > p:last-child {
+    font-size: 13px;
+    color: #b5b9b1;
+  }
+  .interests span {
+    color: #e85c1a;
+    padding: 0 7px;
+  }
+  .research-feature {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 30px;
+    align-items: center;
+  }
+  .research-feature h3 {
+    margin: 12px 0;
+  }
+  .research-role {
+    font-size: 12px;
+    color: #a1a79e;
+    margin: 14px 0;
+  }
+  .accent,
+  .research-actions a {
+    color: #f08450;
+  }
+  .research-actions {
+    display: flex;
+    gap: 25px;
+    margin-top: 25px;
+    font-size: 12px;
+  }
+  .research-actions a {
+    border-bottom: 1px solid #e85c1a;
+    padding-bottom: 6px;
+  }
+  .research-visual {
+    position: relative;
+    height: 265px;
+    overflow: hidden;
+    border: 1px solid #ffffff22;
+    background: linear-gradient(135deg, #202922, #101412);
+  }
+  .model-lines {
+    position: absolute;
+    left: 18%;
+    top: 24%;
+    width: 47%;
+    height: 48%;
+    transform: skewY(-18deg);
+    border: 1px solid #dadbc6;
+  }
+  .model-lines i {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 25%;
+    border: 1px solid #bbbba7;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 31%,
+      #a9ac9444 32%,
+      transparent 33%
+    );
+  }
+  .model-lines i:nth-child(2) {
+    top: 25%;
+  }
+  .model-lines i:nth-child(3) {
+    top: 50%;
+  }
+  .model-lines i:nth-child(4) {
+    top: 75%;
+  }
+  .ar-frame {
+    position: absolute;
+    right: 13%;
+    top: 21%;
+    height: 60%;
+    width: 30%;
+    border: 3px solid #979c91;
+    border-radius: 13px;
+    background: #101412d9;
+    transform: rotate(8deg);
+    display: grid;
+    place-items: center;
+  }
+  .ar-frame i {
+    position: absolute;
+    width: 65%;
+    height: 55%;
+    border: 1px solid #e85c1a;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 20%,
+      #e85c1a77 21%,
+      transparent 23%
+    );
+    transform: skewY(-18deg);
+  }
+  .ar-frame span {
+    position: absolute;
+    bottom: 8px;
+    font: 9px var(--font-mono);
+    color: #ed8958;
+  }
+  .diagram-label {
+    position: absolute;
+    bottom: 15px;
+    left: 18px;
+    font: 8px var(--font-mono);
+    letter-spacing: 0.1em;
+    color: #a1a79e;
+  }
+  .dossier-record {
+    display: grid;
+    grid-template-columns: 135px 1fr 20px;
+    gap: 20px;
+    padding: 25px 0;
+    border-bottom: 1px solid #ffffff16;
+  }
+  .record-date {
+    font: 11px/1.8 var(--font-mono);
+    color: #a1a79e;
+    padding-top: 4px;
+  }
+  .dossier-record h3 {
+    font-size: 19px;
+  }
+  .dossier-record p {
+    font-size: 14px;
+    margin-top: 6px;
+    max-width: 650px;
+  }
+  .record-arrow {
+    color: #ed8958;
+  }
+  .dossier-record:hover h3 {
+    color: #f08450;
+  }
+  .academic-end {
+    padding: 20px 0 30px;
+  }
+  .academic-end h2 {
+    font-size: clamp(28px, 3vw, 42px);
+    letter-spacing: -0.04em;
+    line-height: 1.2;
+    margin: 18px 0 25px;
+  }
+  .academic-end > a {
+    color: #f08450;
+    font-size: 14px;
+  }
+  .reveal-ready {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity 0.65s ease,
+      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal-ready.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+  a:focus-visible {
+    outline: 2px solid #e85c1a;
+    outline-offset: 5px;
+  }
+  @media (max-width: 1050px) {
+    .dossier {
+      gap: 28px;
+      grid-template-columns: 135px 1fr;
+    }
+    .profile {
+      grid-template-columns: 1fr;
+    }
+    .profile-drawing {
       display: none;
+    }
+    .education-record {
+      display: block;
+    }
+    .education-record > .eyebrow {
+      display: block;
+      margin-top: 17px;
+    }
+    .interests {
+      display: block;
+    }
+    .interests > p:last-child {
+      margin-top: 9px;
+    }
+  }
+  @media (max-width: 700px) {
+    .dossier {
+      display: block;
+      padding: 100px 6vw 30px;
+    }
+    .dossier-index {
+      position: sticky;
+      top: var(--nav-h);
+      z-index: 30;
+      height: auto;
+      border: 0;
+      padding: 0;
+      margin-bottom: 35px;
+      background: #101412;
+      box-shadow: 0 8px 18px #101412cc;
+    }
+    .mobile-section-picker { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 15px; padding: 12px 0; border-bottom: 1px solid #ffffff24; }
+    .mobile-section-picker label { font: 9px var(--font-mono); letter-spacing: .06em; color: #aeb3ac; }
+    .mobile-section-picker select { width: 100%; min-height: 44px; padding: 10px; background: #1c241e; color: #ede8e1; border: 1px solid #ffffff30; border-radius: 4px; font: 16px var(--font-sans); }
+    .mobile-section-picker select:focus-visible { outline: 2px solid #e85c1a; outline-offset: 3px; }
+    section, .profile { scroll-margin-top: calc(var(--nav-h) + 90px); }
+    .dossier-index > .eyebrow,
+    .index-note {
+      display: none;
+    }
+    .dossier-index nav {
+      display: none;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      margin: 0;
+      gap: 8px;
+      padding-bottom: 8px;
+    }
+    .dossier-index nav::-webkit-scrollbar {
+      display: none;
+    }
+    .dossier-index a {
+      white-space: nowrap;
+      border-left: 0;
+      border-bottom: 2px solid transparent;
+      padding: 10px 6px;
+      gap: 7px;
+    }
+    .dossier-index a[aria-current] {
+      border-bottom-color: #e85c1a;
+    }
+    .profile {
+      padding-bottom: 42px;
+    }
+    .profile h1 {
+      font-size: 42px;
+    }
+    .research-feature {
+      grid-template-columns: 1fr;
+    }
+    .research-visual {
+      height: 235px;
+    }
+    .section-top {
+      align-items: flex-start;
+    }
+    .section-top > a {
+      max-width: 95px;
+      text-align: right;
+    }
+    .dossier-record {
+      grid-template-columns: 1fr 20px;
+      gap: 8px;
+    }
+    .record-date {
+      grid-column: 1/-1;
+    }
+    .dossier-record > div {
+      grid-column: 1;
+    }
+    .section-top h2 {
+      font-size: 17px;
+    }
+    .section-top h2 span {
+      margin-right: 7px;
+    }
+    section {
+      padding-bottom: 34px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal-ready {
+      opacity: 1;
+      transform: none;
+      transition: none;
     }
   }
 </style>

@@ -43,3 +43,12 @@
 - [ ] Static production build succeeds
 - [ ] No TypeScript errors
 - [ ] Metadata and sitemap valid
+
+## Academic dossier and contextual navigation — 2026-09-24
+- Implemented the approved dark academic overview, section index, research diagram, education and shared content records. Existing content files remain unchanged; unresolved education dates are omitted from the overview.
+- Academic-only IntersectionObserver reveals reset outside the viewport and replay on re-entry; reduced-motion preference displays content immediately.
+- Shared ContextReturn footer uses same-origin referrer and per-history-entry return data, preserving destination on reload. Known section labels and parent fallbacks cover direct visits; experience detail fallback is Work, journey fallback is About.
+- Removed the fixed Academic Archive return from ProjectLayout. Global Layout only imports and renders the footer; existing transition code was compared with the starting version and is unchanged. Explore content and styles untouched.
+- Contact includes required email/message and optional name/phone. Current implementation prepares a mailto draft; it does not deliver mail from a backend or claim successful delivery. Direct sending needs an email service later.
+- Checked Academic → About → Recognition → Best Survey Group labels and reload persistence. Academic reveal class cycled visible → hidden → visible. Phone widths checked at 390px for Academic and Contact with no horizontal overflow. Contact required/email validation checked without sending email. No browser console errors observed.
+- Final build: 24 pages; check: 0 errors, 0 warnings, existing advisory hints remain. Mail-app launch/delivery was not exercised.

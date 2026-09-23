@@ -1,0 +1,108 @@
+<footer class="context-return container">
+  <a id="context-return" href="/">
+    <span aria-hidden="true">↶</span>{" "}
+    <span data-return-label>Back to Explore</span>
+  </a>
+</footer>
+<script>
+  const link = document.querySelector<HTMLAnchorElement>("#context-return");
+  const labels: Record<string, string> = {
+    "/": "Explore",
+    "/academic/": "Academic",
+    "/about/": "About",
+    "/work/": "Work",
+    "/projects/": "Projects",
+    "/research/": "Research",
+    "/recognition/": "Recognition",
+    "/contact/": "Let’s connect",
+  };
+  const normalize = (path: string) =>
+    path === "/" ? "/" : `${path.replace(/\/$/, "")}/`;
+  const current = normalize(location.pathname);
+  const labelFor = (path: string) =>
+    labels[normalize(path)] ||
+    path.split("/").filter(Boolean).pop()?.replaceAll("-", " ") ||
+    "Explore";
+  let previous: { href: string; label: string } | undefined;
+  try {
+    const saved = history.state?.portfolioReturn;
+    if (
+      saved &&
+      new URL(saved.href, location.origin).origin === location.origin &&
+      normalize(new URL(saved.href, location.origin).pathname) !== current
+    )
+      previous = saved;
+    if (!previous && document.referrer) {
+      const source = new URL(document.referrer);
+      if (
+        source.origin === location.origin &&
+        normalize(source.pathname) !== current
+      ) {
+        const name = sessionStorage.getItem(
+          `portfolio-title:${normalize(source.pathname)}`,
+        );
+        previous = {
+          href: source.pathname + source.search + source.hash,
+          label: name || labelFor(source.pathname),
+        };
+      }
+    }
+    sessionStorage.setItem(
+      `portfolio-title:${current}`,
+      labels[current] || document.title.split(" | ")[0],
+    );
+  } catch {
+    /* Storage can be disabled; retain the parent-page fallback. */
+  }
+  if (!previous) {
+    const parts = current.split("/").filter(Boolean);
+    const parent =
+      parts.length > 1
+        ? parts[0] === "journey"
+          ? "/about/"
+          : parts[0] === "experience"
+            ? "/work/"
+            : `/${parts[0]}/`
+        : "/";
+    previous = { href: parent, label: labelFor(parent) };
+  }
+  if (link) {
+    link.href = previous.href;
+    const label = link.querySelector("[data-return-label]");
+    if (label) label.textContent = `Back to ${previous.label}`;
+    if (current === "/" && previous.href === "/")
+      link.parentElement!.hidden = true;
+    try {
+      history.replaceState({ ...history.state, portfolioReturn: previous }, "");
+    } catch {}
+  }
+</script>
+<style>
+  .context-return {
+    padding-top: 24px;
+    padding-bottom: 45px;
+    border-top: 1px solid #ffffff18;
+  }
+  .context-return[hidden] {
+    display: none;
+  }
+  .context-return a {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    font: 12px var(--font-mono);
+    color: #b6b9b1;
+  }
+  .context-return a > span:first-child {
+    color: #e85c1a;
+    font-size: 22px;
+  }
+  .context-return a:hover {
+    color: #ede8e1;
+  }
+  .context-return a:focus-visible {
+    outline: 2px solid #e85c1a;
+    outline-offset: 5px;
+  }
+</style>

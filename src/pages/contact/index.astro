@@ -3,70 +3,246 @@ import Layout from "../../layouts/Layout.astro";
 ---
 
 <Layout
-  title="Contact | Faizan Manshad"
-  description="Get in touch with Faizan Manshad about civil engineering, BIM, digital construction, or research."
+  title="Let’s connect | Faizan Manshad"
+  description="Contact Faizan Manshad about civil engineering, BIM, digital construction and research."
 >
   <main class="contact-page container">
-    <p class="label">LET'S CONNECT</p>
-    <h1>
-      Good work starts
-      <br />
-      with a conversation.
-    </h1>
-    <p class="contact-intro">
-      For conversations about civil engineering, BIM, digital construction, and
-      research.
-    </p>
-    <a class="email" href="mailto:faizanmanshad@gmail.com">
-      faizanmanshad@gmail.com <span>↗</span>
-    </a>
-    <div class="contact-links">
-      <a href="/">BACK TO THE STUDIO ↗</a>
-      <a href="/academic/">ACADEMIC CV ↗</a>
+    <div class="contact-copy">
+      <p class="eyebrow">LET’S CONNECT / START A CONVERSATION</p>
+      <h1>
+        Good work starts
+        <br />
+        with a conversation<span>.</span>
+      </h1>
+      <p class="intro">
+        A project, a research question, or an idea worth exploring. I’d love to
+        hear from you.
+      </p>
+      <a class="email" href="mailto:faizanmanshad@gmail.com">
+        faizanmanshad@gmail.com ↗
+      </a>
+      <p class="small">Civil engineering · BIM · Digital construction</p>
     </div>
+    <form id="contact-form" class="contact-form">
+      <h2>A note to Faizan</h2>
+      <label for="sender-name">
+        Your name <span>(optional)</span>
+      </label>
+      <input
+        id="sender-name"
+        name="name"
+        autocomplete="name"
+        maxlength="100"
+        placeholder="How should I address you?"
+      />
+      <label for="sender-email">
+        Email address <span>(required)</span>
+      </label>
+      <input
+        id="sender-email"
+        name="email"
+        type="email"
+        autocomplete="email"
+        required
+        maxlength="254"
+        placeholder="you@example.com"
+      />
+      <label for="sender-phone">
+        Phone number <span>(optional)</span>
+      </label>
+      <input
+        id="sender-phone"
+        name="phone"
+        type="tel"
+        autocomplete="tel"
+        maxlength="40"
+        placeholder="Include your country code"
+      />
+      <label for="sender-message">
+        Your message <span>(required)</span>
+      </label>
+      <textarea
+        id="sender-message"
+        name="message"
+        rows="5"
+        required
+        maxlength="3000"
+        placeholder="Tell me a little about what you have in mind…"
+      ></textarea>
+      <p id="email-help" class="small">
+        This opens a prepared email in your mail app. Review it there and press
+        Send.
+      </p>
+      <button type="submit" aria-describedby="email-help" disabled>
+        Prepare email <span aria-hidden="true">↗</span>
+      </button>
+      <p id="contact-status" role="status" aria-live="polite"></p>
+      <noscript>
+        <p>
+          Please email{" "}
+          <a href="mailto:faizanmanshad@gmail.com">faizanmanshad@gmail.com</a>{" "}
+          directly.
+        </p>
+      </noscript>
+    </form>
   </main>
 </Layout>
+<script>
+  const form = document.querySelector<HTMLFormElement>("#contact-form");
+  const submitButton = form?.querySelector<HTMLButtonElement>(
+    'button[type="submit"]',
+  );
+  if (submitButton) submitButton.disabled = false;
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const values = new FormData(form);
+    const message = String(values.get("message") || "").trim();
+    const field = form.querySelector<HTMLTextAreaElement>("textarea")!;
+    field.setCustomValidity(message ? "" : "Please write a short message.");
+    if (!form.reportValidity()) return;
+    const name = String(values.get("name") || "").trim();
+    const email = String(values.get("email") || "").trim();
+    const phone = String(values.get("phone") || "").trim();
+    const body = [
+      message,
+      "",
+      `From: ${name || "Portfolio visitor"}`,
+      `Email: ${email}`,
+      phone ? `Phone: ${phone}` : "",
+    ]
+      .filter((line, i) => line || i === 1)
+      .join("\n");
+    const href = `mailto:faizanmanshad@gmail.com?subject=${encodeURIComponent(`Portfolio enquiry${name ? ` from ${name}` : ""}`)}&body=${encodeURIComponent(body)}`;
+    window.location.href = href;
+    document.querySelector("#contact-status")!.textContent =
+      "Your email draft is ready to open. If no mail app appears, email me directly using the address on this page. Your message has not been sent by this website.";
+  });
+  form
+    ?.querySelector("textarea")
+    ?.addEventListener("input", (event) =>
+      (event.target as HTMLTextAreaElement).setCustomValidity(""),
+    );
+</script>
 <style>
   .contact-page {
-    padding-top: 170px;
-    padding-bottom: 100px;
-    max-width: 1150px;
+    padding-top: 155px;
+    padding-bottom: 90px;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 8vw;
+    max-width: 1250px;
   }
-  .label {
-    color: var(--c-accent);
-    margin-bottom: 40px;
+  .eyebrow {
+    font: 10px/1.8 var(--font-mono);
+    letter-spacing: 0.1em;
+    color: #aeb3ac;
   }
   h1 {
-    font-size: clamp(42px, 6vw, 80px);
+    font-size: clamp(35px, 4.2vw, 61px);
+    line-height: 1.1;
     letter-spacing: -0.045em;
+    margin: 30px 0;
   }
-  .contact-intro {
-    color: #a1a396;
-    max-width: 460px;
-    margin: 30px 0 55px;
+  h1 span {
+    color: #e85c1a;
+  }
+  .intro {
+    max-width: 390px;
+    color: #b2b7ae;
+    font-size: 17px;
+    line-height: 1.7;
   }
   .email {
+    display: inline-block;
+    font-size: clamp(14px, 1.5vw, 20px);
+    margin: 36px 0 15px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e85c1a;
+  }
+  .small {
+    font-size: 12px;
+    color: #aeb3ac;
+    line-height: 1.7;
+  }
+  .contact-form {
+    border: 1px solid #ffffff24;
+    padding: 32px;
+    background: #171d1880;
+  }
+  .contact-form h2 {
+    font-size: 25px;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+  }
+  .contact-form label {
+    display: block;
+    margin: 22px 0 9px;
+    font-size: 13px;
+  }
+  .contact-form label span {
+    color: #aeb3ac;
+    font-size: 11px;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    display: block;
+    width: 100%;
+    border: 1px solid #ffffff30;
+    border-radius: 0;
+    background: #101412;
+    color: #ede8e1;
+    padding: 13px;
+    font: 14px/1.5 var(--font-sans);
+  }
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 130px;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder {
+    color: #939b90;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: 1px solid #e85c1a;
+    border-color: #e85c1a;
+  }
+  .contact-form > .small {
+    margin: 17px 0;
+  }
+  .contact-form button {
     display: flex;
+    width: 100%;
     justify-content: space-between;
-    gap: 15px;
-    font-size: clamp(17px, 3vw, 34px);
-    border-bottom: 1px solid #ffffff33;
-    padding-bottom: 22px;
-    max-width: 710px;
+    background: #e85c1a;
+    color: #101412;
+    padding: 15px 20px;
+    font: 14px var(--font-sans);
+    border: 0;
+    cursor: pointer;
   }
-  .email span {
-    color: var(--c-accent);
+  .contact-form button:focus-visible {
+    outline: 2px solid #ede8e1;
+    outline-offset: 4px;
   }
-  .contact-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 32px;
-    margin-top: 60px;
-    font: 10px var(--font-mono);
+  #contact-status {
+    font-size: 12px;
+    line-height: 1.7;
+    margin-top: 15px;
+    color: #c3c8be;
   }
-  @media (max-width: 600px) {
+  #contact-status:empty {
+    display: none;
+  }
+  @media (max-width: 800px) {
     .contact-page {
-      padding-top: 125px;
+      grid-template-columns: 1fr;
+      gap: 35px;
+      padding-top: 110px;
+    }
+    .contact-form {
+      padding: 24px;
     }
   }
 </style>

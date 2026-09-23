@@ -6,6 +6,7 @@
 import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Cursor from "../components/Cursor.astro";
+import ContextReturn from "../components/ContextReturn.astro";
 
 interface Props {
   title?: string;
@@ -127,6 +128,7 @@ const resolvedMode: "explore" | "index" =
     <!-- Page content (Hidden initially, revealed after Iris wipe) -->
     <div id="main-content" tabindex="-1" style="opacity: 0;">
       <slot />
+      <ContextReturn />
     </div>
 
     <!-- Initialize Lenis and GSAP globally -->
