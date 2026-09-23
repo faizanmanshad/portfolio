@@ -3,6 +3,23 @@
   width: 100%;
   height: 100%;
 }
+.studio-interactive.is-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  width: 100vw;
+  height: 100vh;
+}
+.studio-interactive.is-intro .studio-canvas {
+  inset: 0;
+}
+.intro-overlay {
+  position: absolute;
+  inset: 0;
+  background: #101412; /* Match studio-page background */
+  z-index: -1;
+  pointer-events: auto;
+}
 .studio-canvas {
   position: absolute;
   inset: 0 0 108px;
@@ -14,6 +31,12 @@
 }
 .studio-canvas canvas {
   touch-action: pan-y !important;
+}
+.is-intro .studio-tools,
+.is-intro .studio-topics,
+.is-intro .model-hotspot {
+  opacity: 0;
+  pointer-events: none;
 }
 .studio-tools,
 .studio-topics {

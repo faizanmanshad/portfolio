@@ -12,6 +12,7 @@ import {
   useThree,
   type ThreeEvent,
 } from "@react-three/fiber";
+import { gsap } from "gsap";
 import {
   RoundedBox,
   OrbitControls,
@@ -450,6 +451,8 @@ function Scene({
   reset,
   ready,
   fail,
+  introState,
+  sceneRef,
 }: {
   mode: Mode;
   selected: Topic | null;
@@ -458,17 +461,36 @@ function Scene({
   reset: number;
   ready: () => void;
   fail: () => void;
+  introState: string;
+  sceneRef: React.MutableRefObject<any>;
 }) {
   const { size, camera, invalidate, gl } = useThree();
   const controls = useRef<any>(null);
+
   useEffect(() => {
-    (camera as THREE.OrthographicCamera).zoom = Math.min(
-      size.width / 10.3,
-      size.height / 7.1,
-    );
-    camera.updateProjectionMatrix();
-    invalidate();
-  }, [size, camera, invalidate]);
+    sceneRef.current = { camera, invalidate };
+    return () => { 
+      sceneRef.current = null; 
+    };
+  }, [camera, invalidate, sceneRef]);
+
+  useEffect(() => {
+    if (introState !== "docking") {
+      let zoomX = 10.3, zoomY = 7.1;
+      if (introState === "loading" || introState === "revealing" || introState === "holding") {
+        zoomX = 20.0;
+        zoomY = 14.0;
+      }
+      const safeWidth = size.width || window.innerWidth;
+      const safeHeight = size.height || window.innerHeight;
+      (camera as THREE.OrthographicCamera).zoom = Math.max(0.1, Math.min(
+        safeWidth / zoomX,
+        safeHeight / zoomY,
+      ));
+      camera.updateProjectionMatrix();
+      invalidate();
+    }
+  }, [size, camera, invalidate, introState]);
   useEffect(() => {
     camera.position.set(7.8, 6, 9.5);
     controls.current?.target.set(0.2, 1, 0);
@@ -603,6 +625,7 @@ function Scene({
         maxAzimuthAngle={1.35}
         enableDamping={!reduced}
         dampingFactor={0.09}
+        enabled={introState === "complete"}
       />
     </>
   );
@@ -615,7 +638,8 @@ class SceneBoundary extends Component<
   static getDerivedStateFromError() {
     return { failed: true };
   }
-  componentDidCatch() {
+  componentDidCatch(error: any) {
+    console.error("SceneBoundary caught an error:", error);
     this.props.onError();
   }
   render() {
@@ -628,6 +652,15 @@ export default function StudioScene({ records }: { records: Records }) {
     [reset, setReset] = useState(0),
     [ready, setReady] = useState(false),
     [failed, setFailed] = useState(false);
+  
+  const [introState, setIntroState] = useState<"loading" | "revealing" | "holding" | "docking" | "complete">(
+    () => typeof window !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches ? "complete" : "loading"
+  );
+  
+  const containerRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<any>(null);
+  const clipPlane = useRef(new THREE.Plane(new THREE.Vector3(0, -1, 0), 10.0)).current;
   const [reduced, setReduced] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -647,14 +680,94 @@ export default function StudioScene({ records }: { records: Records }) {
       window.removeEventListener("studio:explore", explore);
     };
   }, []);
+
+  // Scroll lock during intro
+  useEffect(() => {
+    if (introState !== "complete") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [introState]);
+
+  // Intro Sequence Orchestration
+  useEffect(() => {
+    if (introState === "loading" && ready && !failed) {
+      setIntroState("revealing");
+      
+      const loader = document.getElementById("global-intro-loader");
+      if (loader) {
+        loader.style.opacity = "0";
+        setTimeout(() => loader.remove(), 400);
+      }
+      
+      const tl = gsap.timeline({
+        onUpdate: () => sceneRef.current?.invalidate(),
+      });
+
+      clipPlane.constant = -1.0;
+
+      // 1. Section Reveal
+      tl.to(clipPlane, {
+        constant: 4.5,
+        duration: 2.2,
+        ease: "power2.inOut"
+      });
+
+      // 2. Hold momentarily
+      tl.add(() => setIntroState("holding"));
+      tl.to({}, { duration: 0.4 });
+
+      // 3. Docking (Curtain Wipe)
+      tl.add(() => {
+        setIntroState("docking");
+        
+        const curtain = document.createElement('div');
+        curtain.style.position = 'fixed';
+        curtain.style.inset = '0';
+        curtain.style.backgroundColor = '#101412';
+        curtain.style.zIndex = '2147483647';
+        curtain.style.opacity = '0';
+        curtain.style.transition = 'opacity 0.4s ease-in-out';
+        document.body.appendChild(curtain);
+        
+        // Force reflow
+        void curtain.offsetWidth;
+        curtain.style.opacity = '1';
+        
+        setTimeout(() => {
+           // Screen is completely black now. Snap the layout!
+           if (containerRef.current) containerRef.current.style.cssText = '';
+           const canvas = containerRef.current?.querySelector('.studio-canvas') as HTMLElement;
+           if (canvas) canvas.style.cssText = '';
+           setIntroState("complete");
+           
+           // Wait for R3F to resize internally
+           setTimeout(() => {
+             curtain.style.opacity = '0';
+             setTimeout(() => curtain.remove(), 400);
+           }, 150);
+        }, 400);
+      });
+    }
+  }, [introState, ready, failed]);
   const readyCallback = useRef(() => setReady(true)).current,
     failCallback = useRef(() => setFailed(true)).current;
   const rotate = (direction: number) =>
     window.dispatchEvent(
       new CustomEvent("studio:rotate", { detail: direction }),
     );
+    
+  const isIntro = introState !== "complete";
+
   return (
-    <div className="studio-interactive" data-mode={mode}>
+    <div 
+      className={`studio-interactive ${isIntro ? 'is-intro' : ''}`} 
+      data-mode={mode} 
+      ref={containerRef}
+    >
+      {isIntro && <div className="intro-overlay" ref={overlayRef}></div>}
       <div
         className="studio-canvas"
         id="model-view"
@@ -678,6 +791,21 @@ export default function StudioScene({ records }: { records: Records }) {
               dpr={[1, 1.5]}
               frameloop="demand"
               gl={{ antialias: true, alpha: true }}
+              onCreated={({ gl, camera, size }) => {
+                gl.clippingPlanes = [clipPlane];
+                let zX = 10.3, zY = 7.1;
+                if (introState === "loading" || introState === "revealing" || introState === "holding") {
+                  zX = 20.0;
+                  zY = 14.0;
+                }
+                const safeWidth = size.width || window.innerWidth;
+                const safeHeight = size.height || window.innerHeight;
+                (camera as THREE.OrthographicCamera).zoom = Math.max(0.1, Math.min(
+                  safeWidth / zX,
+                  safeHeight / zY,
+                ));
+                camera.updateProjectionMatrix();
+              }}
             >
               <Suspense fallback={null}>
                 <Scene
@@ -688,22 +816,33 @@ export default function StudioScene({ records }: { records: Records }) {
                   reset={reset}
                   ready={readyCallback}
                   fail={failCallback}
+                  introState={introState}
+                  sceneRef={sceneRef}
                 />
               </Suspense>
             </Canvas>
           </SceneBoundary>
         )}
         {(!ready || failed) && (
-          <div className="model-loading">
-            <img
-              src="/images/studio-fallback.svg"
-              alt="Architectural drawing of a pavilion with a truss bridge"
-            />
-            <span>
-              {failed
-                ? "The studio, in drawing form. Explore the work below."
-                : "Setting out the studio…"}
-            </span>
+          <div className={`model-loading ${isIntro ? 'is-intro-loading' : ''}`}>
+            {failed && (
+              <img
+                src="/images/studio-fallback.svg"
+                alt="Architectural drawing of a pavilion with a truss bridge"
+              />
+            )}
+            {!failed && isIntro && (
+              <span style={{color: '#8b9586', font: '9px var(--font-mono)', letterSpacing: '0.15em'}}>
+                SETTING OUT THE STUDIO...
+              </span>
+            )}
+            {(!isIntro || failed) && (
+              <span>
+                {failed
+                  ? "The studio, in drawing form. Explore the work below."
+                  : "Setting out the studio…"}
+              </span>
+            )}
           </div>
         )}
       </div>

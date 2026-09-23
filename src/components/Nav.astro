@@ -10,28 +10,24 @@
 
 interface Props {
   currentPath?: string;
-  mode?: 'explore' | 'index';
+  mode?: "explore" | "index";
 }
 
-const { currentPath = '/', mode = 'explore' } = Astro.props;
+const { currentPath = "/", mode = "explore" } = Astro.props;
 
-const isExplore = mode === 'explore' || currentPath === '/';
-const isIndex   = currentPath.startsWith('/academic');
+const isExplore = mode === "explore" || currentPath === "/";
+const isIndex = currentPath.startsWith("/academic");
 
 const navLinks = [
-  { label: 'Work',        href: '/work/' },
-  { label: 'Projects',    href: '/projects/' },
-  { label: 'Research',    href: '/research/' },
-  { label: 'Recognition', href: '/recognition/' },
-  { label: 'About',       href: '/about/' },
+  { label: "Work", href: "/work/" },
+  { label: "Projects", href: "/projects/" },
+  { label: "Research", href: "/research/" },
+  { label: "Recognition", href: "/recognition/" },
+  { label: "About", href: "/about/" },
 ];
 ---
 
-<nav
-  class="site-nav"
-  data-mode={mode}
-  aria-label="Primary navigation"
->
+<nav class="site-nav" data-mode={mode} aria-label="Primary navigation">
   <!-- Logotype -->
   <a href="/" class="nav-logo" aria-label="Faizan Manshad — home">
     FM<span class="nav-logo-dot accent">.</span>
@@ -39,12 +35,15 @@ const navLinks = [
 
   <!-- Primary links — hidden on small screens, visible on md+ -->
   <ul class="nav-links" role="list">
-    {navLinks.map(link => (
+    {navLinks.map((link) => (
       <li>
         <a
           href={link.href}
-          class:list={['nav-link', { 'nav-link--active': currentPath.startsWith(link.href) }]}
-          aria-current={currentPath.startsWith(link.href) ? 'page' : undefined}
+          class:list={[
+            "nav-link",
+            { "nav-link--active": currentPath.startsWith(link.href) },
+          ]}
+          aria-current={currentPath.startsWith(link.href) ? "page" : undefined}
         >
           {link.label}
         </a>
@@ -61,21 +60,19 @@ const navLinks = [
     id="nav-toggle"
   >
     <span class="nav-mobile-icon" aria-hidden="true">
-      <span></span><span></span>
+      <span></span>
+      <span></span>
     </span>
   </button>
 
   <!-- Explore / Index toggle -->
   <div class="nav-mode-switch" role="group" aria-label="View mode">
-    <a
-      href="/"
-      class="mode-btn"
-      aria-label="Explore mode"
-      id="mode-explore"
-    >
+    <a href="/" class="mode-btn" aria-label="Explore mode" id="mode-explore">
       EXPLORE
     </a>
-    <span class="mode-divider" aria-hidden="true">·</span>
+    <span class="mode-divider" aria-hidden="true">
+      ·
+    </span>
     <a
       href="/academic/"
       class="mode-btn"
@@ -90,11 +87,14 @@ const navLinks = [
 <!-- Mobile overlay menu -->
 <div class="nav-mobile-menu" id="nav-mobile-menu" aria-hidden="true">
   <ul role="list">
-    {navLinks.map(link => (
+    {navLinks.map((link) => (
       <li>
         <a
           href={link.href}
-          class:list={['nav-mobile-link', { 'nav-mobile-link--active': currentPath.startsWith(link.href) }]}
+          class:list={[
+            "nav-mobile-link",
+            { "nav-mobile-link--active": currentPath.startsWith(link.href) },
+          ]}
         >
           {link.label}
         </a>
@@ -105,7 +105,11 @@ const navLinks = [
         EXPLORE
       </a>
       <span aria-hidden="true">·</span>
-      <a href="/academic/" id="mode-index-mobile" class="nav-mobile-link mode-mobile">
+      <a
+        href="/academic/"
+        id="mode-index-mobile"
+        class="nav-mobile-link mode-mobile"
+      >
         ACADEMIC
       </a>
     </li>
@@ -114,34 +118,34 @@ const navLinks = [
 
 <script>
   // Scroll detection — adds backdrop when scrolled
-  const nav = document.querySelector('.site-nav') as HTMLElement | null;
+  const nav = document.querySelector(".site-nav") as HTMLElement | null;
   if (nav) {
     const onScroll = () => {
-      nav.dataset.scrolled = window.scrollY > 20 ? 'true' : 'false';
+      nav.dataset.scrolled = window.scrollY > 20 ? "true" : "false";
     };
-    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
   }
 
   // Mobile toggle
-  const toggle = document.getElementById('nav-toggle');
-  const menu   = document.getElementById('nav-mobile-menu');
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("nav-mobile-menu");
   if (toggle && menu) {
-    toggle.addEventListener('click', () => {
-      const isOpen = toggle.getAttribute('aria-expanded') === 'true';
-      toggle.setAttribute('aria-expanded', String(!isOpen));
-      menu.setAttribute('aria-hidden', String(isOpen));
-      menu.classList.toggle('nav-mobile-menu--open', !isOpen);
-      document.body.style.overflow = isOpen ? '' : 'hidden';
+    toggle.addEventListener("click", () => {
+      const isOpen = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!isOpen));
+      menu.setAttribute("aria-hidden", String(isOpen));
+      menu.classList.toggle("nav-mobile-menu--open", !isOpen);
+      document.body.style.overflow = isOpen ? "" : "hidden";
     });
 
     // Close on link click
-    menu.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        toggle.setAttribute('aria-expanded', 'false');
-        menu.setAttribute('aria-hidden', 'true');
-        menu.classList.remove('nav-mobile-menu--open');
-        document.body.style.overflow = '';
+    menu.querySelectorAll("a").forEach((a) => {
+      a.addEventListener("click", () => {
+        toggle.setAttribute("aria-expanded", "false");
+        menu.setAttribute("aria-hidden", "true");
+        menu.classList.remove("nav-mobile-menu--open");
+        document.body.style.overflow = "";
       });
     });
   }
@@ -150,20 +154,20 @@ const navLinks = [
 <style>
   /* ── Nav shell ─────────────────────────────────────────── */
   .site-nav {
-    position:        fixed;
-    top:             0;
-    left:            0;
-    right:           0;
-    z-index:         var(--z-nav);
-    height:          var(--nav-h);
-    display:         flex;
-    align-items:     center;
-    padding:         0 var(--s-8);
-    gap:             var(--s-8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-nav);
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--s-8);
+    gap: var(--s-8);
 
     /* Default: transparent, transitions on scroll */
-    background:      transparent;
-    border-bottom:   1px solid transparent;
+    background: transparent;
+    border-bottom: 1px solid transparent;
     transition:
       background var(--t-ui) var(--ease-out),
       border-color var(--t-ui) var(--ease-out);
@@ -171,7 +175,7 @@ const navLinks = [
 
   /* Scrolled state — subtle backdrop */
   .site-nav[data-scrolled="true"] {
-    background:   rgba(16, 18, 20, 0.88);
+    background: rgba(16, 18, 20, 0.88);
     border-color: rgba(255, 255, 255, 0.06);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
@@ -179,14 +183,14 @@ const navLinks = [
 
   /* ── Logotype ──────────────────────────────────────────── */
   .nav-logo {
-    font-family:    var(--font-sans);
-    font-weight:    600;
-    font-size:      1.0625rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.0625rem;
     letter-spacing: var(--tracking-tight);
-    color:          var(--c-explore-text);
-    flex-shrink:    0;
-    transition:     color var(--t-micro) var(--ease-out);
-    line-height:    1;
+    color: var(--c-explore-text);
+    flex-shrink: 0;
+    transition: color var(--t-micro) var(--ease-out);
+    line-height: 1;
   }
 
   .site-nav[data-mode="index"] .nav-logo {
@@ -205,23 +209,23 @@ const navLinks = [
 
   /* ── Primary links ─────────────────────────────────────── */
   .nav-links {
-    display:         flex;
-    list-style:      none;
-    margin:          0;
-    padding:         0;
-    gap:             var(--s-6);
-    flex:            1;
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: var(--s-6);
+    flex: 1;
     /* Push links toward center-right */
     justify-content: flex-end;
   }
 
   .nav-link {
-    font-size:      var(--text-sm);
-    font-weight:    400;
+    font-size: var(--text-sm);
+    font-weight: 400;
     letter-spacing: 0.01em;
-    color:          var(--c-explore-muted);
-    transition:     color var(--t-micro) var(--ease-out);
-    position:       relative;
+    color: var(--c-explore-muted);
+    transition: color var(--t-micro) var(--ease-out);
+    position: relative;
   }
 
   .site-nav[data-mode="index"] .nav-link {
@@ -248,17 +252,17 @@ const navLinks = [
 
   /* ── Mode switch ───────────────────────────────────────── */
   .nav-mode-switch {
-    display:     flex;
+    display: flex;
     align-items: center;
-    gap:         var(--s-2);
+    gap: var(--s-2);
     flex-shrink: 0;
     margin-left: var(--s-4);
   }
 
   .mode-divider {
     font-family: var(--font-mono);
-    font-size:   var(--text-xs);
-    color:       var(--c-explore-muted);
+    font-size: var(--text-xs);
+    color: var(--c-explore-muted);
     user-select: none;
     line-height: 1;
   }
@@ -268,15 +272,15 @@ const navLinks = [
   }
 
   .mode-btn {
-    font-family:    var(--font-mono);
-    font-size:      var(--text-xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    color:          var(--c-explore-muted);
-    transition:     color var(--t-micro) var(--ease-out);
-    padding:        var(--s-1) 0;
-    position:       relative;
-    line-height:    1;
+    color: var(--c-explore-muted);
+    transition: color var(--t-micro) var(--ease-out);
+    padding: var(--s-1) 0;
+    position: relative;
+    line-height: 1;
   }
 
   .site-nav[data-mode="index"] .mode-btn {
@@ -291,12 +295,12 @@ const navLinks = [
   /* Subtle underline on active mode */
   html[data-active-mode="explore"] #mode-explore::after,
   html[data-active-mode="academic"] #mode-index::after {
-    content:    '';
-    position:   absolute;
-    bottom:     -2px;
-    left:       0;
-    right:      0;
-    height:     1px;
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 1px;
     background: var(--c-accent);
   }
 
@@ -312,12 +316,12 @@ const navLinks = [
 
   /* ── Mobile button ─────────────────────────────────────── */
   .nav-mobile-btn {
-    display:    none;
+    display: none;
     background: none;
-    border:     none;
-    cursor:     pointer;
-    padding:    var(--s-2);
-    color:      var(--c-text);
+    border: none;
+    cursor: pointer;
+    padding: var(--s-2);
+    color: var(--c-text);
     margin-left: auto;
   }
 
@@ -326,46 +330,47 @@ const navLinks = [
   }
 
   .nav-mobile-icon {
-    display:        flex;
+    display: flex;
     flex-direction: column;
-    gap:            5px;
-    width:          20px;
+    gap: 5px;
+    width: 20px;
   }
 
   .nav-mobile-icon span {
-    display:      block;
-    height:       1px;
-    background:   currentColor;
-    transition:   transform var(--t-micro) var(--ease-out),
-                  opacity   var(--t-micro) var(--ease-out);
+    display: block;
+    height: 1px;
+    background: currentColor;
+    transition:
+      transform var(--t-micro) var(--ease-out),
+      opacity var(--t-micro) var(--ease-out);
   }
 
   /* ── Mobile menu ───────────────────────────────────────── */
   .nav-mobile-menu {
-    display:    none;
-    position:   fixed;
-    inset:      0;
-    z-index:    calc(var(--z-nav) - 1);
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-nav) - 1);
     background: var(--c-bg);
-    padding:    calc(var(--nav-h) + var(--s-8)) var(--s-6) var(--s-8);
+    padding: calc(var(--nav-h) + var(--s-8)) var(--s-6) var(--s-8);
     overflow-y: auto;
   }
 
   .nav-mobile-menu ul {
     list-style: none;
-    margin:     0;
-    padding:    0;
+    margin: 0;
+    padding: 0;
   }
 
   .nav-mobile-link {
-    display:        block;
-    font-size:      var(--text-xl);
-    font-weight:    400;
+    display: block;
+    font-size: var(--text-xl);
+    font-weight: 400;
     letter-spacing: var(--tracking-tight);
-    color:          var(--c-explore-muted);
-    padding:        var(--s-4) 0;
-    border-bottom:  1px solid var(--c-border);
-    transition:     color var(--t-micro) var(--ease-out);
+    color: var(--c-explore-muted);
+    padding: var(--s-4) 0;
+    border-bottom: 1px solid var(--c-border);
+    transition: color var(--t-micro) var(--ease-out);
   }
 
   .nav-mobile-link--active,
@@ -374,22 +379,22 @@ const navLinks = [
   }
 
   .mobile-mode-row {
-    display:     flex;
+    display: flex;
     align-items: center;
-    gap:         var(--s-3);
-    padding:     var(--s-6) 0 0;
-    margin-top:  var(--s-4);
+    gap: var(--s-3);
+    padding: var(--s-6) 0 0;
+    margin-top: var(--s-4);
   }
 
   .mode-mobile {
-    font-family:    var(--font-mono);
-    font-size:      var(--text-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;
-    color:          var(--c-explore-muted);
-    padding:        0;
-    border:         none;
-    display:        inline;
+    color: var(--c-explore-muted);
+    padding: 0;
+    border: none;
+    display: inline;
   }
 
   html[data-active-mode="explore"] #mode-explore-mobile,
@@ -415,7 +420,7 @@ const navLinks = [
   @media (max-width: 480px) {
     .site-nav {
       padding: 0 var(--s-4);
-      gap:     var(--s-4);
+      gap: var(--s-4);
     }
   }
 
