@@ -24,7 +24,7 @@ const currentPath = Astro.url.pathname;
 // Derive mode from path if not explicitly set
 const resolvedMode: 'explore' | 'index' =
   currentPath === '/' ? 'explore'
-  : currentPath.startsWith('/index') ? 'index'
+  : currentPath.startsWith('/academic') ? 'index'
   : mode;
 ---
 
@@ -63,6 +63,18 @@ const resolvedMode: 'explore' | 'index' =
       href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..600;1,75..100,400..600&family=IBM+Plex+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <script is:inline>
+      (function() {
+        var path = window.location.pathname;
+        if (path === '/' || path === '/index.html') {
+          sessionStorage.setItem('portfolioMode', 'explore');
+        } else if (path.startsWith('/academic')) {
+          sessionStorage.setItem('portfolioMode', 'academic');
+        }
+        var mode = sessionStorage.getItem('portfolioMode') || 'explore';
+        document.documentElement.setAttribute('data-active-mode', mode);
+      })();
+    </script>
   </head>
 
   <body data-mode={resolvedMode}>
@@ -78,6 +90,17 @@ const resolvedMode: 'explore' | 'index' =
     <!-- Page content -->
     <div id="main-content" tabindex="-1">
       <slot />
+
+      {currentPath !== '/' && !currentPath.startsWith('/academic') && (
+        <div class="back-mode-container container">
+          <a href="/" class="back-mode-btn link-explore">
+            <span aria-hidden="true">&larr;</span> Back to Explore section
+          </a>
+          <a href="/academic/" class="back-mode-btn link-academic">
+            <span aria-hidden="true">&larr;</span> Back to Academic section
+          </a>
+        </div>
+      )}
     </div>
 
     <!-- Initialize Lenis and GSAP globally -->
@@ -158,5 +181,56 @@ const resolvedMode: 'explore' | 'index' =
         });
       }
     </script>
+    <style>
+      .back-mode-container {
+        padding-top: var(--s-16);
+        padding-bottom: var(--s-16);
+        text-align: center;
+        display: flex;
+        justify-content: center;
+      }
+      
+      .link-explore, .link-academic {
+        display: none;
+      }
+      
+      html[data-active-mode="explore"] .link-explore {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-2);
+      }
+      
+      html[data-active-mode="academic"] .link-academic {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-2);
+      }
+      
+      .back-mode-btn {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        letter-spacing: var(--tracking-label);
+        text-transform: uppercase;
+        color: var(--c-explore-muted);
+        transition: color var(--t-micro) var(--ease-out);
+        padding: var(--s-2) var(--s-4);
+        border: 1px solid var(--c-border);
+        border-radius: 999px;
+      }
+      
+      html[data-active-mode="academic"] .back-mode-btn {
+        color: var(--c-index-muted);
+      }
+      
+      .back-mode-btn:hover {
+        color: var(--c-text);
+        border-color: var(--c-text);
+      }
+      
+      html[data-active-mode="academic"] .back-mode-btn:hover {
+        color: var(--c-index-text);
+        border-color: var(--c-index-text);
+      }
+    </style>
   </body>
 </html>

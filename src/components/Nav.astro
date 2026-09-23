@@ -69,7 +69,7 @@ const navLinks = [
   <div class="nav-mode-switch" role="group" aria-label="View mode">
     <a
       href="/"
-      class:list={['mode-btn', { 'mode-btn--active': isExplore }]}
+      class="mode-btn"
       aria-label="Explore mode"
       id="mode-explore"
     >
@@ -78,7 +78,7 @@ const navLinks = [
     <span class="mode-divider" aria-hidden="true">·</span>
     <a
       href="/academic/"
-      class:list={['mode-btn', { 'mode-btn--active': isIndex }]}
+      class="mode-btn"
       aria-label="Index mode"
       id="mode-index"
     >
@@ -101,11 +101,11 @@ const navLinks = [
       </li>
     ))}
     <li class="mobile-mode-row">
-      <a href="/" class:list={['nav-mobile-link mode-mobile', { 'mode-mobile--active': isExplore }]}>
+      <a href="/" id="mode-explore-mobile" class="nav-mobile-link mode-mobile">
         EXPLORE
       </a>
       <span aria-hidden="true">·</span>
-      <a href="/academic/" class:list={['nav-mobile-link mode-mobile', { 'mode-mobile--active': isIndex }]}>
+      <a href="/academic/" id="mode-index-mobile" class="nav-mobile-link mode-mobile">
         ACADEMIC
       </a>
     </li>
@@ -288,12 +288,14 @@ const navLinks = [
     color: var(--c-index-muted);
   }
 
-  .mode-btn--active {
+  html[data-active-mode="explore"] #mode-explore,
+  html[data-active-mode="academic"] #mode-index {
     color: var(--c-accent) !important;
   }
 
   /* Subtle underline on active mode */
-  .mode-btn--active::after {
+  html[data-active-mode="explore"] #mode-explore::after,
+  html[data-active-mode="academic"] #mode-index::after {
     content:    '';
     position:   absolute;
     bottom:     -2px;
@@ -303,13 +305,13 @@ const navLinks = [
     background: var(--c-accent);
   }
 
-  .mode-btn:hover:not(.mode-btn--active),
-  .mode-btn:focus-visible:not(.mode-btn--active) {
+  .mode-btn:hover,
+  .mode-btn:focus-visible {
     color: var(--c-text);
   }
 
-  .site-nav[data-mode="index"] .mode-btn:hover:not(.mode-btn--active),
-  .site-nav[data-mode="index"] .mode-btn:focus-visible:not(.mode-btn--active) {
+  .site-nav[data-mode="index"] .mode-btn:hover,
+  .site-nav[data-mode="index"] .mode-btn:focus-visible {
     color: var(--c-index-text);
   }
 
@@ -395,7 +397,8 @@ const navLinks = [
     display:        inline;
   }
 
-  .mode-mobile--active {
+  html[data-active-mode="explore"] #mode-explore-mobile,
+  html[data-active-mode="academic"] #mode-index-mobile {
     color: var(--c-accent) !important;
   }
 
