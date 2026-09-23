@@ -27,7 +27,7 @@ const { items } = Astro.props;
       title={item.data.title}
       domain={item.data.domains?.join(', ') || item.data.type}
       role={item.data.role || item.data.organization}
-      href={`/portfolio/${item.collection}/${item.id}`}
+      href={`/${item.collection}/${item.id}`}
     />
   ))}
 </ul>

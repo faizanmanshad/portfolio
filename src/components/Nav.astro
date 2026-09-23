@@ -19,11 +19,11 @@ const isExplore = mode === 'explore' || currentPath === '/';
 const isIndex   = currentPath.startsWith('/academic');
 
 const navLinks = [
-  { label: 'Work',        href: '/portfolio/work/' },
-  { label: 'Projects',    href: '/portfolio/projects/' },
-  { label: 'Research',    href: '/portfolio/research/' },
-  { label: 'Recognition', href: '/portfolio/recognition/' },
-  { label: 'About',       href: '/portfolio/about/' },
+  { label: 'Work',        href: '/work/' },
+  { label: 'Projects',    href: '/projects/' },
+  { label: 'Research',    href: '/research/' },
+  { label: 'Recognition', href: '/recognition/' },
+  { label: 'About',       href: '/about/' },
 ];
 ---
 
@@ -33,7 +33,7 @@ const navLinks = [
   aria-label="Primary navigation"
 >
   <!-- Logotype -->
-  <a href="/portfolio/" class="nav-logo" aria-label="Faizan Manshad — home">
+  <a href="/" class="nav-logo" aria-label="Faizan Manshad — home">
     FM<span class="nav-logo-dot accent">.</span>
   </a>
 
@@ -68,7 +68,7 @@ const navLinks = [
   <!-- Explore / Index toggle -->
   <div class="nav-mode-switch" role="group" aria-label="View mode">
     <a
-      href="/portfolio/"
+      href="/"
       class:list={['mode-btn', { 'mode-btn--active': isExplore }]}
       aria-label="Explore mode"
       id="mode-explore"
@@ -77,7 +77,7 @@ const navLinks = [
     </a>
     <span class="mode-divider" aria-hidden="true">·</span>
     <a
-      href="/portfolio/academic/"
+      href="/academic/"
       class:list={['mode-btn', { 'mode-btn--active': isIndex }]}
       aria-label="Index mode"
       id="mode-index"
@@ -101,11 +101,11 @@ const navLinks = [
       </li>
     ))}
     <li class="mobile-mode-row">
-      <a href="/portfolio/" class:list={['nav-mobile-link mode-mobile', { 'mode-mobile--active': isExplore }]}>
+      <a href="/" class:list={['nav-mobile-link mode-mobile', { 'mode-mobile--active': isExplore }]}>
         EXPLORE
       </a>
       <span aria-hidden="true">·</span>
-      <a href="/portfolio/academic/" class:list={['nav-mobile-link mode-mobile', { 'mode-mobile--active': isIndex }]}>
+      <a href="/academic/" class:list={['nav-mobile-link mode-mobile', { 'mode-mobile--active': isIndex }]}>
         ACADEMIC
       </a>
     </li>

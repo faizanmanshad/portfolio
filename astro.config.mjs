@@ -5,8 +5,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://faizanmanshad.github.io',
-  base: '/portfolio',
+  site: 'https://faizanmanshad.com',
   integrations: [react()],
   vite: {
     optimizeDeps: {
