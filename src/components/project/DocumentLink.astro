@@ -1,0 +1,42 @@
+---
+export interface Props {
+  href: string;
+  label: string;
+  type?: 'pdf' | 'link' | 'doi';
+}
+
+const { href, label, type = 'link' } = Astro.props;
+---
+
+<a href={href} target="_blank" rel="noopener noreferrer" class={`document-link type-${type}`}>
+  <span class="icon">
+    {type === 'pdf' && '📄'}
+    {type === 'doi' && '🔗'}
+    {type === 'link' && '↗'}
+  </span>
+  <span class="label">{label}</span>
+</a>
+
+<style>
+  .document-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    padding: var(--s-2) var(--s-4);
+    background-color: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+
+  .document-link:hover,
+  .document-link:focus-visible {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+  }
+
+  .icon {
+    opacity: 0.7;
+  }
+</style>

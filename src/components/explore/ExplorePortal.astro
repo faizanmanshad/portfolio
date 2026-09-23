@@ -1,0 +1,124 @@
+---
+export interface Props {
+  id: string;
+  theme: string;
+}
+
+const { id, theme } = Astro.props;
+---
+<div id={id} class="explore-portal" aria-hidden="true">
+  <div class="portal-sticky">
+    <div class="portal-bg-gradient"></div>
+    
+    {/* Starburst / Warp Speedlines Background */}
+    <div class="starburst-container">
+      {Array.from({ length: 60 }).map((_, i) => {
+        const angle = Math.random() * 360;
+        const length = 20 + Math.random() * 80; // random length
+        const distance = 10 + Math.random() * 40; // distance from center
+        const duration = 0.5 + Math.random() * 1.5; // speed
+        const delay = Math.random() * -2; // random start time
+        // Add some variation in colors, picking between white, accent, and muted blue
+        const colorClass = Math.random() > 0.8 ? 'line-accent' : (Math.random() > 0.5 ? 'line-white' : 'line-blue');
+
+        return (
+          <div 
+            class={`starburst-line ${colorClass}`}
+            style={`
+              transform: rotate(${angle}deg) translateY(${distance}vh);
+              height: ${length}vh;
+              animation-duration: ${duration}s;
+              animation-delay: ${delay}s;
+            `}
+          ></div>
+        )
+      })}
+    </div>
+
+    <div class="portal-content">
+      <h2 class="portal-text gsap-split-text">{theme}</h2>
+    </div>
+  </div>
+</div>
+
+<style>
+  .explore-portal {
+    height: 300vh; /* Extremely tall to allow smooth scrub duration */
+    position: relative;
+    z-index: 10;
+  }
+
+  .portal-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: var(--c-bg); /* Opaque background so it hides the terrain when inside */
+  }
+
+  .portal-bg-gradient {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0,0,0,0) 10%, var(--c-bg) 70%);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .starburst-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    perspective: 1000px;
+    opacity: 0; /* Handled by GSAP scroll trigger */
+  }
+
+  .starburst-line {
+    position: absolute;
+    width: 2px;
+    background: var(--c-text);
+    transform-origin: center top;
+    opacity: 0;
+    animation: warpSpeed linear infinite;
+    border-radius: 2px;
+  }
+
+  .line-accent { background: var(--c-accent); box-shadow: 0 0 10px var(--c-accent); width: 3px; }
+  .line-white { background: #ffffff; }
+  .line-blue { background: #4a90e2; }
+
+  @keyframes warpSpeed {
+    0% {
+      opacity: 0;
+      transform: scaleY(0.1) translateZ(-1000px);
+    }
+    20% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: scaleY(2) translateZ(500px);
+    }
+  }
+
+  .portal-content {
+    position: relative;
+    z-index: 3;
+  }
+
+  .portal-text {
+    font-size: clamp(3rem, 8vw, 8rem);
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    text-align: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    opacity: 0; /* Handled by GSAP */
+    line-height: 0.9;
+  }
+</style>

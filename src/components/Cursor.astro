@@ -1,0 +1,36 @@
+---
+/**
+ * Cursor.astro
+ * A global custom cursor element for the Awwwards-style revamp.
+ * Styled in global.css and animated via GSAP in Layout.astro.
+ */
+---
+<div class="custom-cursor" id="custom-cursor">
+  <div class="cursor-dot"></div>
+</div>
+
+<style>
+  .custom-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: var(--c-accent);
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: exclusion;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  /* The inner dot can be styled or animated separately if needed */
+  .cursor-dot {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: white;
+  }
+</style>

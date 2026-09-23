@@ -1,0 +1,170 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import IndexList from '../../components/index/IndexList.astro';
+
+const journey = await getCollection('journey');
+const allItems = journey.sort((a, b) => {
+  return (a.data.priority || 99) - (b.data.priority || 99);
+});
+---
+
+<Layout
+  title="About | Faizan Manshad"
+  description="About Faizan Manshad, Civil Engineering student and BIM specialist."
+>
+  <main class="about-page container gsap-stagger-parent">
+    <header class="about-header">
+      <div class="index-header-meta">
+        <p class="label index-label gsap-stagger-item">ABOUT ME</p>
+      </div>
+      <h1 class="index-title gsap-stagger-item">Building the Future,<br/>Digitally & Physically.</h1>
+    </header>
+
+    <div class="about-content gsap-stagger-item">
+      <div class="about-image-wrapper">
+        <!-- Empty placeholder for user image -->
+        <div class="profile-image-placeholder">
+          <!-- <img src="/images/profile.jpg" alt="Faizan Manshad" /> -->
+          <span class="placeholder-text mono label">[ ATTACH IMAGE HERE ]</span>
+        </div>
+      </div>
+      
+      <div class="about-text text-lg">
+        <p>
+          I am Faizan Manshad, a Civil Engineering student at COMSATS University Islamabad with a strong academic record and specialized expertise in Building Information Modeling (BIM).
+        </p>
+        <p>
+          Throughout my academic and professional journey, I have gained practical BIM experience as a modeler at Mount Khalid, where I developed comprehensive architectural and structural models for Mount 4, alongside multiple smaller projects that demonstrate my proficiency in Revit, AutoCAD, Enscape, Lumion, and ETABS.
+        </p>
+        <p>
+          My technical skills are complemented by real-world construction experience from my internship at Resolve & NSTP Tower (NUST University). During this time, I handled material quantity calculations, steel weight analysis, and construction drawing interpretation.
+        </p>
+        <p>
+          Certified in Revit Architecture, Structure & MEP and AutoCAD, I am passionate about leveraging BIM technology to optimize design workflows, enhance project collaboration, and deliver innovative engineering solutions that bridge the gap between digital modeling and construction execution.
+        </p>
+      </div>
+    </div>
+
+    <section class="journey-section">
+      <header class="index-header">
+        <h2 class="index-title gsap-stagger-item">Community & Journey</h2>
+        <p class="index-deck gsap-stagger-item">
+          Beyond technical execution, contributing back to the community and environment.
+        </p>
+      </header>
+      
+      <div class="index-columns gsap-stagger-item">
+        <span class="col-head col-head--year label">YEAR</span>
+        <span class="col-head col-head--title label">TITLE</span>
+        <span class="col-head col-head--domain label">DOMAIN</span>
+        <span class="col-head col-head--context label">CONTEXT</span>
+      </div>
+
+      <div class="gsap-stagger-item">
+        <IndexList items={allItems} />
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+  gsap.fromTo('.gsap-stagger-item', 
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.2 }
+  );
+</script>
+
+<style>
+  .about-page {
+    padding-top: calc(var(--nav-h) + var(--s-16));
+    padding-bottom: var(--s-24);
+    color: var(--c-text);
+  }
+
+  .about-header {
+    margin-bottom: var(--s-16);
+    max-width: 800px;
+  }
+
+  .index-label {
+    color: var(--c-accent);
+    margin-bottom: var(--s-4);
+  }
+
+  .index-title {
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    margin-bottom: var(--s-4);
+    color: var(--c-text);
+  }
+
+  .index-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+  }
+
+  .about-content {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--s-12);
+    margin-bottom: var(--s-24);
+  }
+
+  .profile-image-placeholder {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background-color: var(--c-surface);
+    border: 1px dashed var(--c-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--c-muted);
+  }
+
+  .profile-image-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none; /* Remove when src is added */
+  }
+
+  .about-text {
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--c-text);
+  }
+
+  .about-text p {
+    margin-bottom: var(--s-6);
+  }
+
+  .journey-section {
+    padding-top: var(--s-16);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .index-columns {
+    display: grid;
+    grid-template-columns: 80px 3fr 2fr 3fr;
+    gap: var(--s-4);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--c-border);
+    color: var(--c-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+  }
+
+  @media (max-width: 768px) {
+    .about-content {
+      grid-template-columns: 1fr;
+    }
+    .index-columns {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,95 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import IndexList from '../../components/index/IndexList.astro';
+
+const recognition = await getCollection('recognition');
+const allItems = recognition.sort((a, b) => {
+  return (a.data.priority || 99) - (b.data.priority || 99);
+});
+---
+
+<Layout
+  title="Recognition | Faizan Manshad"
+  description="Honors, awards, and recognitions."
+>
+  <main class="index-page container gsap-stagger-parent">
+    <header class="index-header">
+      <div class="index-header-meta">
+        <p class="label index-label gsap-stagger-item">RECOGNITION — {allItems.length} ENTRIES</p>
+      </div>
+      <h1 class="index-title gsap-stagger-item">Honors & Awards</h1>
+      <p class="index-deck gsap-stagger-item">
+        Academic excellence, competitive achievements, and technical recognition.
+      </p>
+    </header>
+
+    <div class="index-columns gsap-stagger-item">
+      <span class="col-head col-head--year label">YEAR</span>
+      <span class="col-head col-head--title label">TITLE</span>
+      <span class="col-head col-head--domain label">DOMAIN</span>
+      <span class="col-head col-head--context label">CONTEXT</span>
+    </div>
+
+    <div class="gsap-stagger-item">
+      <IndexList items={allItems} />
+    </div>
+  </main>
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+  gsap.fromTo('.gsap-stagger-item', 
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.2 }
+  );
+</script>
+
+<style>
+  .index-page {
+    padding-top: calc(var(--nav-h) + var(--s-16));
+    padding-bottom: var(--s-24);
+    color: var(--c-text);
+  }
+
+  .index-header {
+    margin-bottom: var(--s-16);
+    max-width: 640px;
+  }
+
+  .index-label {
+    color: var(--c-accent);
+    margin-bottom: var(--s-4);
+  }
+
+  .index-title {
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    margin-bottom: var(--s-4);
+    color: var(--c-text);
+  }
+
+  .index-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+  }
+
+  .index-columns {
+    display: grid;
+    grid-template-columns: 80px 3fr 2fr 3fr;
+    gap: var(--s-4);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--c-border);
+    color: var(--c-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+  }
+
+  @media (max-width: 768px) {
+    .index-columns {
+      display: none;
+    }
+  }
+</style>

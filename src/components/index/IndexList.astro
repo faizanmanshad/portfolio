@@ -1,0 +1,41 @@
+---
+import IndexRow from './IndexRow.astro';
+
+export interface Props {
+  items: Array<{
+    id: string;
+    collection: string;
+    data: {
+      title: string;
+      dateDisplay?: string;
+      dateStart?: Date;
+      domains?: string[];
+      role?: string;
+      type?: string;
+      organization?: string;
+    };
+  }>;
+}
+
+const { items } = Astro.props;
+---
+
+<ul class="index-list">
+  {items.map(item => (
+    <IndexRow
+      year={item.data.dateDisplay || (item.data.dateStart ? item.data.dateStart.getFullYear() : '')}
+      title={item.data.title}
+      domain={item.data.domains?.join(', ') || item.data.type}
+      role={item.data.role || item.data.organization}
+      href={`/${item.collection}/${item.id}`}
+    />
+  ))}
+</ul>
+
+<style>
+  .index-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--s-8) 0;
+  }
+</style>

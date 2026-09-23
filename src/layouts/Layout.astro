@@ -1,0 +1,162 @@
+---
+/**
+ * Layout.astro — Global page shell
+ * Editorial Engineer × Spatial Blueprint × Digital Model
+ */
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Cursor from '../components/Cursor.astro';
+
+interface Props {
+  title?:       string;
+  description?: string;
+  mode?:        'explore' | 'index';
+}
+
+const {
+  title       = 'Faizan Manshad',
+  description = 'Civil engineer, BIM specialist and digital construction researcher. Working across physical structures, digital models, and emerging construction technology.',
+  mode        = 'explore',
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+
+// Derive mode from path if not explicitly set
+const resolvedMode: 'explore' | 'index' =
+  currentPath === '/' ? 'explore'
+  : currentPath.startsWith('/index') ? 'index'
+  : mode;
+---
+
+<!doctype html>
+<html lang="en" data-mode={resolvedMode}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Open Graph -->
+    <meta property="og:type"        content="website" />
+    <meta property="og:title"       content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:locale"      content="en_US" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card"        content="summary_large_image" />
+    <meta name="twitter:title"       content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Canonical -->
+    <link rel="canonical" href={Astro.url.href} />
+
+    <!--
+      Fonts: Instrument Sans (variable, primary) + IBM Plex Mono (metadata)
+      Preconnect for performance, variable font axes: wdth + wght
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wdth,wght@0,75..100,400..600;1,75..100,400..600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body data-mode={resolvedMode}>
+    <!-- Skip to main content (accessibility) -->
+    <a href="#main-content" class="skip-link">Skip to content</a>
+
+    <!-- Custom Cursor -->
+    <Cursor />
+
+    <!-- Compact fixed navigation -->
+    <Nav currentPath={currentPath} mode={resolvedMode} />
+
+    <!-- Page content -->
+    <div id="main-content" tabindex="-1">
+      <slot />
+    </div>
+
+    <!-- Initialize Lenis and GSAP globally -->
+    <script>
+      import Lenis from 'lenis';
+      import { gsap } from 'gsap';
+      import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Initialize Lenis
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        smoothTouch: false,
+        touchMultiplier: 2,
+        infinite: false,
+      });
+
+      // Sync Lenis with GSAP ScrollTrigger
+      lenis.on('scroll', ScrollTrigger.update);
+
+      gsap.ticker.add((time) => {
+        lenis.raf(time * 1000);
+      });
+      gsap.ticker.lagSmoothing(0);
+
+      // Global Custom Cursor Logic
+      const cursor = document.getElementById('custom-cursor');
+      if (cursor) {
+        // Show cursor when mouse moves
+        document.addEventListener('mousemove', () => {
+          cursor.style.opacity = '1';
+        }, { once: true });
+
+        // Update cursor position using GSAP for smooth trailing
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+        });
+
+        // Use GSAP ticker to smoothly interpolate cursor position
+        gsap.ticker.add(() => {
+          // Lerp for smooth trailing effect
+          cursorX += (mouseX - cursorX) * 0.15;
+          cursorY += (mouseY - cursorY) * 0.15;
+          gsap.set(cursor, { x: cursorX, y: cursorY });
+        });
+
+        // Handle hover states on interactive elements and Magnetic effect
+        const interactiveElements = document.querySelectorAll('a, button, .interactive');
+        interactiveElements.forEach((el) => {
+          el.addEventListener('mouseenter', () => {
+            gsap.to(cursor, { scale: 3, duration: 0.3, ease: 'power2.out' });
+          });
+          el.addEventListener('mouseleave', () => {
+            gsap.to(cursor, { scale: 1, duration: 0.3, ease: 'power2.out' });
+            gsap.to(el, { x: 0, y: 0, duration: 0.5, ease: 'power2.out' });
+          });
+
+          // Magnetic effect
+          el.addEventListener('mousemove', (e: any) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            // Only apply magnetic effect if it's a specific class or we can just apply a small movement
+            if(el.classList.contains('magnetic')) {
+               gsap.to(el, { x: x * 0.3, y: y * 0.3, duration: 0.3, ease: 'power2.out' });
+            }
+          });
+        });
+      }
+    </script>
+  </body>
+</html>

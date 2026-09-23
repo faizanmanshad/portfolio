@@ -1,0 +1,165 @@
+---
+import Layout from './Layout.astro';
+import type { CollectionEntry } from 'astro:content';
+import DocumentLink from '../components/project/DocumentLink.astro';
+
+interface Props {
+  entry: any; // We'll pass the whole entry
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+---
+
+<Layout title={`${data.title} | Faizan Manshad`} description={data.deck || data.summary}>
+  <article class="container project-article">
+    <header class="project-header">
+      <div class="header-meta mono text-muted">
+        {data.dateDisplay && <span>{data.dateDisplay}</span>}
+        {data.type && <span> / {data.type}</span>}
+      </div>
+      <h1 class="project-title">{data.title}</h1>
+      {data.deck && <p class="project-deck">{data.deck}</p>}
+      
+      <div class="project-details">
+        {data.role && (
+          <div class="detail-group">
+            <span class="detail-label text-muted mono">ROLE</span>
+            <span class="detail-value">{data.role}</span>
+          </div>
+        )}
+        {data.organization && (
+          <div class="detail-group">
+            <span class="detail-label text-muted mono">CONTEXT</span>
+            <span class="detail-value">{data.organization}</span>
+          </div>
+        )}
+        {data.domains && data.domains.length > 0 && (
+          <div class="detail-group">
+            <span class="detail-label text-muted mono">DOMAIN</span>
+            <span class="detail-value">{data.domains.join(', ')}</span>
+          </div>
+        )}
+        {data.tools && data.tools.length > 0 && (
+          <div class="detail-group">
+            <span class="detail-label text-muted mono">TOOLS</span>
+            <span class="detail-value">{data.tools.join(', ')}</span>
+          </div>
+        )}
+        {data.verificationStatus && (
+          <div class="detail-group">
+            <span class="detail-label text-muted mono">STATUS</span>
+            <span class="detail-value verification-status" data-status={data.verificationStatus}>
+              {data.verificationStatus.replace(/-/g, ' ')}
+            </span>
+          </div>
+        )}
+      </div>
+      
+      {data.links && data.links.length > 0 && (
+        <div class="project-links">
+          {data.links.map((link: { url: string; label: string }) => (
+            <DocumentLink href={link.url} label={link.label} type={link.url.includes('doi') ? 'doi' : 'link'} />
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="project-content">
+      <slot />
+    </div>
+
+    <footer class="project-footer">
+      <a href="/academic/" class="back-link">← Back to Academic Archive</a>
+    </footer>
+  </article>
+</Layout>
+
+<style>
+  .project-article {
+    padding-top: calc(var(--nav-h) + var(--s-12));
+    padding-bottom: var(--s-16);
+  }
+
+  .project-header {
+    margin-bottom: var(--s-12);
+  }
+
+  .header-meta {
+    font-size: 0.875rem;
+    margin-bottom: var(--s-4);
+  }
+
+  .project-title {
+    margin-bottom: var(--s-4);
+    color: var(--c-text);
+  }
+
+  .project-deck {
+    font-size: 1.25rem;
+    color: var(--c-text-muted);
+    max-width: var(--max-w-editorial);
+    margin-bottom: var(--s-8);
+  }
+
+  .project-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--s-6);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .detail-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .detail-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .detail-value {
+    font-size: 0.9375rem;
+    font-weight: 500;
+  }
+
+  .verification-status {
+    text-transform: capitalize;
+  }
+  .verification-status[data-status="user-reported"] {
+    color: var(--c-text-muted);
+  }
+  .verification-status[data-status="primary-curated-source"],
+  .verification-status[data-status="official-document"] {
+    color: var(--c-text-main);
+  }
+
+  .project-links {
+    margin-top: var(--s-8);
+    display: flex;
+    gap: var(--s-4);
+    flex-wrap: wrap;
+  }
+
+  .project-content {
+    max-width: var(--max-w-editorial);
+    font-size: 1.0625rem;
+  }
+
+  .project-content :global(h2) {
+    margin-top: var(--s-12);
+  }
+
+  .project-footer {
+    margin-top: var(--s-16);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .back-link {
+    font-weight: 500;
+  }
+</style>

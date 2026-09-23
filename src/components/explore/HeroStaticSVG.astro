@@ -1,0 +1,166 @@
+---
+/**
+ * HeroStaticSVG.astro
+ * Static SVG structural linework — shown when:
+ * (a) prefers-reduced-motion: reduce is active
+ * (b) WebGL is unavailable
+ *
+ * Art-directed to match the 3D scene aesthetic:
+ * slender members, coordinate markers, dimension references,
+ * node points — all as flat SVG on the graphite background.
+ */
+---
+
+<div class="hero-svg-wrap" aria-hidden="true" role="presentation">
+  <svg
+    class="hero-svg"
+    viewBox="0 0 800 640"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <defs>
+      <!-- Radial fade for grid -->
+      <radialGradient id="gridFade" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"   stop-color="#ffffff" stop-opacity="0.06" />
+        <stop offset="100%" stop-color="#ffffff" stop-opacity="0"    />
+      </radialGradient>
+
+      <!-- Vertical member gradient -->
+      <linearGradient id="memberGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"   stop-color="#8A8E95" stop-opacity="0"   />
+        <stop offset="20%"  stop-color="#8A8E95" stop-opacity="0.9" />
+        <stop offset="80%"  stop-color="#8A8E95" stop-opacity="0.9" />
+        <stop offset="100%" stop-color="#8A8E95" stop-opacity="0.1" />
+      </linearGradient>
+
+      <!-- Thin member gradient (bracing) -->
+      <linearGradient id="braceGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"   stop-color="#4A5060" stop-opacity="0.8" />
+        <stop offset="100%" stop-color="#4A5060" stop-opacity="0.2" />
+      </linearGradient>
+    </defs>
+
+    <!-- ── Module grid (fine, fading) ── -->
+    <g opacity="1">
+      <!-- Major grid lines (every 80px) -->
+      <g stroke="url(#gridFade)" stroke-width="0.5">
+        <!-- Vertical majors -->
+        <line x1="200" y1="80"  x2="200" y2="560" />
+        <line x1="360" y1="80"  x2="360" y2="560" />
+        <line x1="520" y1="80"  x2="520" y2="560" />
+        <line x1="680" y1="80"  x2="680" y2="560" />
+        <!-- Horizontal majors -->
+        <line x1="80"  y1="160" x2="720" y2="160" />
+        <line x1="80"  y1="320" x2="720" y2="320" />
+        <line x1="80"  y1="480" x2="720" y2="480" />
+      </g>
+      <!-- Minor grid lines (every 40px) -->
+      <g stroke="rgba(255,255,255,0.025)" stroke-width="0.5">
+        <line x1="280" y1="80"  x2="280" y2="560" />
+        <line x1="440" y1="80"  x2="440" y2="560" />
+        <line x1="600" y1="80"  x2="600" y2="560" />
+        <line x1="80"  y1="240" x2="720" y2="240" />
+        <line x1="80"  y1="400" x2="720" y2="400" />
+      </g>
+    </g>
+
+    <!-- ── Structural fragment — perspective-implied ── -->
+    <g transform="translate(380, 80)">
+
+      <!-- Vertical members (3 slender columns) -->
+      <rect x="-120" y="40"  width="2.5" height="380" fill="url(#memberGrad)" />
+      <rect x="0"    y="20"  width="2.5" height="400" fill="url(#memberGrad)" />
+      <rect x="120"  y="40"  width="2.5" height="380" fill="url(#memberGrad)" />
+
+      <!-- Wireframe overlay (lighter, thinner) -->
+      <rect x="-120" y="40"  width="1"   height="380" fill="none" stroke="#8A8E95" stroke-width="0.5" opacity="0.3" />
+      <rect x="0"    y="20"  width="1"   height="400" fill="none" stroke="#8A8E95" stroke-width="0.5" opacity="0.3" />
+      <rect x="120"  y="40"  width="1"   height="380" fill="none" stroke="#8A8E95" stroke-width="0.5" opacity="0.3" />
+
+      <!-- Horizontal connecting beams (4 levels) -->
+      <line x1="-120" y1="80"  x2="121"  y2="80"  stroke="#4A5060" stroke-width="1.5" />
+      <line x1="-120" y1="180" x2="121"  y2="180" stroke="#4A5060" stroke-width="1.5" />
+      <line x1="-120" y1="280" x2="121"  y2="280" stroke="#4A5060" stroke-width="1.5" />
+      <line x1="-120" y1="380" x2="121"  y2="380" stroke="#4A5060" stroke-width="1.5" />
+
+      <!-- Diagonal bracing members -->
+      <line x1="-120" y1="80"  x2="0"   y2="180" stroke="url(#braceGrad)" stroke-width="1" />
+      <line x1="0"    y1="180" x2="121" y2="280" stroke="url(#braceGrad)" stroke-width="1" />
+      <line x1="-120" y1="280" x2="0"   y2="380" stroke="url(#braceGrad)" stroke-width="0.8" />
+
+      <!-- Section plane (translucent horizontal slab at mid-height) -->
+      <rect
+        x="-135" y="220" width="272" height="1.5"
+        fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"
+      />
+      <rect x="-135" y="221" width="272" height="60" fill="rgba(42,48,64,0.08)" />
+
+      <!-- Dimension lines -->
+      <!-- Vertical height dimension -->
+      <g stroke="#4A5060" stroke-width="0.8" opacity="0.5">
+        <line x1="-160" y1="80"  x2="-160" y2="380" />
+        <!-- Tick marks -->
+        <line x1="-165" y1="80"  x2="-155" y2="80"  />
+        <line x1="-165" y1="380" x2="-155" y2="380" />
+        <!-- Horizontal width dimension -->
+        <line x1="-120" y1="430" x2="121"  y2="430" />
+        <line x1="-120" y1="425" x2="-120" y2="435" />
+        <line x1="121"  y1="425" x2="121"  y2="435" />
+      </g>
+
+      <!-- Dimension labels -->
+      <text x="-175" y="232" font-family="'IBM Plex Mono', monospace" font-size="7" fill="#4A5060" opacity="0.6" text-anchor="middle" transform="rotate(-90,-175,232)">4.5m</text>
+      <text x="0"    y="446" font-family="'IBM Plex Mono', monospace" font-size="7" fill="#4A5060" opacity="0.6" text-anchor="middle">3.0m</text>
+
+      <!-- Node points at structural intersections -->
+      <!-- Top chord -->
+      <circle cx="-120" cy="80"  r="3.5" fill="none" stroke="#EDE8E1" stroke-width="1"   opacity="0.7" />
+      <circle cx="0"    cy="80"  r="2.5" fill="#EDE8E1"                                  opacity="0.5" />
+      <circle cx="121"  cy="80"  r="3.5" fill="none" stroke="#EDE8E1" stroke-width="1"   opacity="0.7" />
+      <!-- Mid level -->
+      <circle cx="-120" cy="180" r="2.5" fill="#EDE8E1"                                  opacity="0.4" />
+      <circle cx="0"    cy="180" r="2.5" fill="none" stroke="#EDE8E1" stroke-width="0.8" opacity="0.4" />
+      <circle cx="121"  cy="180" r="2.5" fill="#EDE8E1"                                  opacity="0.4" />
+      <!-- Base chord -->
+      <circle cx="-120" cy="380" r="3"   fill="none" stroke="#EDE8E1" stroke-width="1"   opacity="0.6" />
+      <circle cx="0"    cy="380" r="2"   fill="#EDE8E1"                                  opacity="0.4" />
+      <circle cx="121"  cy="380" r="3"   fill="none" stroke="#EDE8E1" stroke-width="1"   opacity="0.6" />
+
+      <!-- Coordinate origin marker (accent color) -->
+      <g transform="translate(0, 420)">
+        <line x1="-8" y1="0" x2="8" y2="0"  stroke="#E85C1A" stroke-width="1.5" />
+        <line x1="0"  y1="-8" x2="0" y2="8" stroke="#E85C1A" stroke-width="1.5" />
+        <circle cx="0" cy="0" r="2" fill="#E85C1A" />
+      </g>
+
+      <!-- Section marker labels -->
+      <text x="-120" y="68" font-family="'IBM Plex Mono', monospace" font-size="6.5" fill="#4A5060" opacity="0.5" text-anchor="middle">A</text>
+      <text x="0"    y="60" font-family="'IBM Plex Mono', monospace" font-size="6.5" fill="#4A5060" opacity="0.5" text-anchor="middle">B</text>
+      <text x="121"  y="68" font-family="'IBM Plex Mono', monospace" font-size="6.5" fill="#4A5060" opacity="0.5" text-anchor="middle">C</text>
+
+      <!-- Figure label -->
+      <text x="160" y="300" font-family="'IBM Plex Mono', monospace" font-size="7" fill="#4A5060" opacity="0.4">FIG. 01</text>
+      <text x="160" y="312" font-family="'IBM Plex Mono', monospace" font-size="7" fill="#4A5060" opacity="0.4">STRUCTURAL</text>
+      <text x="160" y="324" font-family="'IBM Plex Mono', monospace" font-size="7" fill="#4A5060" opacity="0.4">FRAGMENT</text>
+    </g>
+  </svg>
+</div>
+
+<style>
+  .hero-svg-wrap {
+    position:   absolute;
+    inset:      0;
+    display:    flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 8%;
+    pointer-events: none;
+  }
+
+  .hero-svg {
+    width:     clamp(300px, 55vw, 640px);
+    height:    auto;
+    max-height: 90vh;
+    opacity:   1;
+  }
+</style>

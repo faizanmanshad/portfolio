@@ -1,0 +1,207 @@
+---
+/**
+ * /academic/ — Curriculum Vitae mode
+ * Detailed CV format with sections for education, experience, research, projects, and skills.
+ */
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+import IndexList from '../../components/index/IndexList.astro';
+import IndexRow from '../../components/index/IndexRow.astro';
+
+const projects = (await getCollection('projects')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
+const experience = (await getCollection('experience')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
+const research = (await getCollection('research')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
+const recognition = (await getCollection('recognition')).sort((a, b) => (a.data.priority || 99) - (b.data.priority || 99));
+---
+
+<Layout
+  title="Curriculum Vitae | Faizan Manshad"
+  description="Curriculum Vitae of Faizan Manshad, detailing education, professional experience, research, projects, and skills."
+>
+  <main class="index-page container gsap-stagger-parent">
+    <header class="index-header">
+      <div class="index-header-meta">
+        <p class="label index-label gsap-stagger-item">CURRICULUM VITAE</p>
+      </div>
+      <h1 class="index-title gsap-stagger-item">Faizan Manshad</h1>
+      <p class="index-deck gsap-stagger-item">
+        A comprehensive repository of my education, professional work, research, and engineering practice, curated for scholarship and academic review.
+      </p>
+    </header>
+
+    <section class="cv-section">
+      <header class="index-header cv-section-header">
+        <h2 class="index-title gsap-stagger-item">Education</h2>
+      </header>
+      <div class="index-columns gsap-stagger-item">
+        <span class="col-head col-head--year label">YEAR</span>
+        <span class="col-head col-head--title label">DEGREE</span>
+        <span class="col-head col-head--domain label">INSTITUTION</span>
+        <span class="col-head col-head--context label">LOCATION</span>
+      </div>
+      <ul class="cv-index-list gsap-stagger-item">
+        <IndexRow 
+          year="2021 — Present" 
+          title="Bachelor of Science in Civil Engineering" 
+          domain="COMSATS University Islamabad" 
+          role="Islamabad, PK" 
+        />
+      </ul>
+    </section>
+
+    <section class="cv-section">
+      <header class="index-header cv-section-header">
+        <h2 class="index-title gsap-stagger-item">Professional Experience</h2>
+      </header>
+      <div class="index-columns gsap-stagger-item">
+        <span class="col-head col-head--year label">YEAR</span>
+        <span class="col-head col-head--title label">ROLE</span>
+        <span class="col-head col-head--domain label">ORGANIZATION</span>
+        <span class="col-head col-head--context label">LOCATION / TYPE</span>
+      </div>
+      <div class="gsap-stagger-item">
+        <IndexList items={experience} />
+      </div>
+    </section>
+
+    <section class="cv-section">
+      <header class="index-header cv-section-header">
+        <h2 class="index-title gsap-stagger-item">Research & Publications</h2>
+      </header>
+      <div class="index-columns gsap-stagger-item">
+        <span class="col-head col-head--year label">YEAR</span>
+        <span class="col-head col-head--title label">TITLE</span>
+        <span class="col-head col-head--domain label">DOMAIN</span>
+        <span class="col-head col-head--context label">CONTEXT</span>
+      </div>
+      <div class="gsap-stagger-item">
+        <IndexList items={research} />
+      </div>
+    </section>
+
+    <section class="cv-section">
+      <header class="index-header cv-section-header">
+        <h2 class="index-title gsap-stagger-item">Academic & Professional Projects</h2>
+      </header>
+      <div class="index-columns gsap-stagger-item">
+        <span class="col-head col-head--year label">YEAR</span>
+        <span class="col-head col-head--title label">TITLE</span>
+        <span class="col-head col-head--domain label">DOMAIN</span>
+        <span class="col-head col-head--context label">CONTEXT</span>
+      </div>
+      <div class="gsap-stagger-item">
+        <IndexList items={projects} />
+      </div>
+    </section>
+
+    <section class="cv-section">
+      <header class="index-header cv-section-header">
+        <h2 class="index-title gsap-stagger-item">Technical Skills & Certifications</h2>
+      </header>
+      <div class="index-columns gsap-stagger-item">
+        <span class="col-head col-head--year label">STATUS</span>
+        <span class="col-head col-head--title label">SKILL / CERTIFICATE</span>
+        <span class="col-head col-head--domain label">CATEGORY</span>
+        <span class="col-head col-head--context label">ISSUER</span>
+      </div>
+      <ul class="cv-index-list gsap-stagger-item">
+        <IndexRow year="Certified" title="Revit Architecture, Structure & MEP" domain="BIM Modeling" role="Autodesk" />
+        <IndexRow year="Certified" title="AutoCAD" domain="Drafting & Design" role="Autodesk" />
+        <IndexRow year="Proficient" title="Enscape & Lumion" domain="3D Rendering" role="Visualization" />
+        <IndexRow year="Proficient" title="ETABS" domain="Structural Analysis" role="Engineering" />
+      </ul>
+    </section>
+
+    <section class="cv-section">
+      <header class="index-header cv-section-header">
+        <h2 class="index-title gsap-stagger-item">Community & Recognition</h2>
+      </header>
+      <div class="index-columns gsap-stagger-item">
+        <span class="col-head col-head--year label">YEAR</span>
+        <span class="col-head col-head--title label">TITLE</span>
+        <span class="col-head col-head--domain label">DOMAIN</span>
+        <span class="col-head col-head--context label">CONTEXT</span>
+      </div>
+      <div class="gsap-stagger-item">
+        <IndexList items={recognition} />
+      </div>
+    </section>
+
+  </main>
+</Layout>
+
+<script>
+  import { gsap } from 'gsap';
+  // Astro script modules execute after the DOM is parsed.
+  gsap.fromTo('.gsap-stagger-item', 
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.2 }
+  );
+</script>
+
+<style>
+  .index-page {
+    /* Nav clearance */
+    padding-top: calc(var(--nav-h) + var(--s-16));
+    padding-bottom: var(--s-24);
+    color: var(--c-text);
+  }
+
+  .index-header {
+    margin-bottom: var(--s-16);
+    max-width: 640px;
+  }
+
+  .cv-section {
+    padding-top: var(--s-16);
+    border-top: 1px solid var(--c-border);
+    margin-top: var(--s-16);
+  }
+
+  .cv-section-header {
+    margin-bottom: var(--s-8);
+  }
+
+  .index-label {
+    color: var(--c-accent);
+    margin-bottom: var(--s-4);
+  }
+
+  .index-title {
+    font-size: var(--text-2xl);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    margin-bottom: var(--s-4);
+    color: var(--c-text);
+  }
+
+  .index-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Column headers — matching IndexRow grid */
+  .index-columns {
+    display: grid;
+    grid-template-columns: 80px 3fr 2fr 3fr;
+    gap: var(--s-4);
+    padding: var(--s-3) 0;
+    border-bottom: 1px solid var(--c-border);
+    color: var(--c-muted);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .cv-index-list {
+    list-style: none;
+    padding: 0;
+    margin: var(--s-8) 0;
+  }
+
+  @media (max-width: 768px) {
+    .index-columns {
+      display: none;
+    }
+  }
+</style>

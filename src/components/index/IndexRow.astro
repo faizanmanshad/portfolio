@@ -1,0 +1,102 @@
+---
+export interface Props {
+  year?: string | number;
+  title: string;
+  domain?: string;
+  role?: string;
+  href?: string;
+  thumbnail?: string;
+}
+
+const { year, title, domain, role, href, thumbnail } = Astro.props;
+---
+
+<li class="index-row">
+  {
+    href ? (
+      <a href={href} class="row-inner">
+        <span class="col-year mono text-muted">{year}</span>
+        <span class="col-title">{title}</span>
+        <span class="col-domain text-muted">{domain}</span>
+        <span class="col-role text-muted">{role}</span>
+      </a>
+    ) : (
+      <div class="row-inner">
+        <span class="col-year mono text-muted">{year}</span>
+        <span class="col-title">{title}</span>
+        <span class="col-domain text-muted">{domain}</span>
+        <span class="col-role text-muted">{role}</span>
+      </div>
+    )
+  }
+</li>
+
+<style>
+  .index-row {
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .index-row:first-child {
+    border-top: 1px solid var(--c-border);
+  }
+
+  .row-inner {
+    display: grid;
+    grid-template-columns: 80px 3fr 2fr 3fr;
+    gap: var(--s-4);
+    padding: var(--s-4) 0;
+    align-items: baseline;
+    font-size: var(--text-base);
+    color: var(--c-text);
+    transition: color var(--t-micro) var(--ease-out);
+  }
+
+  a.row-inner {
+    transition:
+      color var(--t-micro) var(--ease-out),
+      padding-left var(--t-micro) var(--ease-out);
+  }
+
+  a.row-inner:hover,
+  a.row-inner:focus-visible {
+    color: var(--c-text);
+    padding-left: var(--s-2);
+  }
+
+  a.row-inner:hover .col-title {
+    color: var(--c-accent);
+  }
+
+  .col-year {
+    color: var(--c-muted);
+  }
+
+  .col-title {
+    font-weight: 500;
+    letter-spacing: var(--tracking-normal);
+    transition: color var(--t-micro) var(--ease-out);
+  }
+
+  .col-domain,
+  .col-role {
+    color: var(--c-muted);
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 768px) {
+    .row-inner {
+      grid-template-columns: 1fr;
+      gap: var(--s-1);
+      padding: var(--s-4) 0;
+    }
+
+    .col-year {
+      font-size: var(--text-xs);
+      margin-bottom: var(--s-1);
+    }
+
+    a.row-inner:hover {
+      padding-left: 0;
+    }
+  }
+</style>
