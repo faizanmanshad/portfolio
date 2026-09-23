@@ -194,7 +194,7 @@ const resolvedMode: "explore" | "index" =
                   scrollTrigger: {
                     trigger: el,
                     start: "top 95%",
-                    toggleActions: "play none none none"
+                    toggleActions: "play none none reverse"
                   }
                 });
               } else {
@@ -208,7 +208,7 @@ const resolvedMode: "explore" | "index" =
                   scrollTrigger: {
                     trigger: el,
                     start: "top 95%",
-                    toggleActions: "play none none none"
+                    toggleActions: "play none none reverse"
                   }
                 });
               }
@@ -353,12 +353,17 @@ const resolvedMode: "explore" | "index" =
 
       if (!isHomePage) {
           // All sub-pages: doors start closed on new page, then open
-          doorOpen();
-          initScrollReveals();
+          setTimeout(() => {
+              doorOpen();
+              initScrollReveals();
+          }, 50);
       } else if (isHomePage && skipIntro) {
           // Returning visitor to home page
-          doorOpen();
-          initScrollReveals();
+          // Give WebGL/Canvas time to compile shaders before animating doors to avoid stutter
+          setTimeout(() => {
+              doorOpen();
+              initScrollReveals();
+          }, 350);
       } else {
           // First-ever visit to home page: 3D model handles the intro sequence
           gsap.to('#main-content', { opacity: 1, duration: 0.1 });

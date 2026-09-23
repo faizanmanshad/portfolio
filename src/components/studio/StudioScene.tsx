@@ -476,10 +476,12 @@ function Scene({
 
   useEffect(() => {
     if (introState !== "docking") {
-      let zoomX = 10.3, zoomY = 7.1;
+      const isMobile = (size.width || window.innerWidth) < 768;
+      let zoomX = isMobile ? 8.5 : 10.3;
+      let zoomY = isMobile ? 5.8 : 7.1;
       if (introState === "loading" || introState === "revealing" || introState === "holding") {
-        zoomX = 20.0;
-        zoomY = 14.0;
+        zoomX = isMobile ? 16.0 : 20.0;
+        zoomY = isMobile ? 11.2 : 14.0;
       }
       const safeWidth = size.width || window.innerWidth;
       const safeHeight = size.height || window.innerHeight;
@@ -716,7 +718,7 @@ export default function StudioScene({ records }: { records: Records }) {
       // 1. Section Reveal
       tl.to(clipPlane, {
         constant: 4.5,
-        duration: 2.2,
+        duration: 2.8,
         ease: "power2.inOut"
       });
 
@@ -812,10 +814,12 @@ export default function StudioScene({ records }: { records: Records }) {
               gl={{ antialias: true, alpha: true }}
               onCreated={({ gl, camera, size }) => {
                 gl.clippingPlanes = [clipPlane];
-                let zX = 10.3, zY = 7.1;
+                const isMobile = (size.width || window.innerWidth) < 768;
+                let zX = isMobile ? 8.5 : 10.3;
+                let zY = isMobile ? 5.8 : 7.1;
                 if (introState === "loading" || introState === "revealing" || introState === "holding") {
-                  zX = 20.0;
-                  zY = 14.0;
+                  zX = isMobile ? 16.0 : 20.0;
+                  zY = isMobile ? 11.2 : 14.0;
                 }
                 const safeWidth = size.width || window.innerWidth;
                 const safeHeight = size.height || window.innerHeight;
