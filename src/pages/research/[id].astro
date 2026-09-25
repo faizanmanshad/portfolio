@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import ResearchFigures from '../../components/academic/ResearchFigures.astro';
 
 export async function getStaticPaths() {
   const research = await getCollection('research');
@@ -16,4 +17,5 @@ const { Content } = await render(entry);
 
 <ProjectLayout entry={entry}>
   <Content />
+  {entry.id === 'bim-to-ar' && <ResearchFigures />}
 </ProjectLayout>

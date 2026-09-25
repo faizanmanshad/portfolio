@@ -1,5 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { Image } from 'astro:assets';
+import researchCover from '../../assets/research-cover.png';
 import { getCollection } from "astro:content";
 const sort = (items: any[]) =>
   items.sort((a, b) => (a.data.priority ?? 99) - (b.data.priority ?? 99));
@@ -137,7 +139,7 @@ const groups = [
       <section id="research" data-academic-section>
         <div class="section-top" data-academic-reveal>
           <h2>
-            <span>02 /</span> Selected research
+            <span>02 /</span> Research & experimentation
           </h2>
           <a href="/research/">Research archive ↗</a>
         </div>
@@ -148,17 +150,8 @@ const groups = [
               class="research-visual"
               aria-label="Read BIM to AR research"
             >
-              <div class="model-lines" aria-hidden="true">
-                <i></i>
-                <i></i>
-                <i></i>
-                <i></i>
-              </div>
-              <div class="ar-frame" aria-hidden="true">
-                <span>AR</span>
-                <i></i>
-              </div>
-              <span class="diagram-label">MODEL → SPATIAL EXPERIENCE</span>
+              <Image class="manuscript-preview" src={researchCover} width={900} format="webp" loading="lazy" alt="Illustration inspired by the research: a BIM structure connected to marker-based, ground-plane and location-based augmented reality" />
+              <span class="manuscript-caption">RESEARCH OVERVIEW / AI-ASSISTED ILLUSTRATION</span>
             </a>
             <div>
               <p class="eyebrow accent">
@@ -298,6 +291,8 @@ const groups = [
   updateIndex();
 </script>
 <style>
+  .manuscript-preview { display:block; width:100%; height:100%; object-fit:contain; padding:12px 12px 35px; }
+  .manuscript-caption { position:absolute; bottom:10px; left:12px; right:12px; text-align:center; font:8px var(--font-mono); color:#c2c8ba; }
   .mobile-section-picker { display: none; }
   .dossier {
     max-width: 1440px;
@@ -497,6 +492,9 @@ const groups = [
     padding-bottom: 6px;
   }
   .research-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     height: 265px;
     overflow: hidden;

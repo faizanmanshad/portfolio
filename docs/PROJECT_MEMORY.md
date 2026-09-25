@@ -76,3 +76,16 @@
 ## Deployment State
 - Local development (npm run dev)
 - GitHub Pages compatible (static output)
+
+## Research figures and navigation recovery — 2026-09-25
+- User prefers targeted source reads and short tool outputs to limit token consumption; reuse this approach for later portfolio sections.
+- Extracted only manuscript Figures 89, 92, 101: printed pages 87, 88, 91; PDF pages 102, 103, 106. Sources are in 03 Documents for Scholarship/09 Research Paper, Publication. Figure list and nearby result-page captions were inspected, not the full manuscript.
+- Academic research thumbnail and research detail gallery use those original figures. Optimized WebP assets in public/images/research. No raw PDF or sensitive configuration screenshots published.
+- Back/Forward cache recovery removes tagged departure door panels and cancels their tweens on persisted pageshow. Normal transition appearance/timing unchanged; modified clicks, downloads and new-tab links retain browser behavior.
+
+## About and research visuals — 2026-09-25
+- About uses the supplied Faizan.jpg via an optimized Astro Image, framed above the belt with CSS; original face/background unchanged. Original root file retained.
+- About now describes current Urbana and OpenSpace duties from existing records, structural engineering/BIM interests, and user-reported daily AI-assisted Revit plugin development. No plugin feature or release claims invented.
+- Research cover: src/assets/research-cover.png, AI-generated using the three extracted manuscript figures as references. Labelled as an illustration, distinct from original testing evidence. Used on Academic and as fourth study gallery image.
+- Four gallery buttons open a native modal dialog with an animated card-to-popup transform, close button, backdrop click, Escape, focus restoration and reduced-motion handling. Existing global navigation transitions unchanged.
+- Build succeeds (24 pages), type check zero errors/warnings. Verified styled modal, backdrop dismissal, Escape and focus restoration; visually checked portrait crop. Restarted dev preview after production build to avoid stale styles/dependencies.

@@ -288,6 +288,8 @@ const resolvedMode: "explore" | "index" =
         const left = document.createElement('div');
         left.style.cssText = baseStyle + 'left:0;width:0;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
         const right = document.createElement('div');
+        left.dataset.pageDoor = 'true';
+        right.dataset.pageDoor = 'true';
         right.style.cssText = baseStyle + 'right:0;width:0;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
         document.body.appendChild(left);
         document.body.appendChild(right);
@@ -337,9 +339,20 @@ const resolvedMode: "explore" | "index" =
       }
 
       // Page Navigation: close doors, then navigate
+      // Back/Forward can restore the departure page, including its closed doors.
+      window.addEventListener('pageshow', (event) => {
+        if (!event.persisted) return;
+        document.querySelectorAll('[data-page-door], #pre-door-left, #pre-door-right').forEach((panel) => {
+          gsap.killTweensOf(panel);
+          panel.remove();
+        });
+        gsap.set('#main-content', { opacity: 1 });
+        ScrollTrigger.refresh();
+      });
       document.addEventListener('click', (e) => {
+        if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
         const link = (e.target as HTMLElement).closest('a');
-        if (link && link.href && link.hostname === window.location.hostname && link.target !== '_blank') {
+        if (link && link.href && link.origin === window.location.origin && !link.hasAttribute('download') && (!link.target || link.target === '_self')) {
           const currentUrl = new URL(window.location.href);
           const targetUrl = new URL(link.href);
           if (currentUrl.pathname === targetUrl.pathname && targetUrl.hash) return;

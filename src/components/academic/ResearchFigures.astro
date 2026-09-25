@@ -1,0 +1,373 @@
+---
+import { getImage } from "astro:assets";
+import researchCover from "../../assets/research-cover.png";
+const cover = await getImage({
+  src: researchCover,
+  width: 1200,
+  format: "webp",
+});
+const figures = [
+  {
+    src: cover.src,
+    title: "Research overview",
+    caption:
+      "An illustration connecting the three BIM-to-AR deployment approaches.",
+    source:
+      "AI-assisted illustration inspired by the manuscript; not a test result.",
+    width: 1200,
+    height: 800,
+  },
+  {
+    src: "/images/research/marker-based.webp",
+    title: "Marker-based AR",
+    caption: "BIM model on an image target.",
+    source: "Figure 89 · manuscript p. 87",
+    width: 442,
+    height: 599,
+  },
+  {
+    src: "/images/research/ground-plane.webp",
+    title: "Ground-plane AR",
+    caption: "Outdoor testing of the ground-plane application.",
+    source: "Figure 92 · manuscript p. 88",
+    width: 373,
+    height: 501,
+  },
+  {
+    src: "/images/research/geospatial.webp",
+    title: "Location-based AR",
+    caption: "Geospatial anchors stabilizing the model.",
+    source: "Figure 101 · manuscript p. 91",
+    width: 266,
+    height: 576,
+  },
+];
+---
+
+<section class="manuscript-gallery" aria-labelledby="manuscript-figures">
+  <p class="figure-label">THE RESEARCH IN VIEW</p>
+  <h2 id="manuscript-figures">Three ways to bring BIM into view.</h2>
+  <p class="gallery-intro">
+    A visual overview, followed by original images from the prototype
+    applications and testing documented in the manuscript. Select any image to
+    take a closer look.
+  </p>
+  <div class="figure-grid">
+    {figures.map((figure) => (
+      <figure>
+        <button
+          type="button"
+          class="figure-trigger"
+          data-figure-title={figure.title}
+          data-figure-caption={`${figure.caption} ${figure.source}`}
+          aria-label={`Enlarge ${figure.title}`}
+          aria-haspopup="dialog"
+        >
+          <img
+            src={figure.src}
+            alt={figure.caption}
+            width={figure.width}
+            height={figure.height}
+            loading="lazy"
+          />
+          <span class="enlarge-mark" aria-hidden="true">
+            ⤢
+          </span>
+        </button>
+        <figcaption>
+          <h3>{figure.title}</h3>
+          <p>{figure.caption}</p>
+          <small>{figure.source}</small>
+        </figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+<dialog
+  class="figure-dialog"
+  aria-labelledby="figure-dialog-title"
+  data-lenis-prevent
+>
+  <div class="figure-popup">
+    <button
+      type="button"
+      class="figure-close"
+      aria-label="Close image"
+      autofocus
+    >
+      ×
+    </button>
+    <img class="figure-expanded" alt="" />
+    <div class="popup-caption">
+      <h2 id="figure-dialog-title"></h2>
+      <p id="figure-dialog-caption"></p>
+    </div>
+  </div>
+</dialog>
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>(".figure-dialog")!;
+  const panel = dialog.querySelector<HTMLElement>(".figure-popup")!;
+  const enlarged = dialog.querySelector<HTMLImageElement>(".figure-expanded")!;
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+  let origin: HTMLButtonElement | null = null;
+  let closing = false;
+  let previousOverflow = "";
+  let animation: Animation | null = null;
+  function cardTransform() {
+    const card = origin!.getBoundingClientRect();
+    const target = panel.getBoundingClientRect();
+    return `translate(${card.left + card.width / 2 - target.left - target.width / 2}px, ${card.top + card.height / 2 - target.top - target.height / 2}px) scale(${card.width / target.width}, ${card.height / target.height})`;
+  }
+  document
+    .querySelectorAll<HTMLButtonElement>(".figure-trigger")
+    .forEach((button) => {
+      button.addEventListener("click", () => {
+        if (dialog.open) return;
+        origin = button;
+        const image = button.querySelector("img")!;
+        enlarged.src = image.currentSrc || image.src;
+        enlarged.alt = image.alt;
+        enlarged.width = image.naturalWidth || image.width;
+        enlarged.height = image.naturalHeight || image.height;
+        dialog.querySelector("#figure-dialog-title")!.textContent =
+          button.dataset.figureTitle || "";
+        dialog.querySelector("#figure-dialog-caption")!.textContent =
+          button.dataset.figureCaption || "";
+        previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        dialog.classList.remove("is-closing");
+        dialog.showModal();
+        animation = panel.animate(
+          [
+            { transform: cardTransform(), opacity: 0 },
+            { transform: "none", opacity: 1 },
+          ],
+          {
+            duration: reduced.matches ? 0 : 300,
+            easing: "cubic-bezier(.2,.75,.25,1)",
+          },
+        );
+      });
+    });
+  async function closeFigure() {
+    if (!dialog.open || closing) return;
+    closing = true;
+    animation?.cancel();
+    dialog.classList.add("is-closing");
+    animation = panel.animate(
+      [
+        { transform: "none", opacity: 1 },
+        { transform: cardTransform(), opacity: 0 },
+      ],
+      {
+        duration: reduced.matches ? 0 : 240,
+        easing: "cubic-bezier(.4,0,.6,1)",
+        fill: "forwards",
+      },
+    );
+    try {
+      await animation.finished;
+    } catch {}
+    dialog.close();
+    animation.cancel();
+    document.body.style.overflow = previousOverflow;
+    origin?.focus({ preventScroll: true });
+    closing = false;
+  }
+  dialog.querySelector(".figure-close")!.addEventListener("click", closeFigure);
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) closeFigure();
+  });
+  dialog.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    closeFigure();
+  });
+</script>
+<style>
+  .manuscript-gallery {
+    margin: 55px 0 25px;
+    padding-top: 30px;
+    border-top: 1px solid #ffffff28;
+  }
+  .figure-label {
+    font: 11px var(--font-mono);
+    letter-spacing: 0.1em;
+    color: #e98550;
+  }
+  .manuscript-gallery h2 {
+    font-size: clamp(24px, 3vw, 36px);
+    letter-spacing: -0.03em;
+    margin: 15px 0;
+  }
+  .gallery-intro {
+    color: #b0b6ad;
+    max-width: 650px;
+    line-height: 1.7;
+  }
+  .figure-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px 24px;
+    margin-top: 28px;
+  }
+  figure {
+    margin: 0;
+    min-width: 0;
+  }
+  .figure-trigger {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #192019;
+    border: 1px solid #ffffff20;
+    padding: 14px;
+    cursor: zoom-in;
+  }
+  .figure-trigger img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .enlarge-mark {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    color: #ede8e1;
+    background: #101412df;
+    font-size: 20px;
+    padding: 2px 8px;
+  }
+  figcaption h3 {
+    font-size: 19px;
+    margin: 18px 0 8px;
+  }
+  figcaption p {
+    font-size: 14px;
+    color: #b0b6ad;
+    line-height: 1.6;
+  }
+  figcaption small {
+    display: block;
+    font: 10px/1.8 var(--font-mono);
+    color: #b0b6ad;
+    margin-top: 10px;
+  }
+  button:focus-visible {
+    outline: 2px solid #e85c1a;
+    outline-offset: 4px;
+  }
+  .figure-dialog {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 24px;
+    border: 0;
+    background: transparent;
+    color: #ede8e1;
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+  .figure-dialog[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .figure-dialog::backdrop {
+    background: #070b09e8;
+    animation: backdrop-in 0.3s ease;
+  }
+  .figure-dialog.is-closing::backdrop {
+    animation: backdrop-out 0.24s ease forwards;
+  }
+  .figure-popup {
+    position: relative;
+    max-width: 1000px;
+    width: fit-content;
+    max-height: calc(100dvh - 48px);
+    background: #151c17;
+    border: 1px solid #ffffff30;
+    padding: 16px;
+    box-shadow: 0 20px 80px #0008;
+    transform-origin: center;
+    overflow: auto;
+  }
+  .figure-expanded {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    max-height: calc(100dvh - 215px);
+    object-fit: contain;
+    margin: auto;
+  }
+  .popup-caption {
+    max-width: 800px;
+    padding: 14px 4px 2px;
+  }
+  .popup-caption h2 {
+    font-size: 19px;
+    margin: 0 0 6px;
+  }
+  .popup-caption p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #b0b6ad;
+    margin: 0;
+  }
+  .figure-close {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: 44px;
+    height: 44px;
+    border: 1px solid #ffffff55;
+    border-radius: 50%;
+    background: #101412ee;
+    color: #fff;
+    font-size: 28px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  @keyframes backdrop-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  @keyframes backdrop-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @media (max-width: 700px) {
+    .figure-grid {
+      grid-template-columns: 1fr;
+    }
+    .figure-trigger {
+      height: 350px;
+    }
+    .figure-dialog {
+      padding: 12px;
+    }
+    .figure-popup {
+      padding: 12px;
+      max-height: calc(100dvh - 24px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .figure-dialog::backdrop,
+    .figure-dialog.is-closing::backdrop {
+      animation: none;
+    }
+  }
+</style>

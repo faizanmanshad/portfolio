@@ -52,3 +52,8 @@
 - Contact includes required email/message and optional name/phone. Current implementation prepares a mailto draft; it does not deliver mail from a backend or claim successful delivery. Direct sending needs an email service later.
 - Checked Academic → About → Recognition → Best Survey Group labels and reload persistence. Academic reveal class cycled visible → hidden → visible. Phone widths checked at 390px for Academic and Contact with no horizontal overflow. Contact required/email validation checked without sending email. No browser console errors observed.
 - Final build: 24 pages; check: 0 errors, 0 warnings, existing advisory hints remain. Mail-app launch/delivery was not exercised.
+
+## 2026-09-25 research pass
+- Type check: zero errors/warnings. Production build: 24 pages.
+- All three manuscript images loaded; gallery visually reviewed at narrow preview width.
+- Academic -> study -> browser Back -> Forward: content visible, zero remaining door panels on both returns. Cached-restoration cleanup added; browser tooling does not confirm cache eligibility on every traversal.

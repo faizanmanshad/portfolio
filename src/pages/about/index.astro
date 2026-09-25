@@ -1,9 +1,11 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import IndexList from '../../components/index/IndexList.astro';
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import IndexList from "../../components/index/IndexList.astro";
+import { Image } from "astro:assets";
+import portrait from "../../assets/faizan.jpg";
 
-const journey = await getCollection('journey');
+const journey = await getCollection("journey");
 const allItems = journey.sort((a, b) => {
   return (a.data.priority || 99) - (b.data.priority || 99);
 });
@@ -18,30 +20,58 @@ const allItems = journey.sort((a, b) => {
       <div class="index-header-meta">
         <p class="label index-label gsap-stagger-item">ABOUT ME</p>
       </div>
-      <h1 class="index-title gsap-stagger-item">Building the Future,<br/>Digitally & Physically.</h1>
+      <h1 class="index-title gsap-stagger-item">
+        Curious about structures.
+        <br />
+        Always building something.
+      </h1>
     </header>
 
     <div class="about-content gsap-stagger-item">
       <div class="about-image-wrapper">
-        <!-- Empty placeholder for user image -->
-        <div class="profile-image-placeholder">
-          <!-- <img src="/images/profile.jpg" alt="Faizan Manshad" /> -->
-          <span class="placeholder-text mono label">[ ATTACH IMAGE HERE ]</span>
+        <div class="profile-portrait">
+          <Image
+            src={portrait}
+            width={960}
+            format="webp"
+            alt="Faizan Manshad wearing glasses, a light shirt and tie, standing beside a brick wall"
+          />
         </div>
       </div>
-      
+
       <div class="about-text text-lg">
         <p>
-          I am Faizan Manshad, a Civil Engineering student at COMSATS University Islamabad with a strong academic record and specialized expertise in Building Information Modeling (BIM).
+          I’m Faizan. I’m interested in both structural engineering and Building
+          Information Modelling: how a structure works, and how a good model
+          helps us understand and build it. I enjoy moving between the
+          engineering details and the digital tools that make them easier to
+          work with.
         </p>
         <p>
-          Throughout my academic and professional journey, I have gained practical BIM experience as a modeler at Mount Khalid, where I developed comprehensive architectural and structural models for Mount 4, alongside multiple smaller projects that demonstrate my proficiency in Revit, AutoCAD, Enscape, Lumion, and ETABS.
+          At <a href="/experience/urbana/">Urbana</a>, I work part-time as a
+          Revit Drafter on modular infrastructure, mainly pedestrian bridges. My
+          day-to-day work includes developing BIM models, preparing general
+          arrangement and fabrication drawings, checking dimensions, and working
+          through engineering review comments.
         </p>
         <p>
-          My technical skills are complemented by real-world construction experience from my internship at Resolve & NSTP Tower (NUST University). During this time, I handled material quantity calculations, steel weight analysis, and construction drawing interpretation.
+          At <a href="/experience/openspace/">OpenSpace</a>, I’m a Track
+          Delivery Specialist. I review 360° site imagery across structural,
+          architectural and MEP work, identify what is complete and what is
+          still outstanding, and turn those observations into reliable
+          construction-progress data.
         </p>
         <p>
-          Certified in Revit Architecture, Structure & MEP and AutoCAD, I am passionate about leveraging BIM technology to optimize design workflows, enhance project collaboration, and deliver innovative engineering solutions that bridge the gap between digital modeling and construction execution.
+          Alongside that, I spend time each day using AI tools to help develop
+          Revit plugins. It’s an ongoing side project and a way to learn by
+          building: trying ideas, testing them in Revit, and figuring out what
+          makes a tool useful in everyday modelling work.
+        </p>
+        <p>
+          That same curiosity led me to{" "}
+          <a href="/research/bim-to-ar/">BIM-to-AR research</a>—exploring how a
+          model can move beyond the screen and become something we can view in a
+          physical space.
         </p>
       </div>
     </div>
@@ -50,10 +80,11 @@ const allItems = journey.sort((a, b) => {
       <header class="index-header">
         <h2 class="index-title gsap-stagger-item">Community & Journey</h2>
         <p class="index-deck gsap-stagger-item">
-          Beyond technical execution, contributing back to the community and environment.
+          Beyond technical execution, contributing back to the community and
+          environment.
         </p>
       </header>
-      
+
       <div class="index-columns gsap-stagger-item">
         <span class="col-head col-head--year label">YEAR</span>
         <span class="col-head col-head--title label">TITLE</span>
@@ -69,10 +100,18 @@ const allItems = journey.sort((a, b) => {
 </Layout>
 
 <script>
-  import { gsap } from 'gsap';
-  gsap.fromTo('.gsap-stagger-item', 
+  import { gsap } from "gsap";
+  gsap.fromTo(
+    ".gsap-stagger-item",
     { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 0.8, stagger: 0.1, ease: 'power2.out', delay: 0.2 }
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: "power2.out",
+      delay: 0.2,
+    },
   );
 </script>
 
@@ -114,11 +153,12 @@ const allItems = journey.sort((a, b) => {
     margin-bottom: var(--s-24);
   }
 
-  .profile-image-placeholder {
+  .profile-portrait {
     width: 100%;
     aspect-ratio: 3/4;
     background-color: var(--c-surface);
-    border: 1px dashed var(--c-border);
+    border: 1px solid var(--c-border);
+    overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -126,11 +166,21 @@ const allItems = journey.sort((a, b) => {
     color: var(--c-muted);
   }
 
-  .profile-image-placeholder img {
+  .profile-portrait img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: none; /* Remove when src is added */
+    display: block;
+    transform: scale(1.75);
+    transform-origin: 50% 28%;
+  }
+  .about-text a {
+    color: #ed925f;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .about-image-wrapper {
+    max-width: 420px;
   }
 
   .about-text {
