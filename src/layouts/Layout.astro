@@ -7,6 +7,7 @@ import "../styles/global.css";
 import Nav from "../components/Nav.astro";
 import Cursor from "../components/Cursor.astro";
 import ContextReturn from "../components/ContextReturn.astro";
+import { SITE_METADATA } from "../consts";
 
 interface Props {
   title?: string;
@@ -15,8 +16,8 @@ interface Props {
 }
 
 const {
-  title = "Faizan Manshad",
-  description = "Civil engineer, BIM specialist and digital construction researcher. Working across physical structures, digital models, and emerging construction technology.",
+  title = SITE_METADATA.default.title,
+  description = SITE_METADATA.default.description,
   mode = "explore",
 } = Astro.props;
 

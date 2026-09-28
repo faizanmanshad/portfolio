@@ -1,10 +1,11 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import { SITE_METADATA } from "../../consts";
 ---
 
 <Layout
-  title="Let’s connect | Faizan Manshad"
-  description="Contact Faizan Manshad about civil engineering, BIM, digital construction and research."
+  title={SITE_METADATA.contact.title}
+  description={SITE_METADATA.contact.description}
 >
   <main class="contact-page container">
     <div class="contact-copy">

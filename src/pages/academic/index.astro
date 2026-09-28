@@ -53,11 +53,12 @@ const groups = [
     items: journey,
   },
 ];
+import { SITE_METADATA } from "../../consts";
 ---
 
 <Layout
-  title="Academic Profile | Faizan Manshad"
-  description="Education, research, professional practice and selected projects by Faizan Manshad, in one academic profile."
+  title={SITE_METADATA.academic.title}
+  description={SITE_METADATA.academic.description}
 >
   <main class="dossier">
     <aside class="dossier-index" aria-label="Academic sections">
