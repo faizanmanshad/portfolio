@@ -24,6 +24,19 @@ import {
 } from "@react-three/drei";
 import * as THREE from "three";
 import "./studio.css";
+
+// Suppress THREE.Clock deprecation warning caused by @react-three/fiber
+const originalWarn = console.warn;
+console.warn = (...args) => {
+  if (
+    typeof args[0] === "string" &&
+    args[0].includes("THREE.Clock: This module has been deprecated")
+  ) {
+    return;
+  }
+  originalWarn(...args);
+};
+
 type Point = [number, number, number];
 type Mode = "assembled" | "exploded" | "drawing";
 type Topic = "structure" | "practice" | "research";
