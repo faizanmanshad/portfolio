@@ -37,7 +37,7 @@
   --c-scene-grid-minor:   rgba(255,255,255,0.03);
 
   /* ── Typography ── */
-  --font-sans:   'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-sans:   'Instrument Sans Variable', 'Instrument Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono:   'IBM Plex Mono', 'JetBrains Mono', 'Fira Code', Consolas, monospace;
 
   /* ── Type scale (clamp: min, preferred, max) ── */
