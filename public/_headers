@@ -1,0 +1,5 @@
+/*
+  X-Frame-Options: DENY
+  Access-Control-Allow-Origin: https://faizanmanshad.com
+  Content-Security-Policy: frame-ancestors 'none';
+  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:;
