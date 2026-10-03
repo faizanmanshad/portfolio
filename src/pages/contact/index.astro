@@ -70,12 +70,8 @@ import { SITE_METADATA } from "../../consts";
         maxlength="3000"
         placeholder="Tell me a little about what you have in mind…"
       ></textarea>
-      <p id="email-help" class="small">
-        This opens a prepared email in your mail app. Review it there and press
-        Send.
-      </p>
-      <button type="submit" aria-describedby="email-help" disabled>
-        Prepare email <span aria-hidden="true">↗</span>
+      <button type="submit" disabled>
+        Send message <span aria-hidden="true">↗</span>
       </button>
       <p id="contact-status" role="status" aria-live="polite"></p>
       <noscript>
@@ -94,29 +90,50 @@ import { SITE_METADATA } from "../../consts";
     'button[type="submit"]',
   );
   if (submitButton) submitButton.disabled = false;
-  form?.addEventListener("submit", (event) => {
+  form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const values = new FormData(form);
     const message = String(values.get("message") || "").trim();
     const field = form.querySelector<HTMLTextAreaElement>("textarea")!;
     field.setCustomValidity(message ? "" : "Please write a short message.");
     if (!form.reportValidity()) return;
+    
     const name = String(values.get("name") || "").trim();
     const email = String(values.get("email") || "").trim();
     const phone = String(values.get("phone") || "").trim();
-    const body = [
-      message,
-      "",
-      `From: ${name || "Portfolio visitor"}`,
-      `Email: ${email}`,
-      phone ? `Phone: ${phone}` : "",
-    ]
-      .filter((line, i) => line || i === 1)
-      .join("\n");
-    const href = `mailto:faizanmanshad@gmail.com?subject=${encodeURIComponent(`Portfolio enquiry${name ? ` from ${name}` : ""}`)}&body=${encodeURIComponent(body)}`;
-    window.location.href = href;
-    document.querySelector("#contact-status")!.textContent =
-      "Your email draft is ready to open. If no mail app appears, email me directly using the address on this page. Your message has not been sent by this website.";
+    
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.innerHTML = 'Sending... <span aria-hidden="true">↗</span>';
+    }
+    
+    const statusEl = document.querySelector("#contact-status") as HTMLElement;
+    statusEl.textContent = "";
+    statusEl.style.color = "#c3c8be";
+
+    try {
+      const response = await fetch("https://contact-api.faizanmanshad.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, phone, message })
+      });
+
+      if (!response.ok) throw new Error("API response error");
+
+      statusEl.textContent = "Message sent successfully. I’ll get back to you soon.";
+      statusEl.style.color = "#9dc79d";
+      form.reset();
+    } catch (error) {
+      statusEl.textContent = "Unable to send message. Please try again or email me directly.";
+      statusEl.style.color = "#e87a5d";
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.innerHTML = 'Send message <span aria-hidden="true">↗</span>';
+      }
+    }
   });
   form
     ?.querySelector("textarea")
