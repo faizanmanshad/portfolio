@@ -31,6 +31,7 @@ const { media, title, labels = [], carousel = false } = Astro.props;
               data-figure-title={labels[index] || title || `Document ${index + 1}`}
               data-figure-caption="Official Document"
               data-rotation={config.rotation}
+              data-full-src={src}
               aria-label="Enlarge document"
               aria-haspopup="dialog"
               style={`
@@ -52,7 +53,7 @@ const { media, title, labels = [], carousel = false } = Astro.props;
                 <img
                   src={src}
                   alt={labels[index] || "Official Document"}
-                  loading={carousel ? "eager" : "lazy"}
+                  loading={carousel && index === 0 ? "eager" : "lazy"}
                 />
               </div>
               <span class="enlarge-mark" aria-hidden="true">
@@ -133,6 +134,7 @@ const { media, title, labels = [], carousel = false } = Astro.props;
         origin = button;
         
         const image = button.querySelector("img")!;
+        const fullSrc = button.dataset.fullSrc || image.currentSrc || image.src;
         const rotation = parseInt(button.dataset.rotation || "0", 10);
         const isRotated = rotation % 180 !== 0;
         const nw = image.naturalWidth || image.width || 800;
@@ -152,7 +154,7 @@ const { media, title, labels = [], carousel = false } = Astro.props;
         const container = dialog.querySelector(".figure-expanded-container")!;
         container.innerHTML = `
           <svg viewBox="0 0 ${effWidth} ${effHeight}" style="width: ${effWidth}px; max-width: 100%; height: auto; max-height: calc(100dvh - 215px);">
-            <image href="${image.currentSrc || image.src}" width="${nw}" height="${nh}" transform="${transform}" />
+            <image href="${fullSrc}" width="${nw}" height="${nh}" transform="${transform}" />
           </svg>
         `;
 

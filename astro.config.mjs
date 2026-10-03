@@ -17,4 +17,7 @@ export default defineConfig({
       ],
     },
   },
+  image: {
+    domains: ['media.faizanmanshad.com'],
+  },
 });
