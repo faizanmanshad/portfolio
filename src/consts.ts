@@ -5,6 +5,8 @@
  * shared on social media (Discord, Twitter, LinkedIn, etc.)
  */
 
+export const MEDIA_BASE_URL = "https://media.faizanmanshad.com";
+
 export const SITE_METADATA = {
   // Default metadata used when a specific page doesn't provide its own
   default: {

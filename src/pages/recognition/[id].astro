@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
+import TrussBridgePage from '../../components/recognition/TrussBridgePage.astro';
 
 export async function getStaticPaths() {
   const recognition = await getCollection('recognition');
@@ -14,6 +15,6 @@ const { entry } = Astro.props;
 const { Content } = await render(entry);
 ---
 
-<ProjectLayout entry={entry}>
+{entry.id === 'truss-bridge-competition' ? <TrussBridgePage media={entry.data.media || []} /> : <ProjectLayout entry={entry}>
   <Content />
-</ProjectLayout>
+</ProjectLayout>}

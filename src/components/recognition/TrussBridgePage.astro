@@ -1,0 +1,38 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import MediaGallery from '../project/MediaGallery.astro';
+interface Props { media: string[]; }
+const { media } = Astro.props;
+---
+<Layout title="Truss Bridge Competition | Faizan Manshad" description="Second position in a truss bridge competition: an ice-cream-stick bridge tested on its load-to-weight ratio, built with Kashan Shafiq and Ahmad Javid.">
+  <main class="truss-page container">
+    <div class="truss-hero">
+      <header class="truss-intro">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href="/recognition/">Recognition</a><span aria-hidden="true"> / </span><span>Competition</span></nav>
+        <p class="eyebrow accent">UNIVERSITY COMPETITION</p>
+        <h1>Truss Bridge<br/>Competition</h1>
+        <p class="award">2nd position</p>
+        <p class="lead">A bridge made from ice cream sticks.<br/>A challenge in balancing strength and weight.</p>
+        <dl class="metadata"><div><dt>INSTITUTION</dt><dd>COMSATS University</dd></div><div><dt>AREA</dt><dd>Structural engineering</dd></div></dl>
+      </header>
+      <section class="certificate-card" aria-label="Competition certificate">
+        <p class="eyebrow">DOCUMENT / 01</p>
+        <MediaGallery media={media} title="Truss Bridge Competition — 2nd position" />
+        <div class="certificate-caption"><span>Original certificate</span><button type="button" id="view-truss-certificate">View certificate <span aria-hidden="true">↗</span></button></div>
+      </section>
+    </div>
+    <section class="experience-note" aria-labelledby="challenge-title">
+      <div class="challenge"><p class="eyebrow accent">THE CHALLENGE</p><h2 id="challenge-title">Carry more. Weigh less.</h2><p>We built a truss bridge using ice cream sticks. The competition assessed its load-to-weight ratio: how much load the bridge could carry relative to its own weight. Keeping it lightweight mattered as much as making it strong.</p></div>
+      <div class="team"><p class="eyebrow">BUILT TOGETHER</p><ul aria-label="Team members"><li>Faizan Manshad</li><li>Kashan Shafiq</li><li>Ahmad Javid</li></ul><p class="team-result">Our team secured second position.</p></div>
+    </section>
+    <div class="archive-link"><a href="/recognition/">Recognition archive <span aria-hidden="true">↗</span></a></div>
+  </main>
+</Layout>
+<script>
+  document.getElementById('view-truss-certificate')?.addEventListener('click',()=>{
+    document.querySelector<HTMLButtonElement>('.truss-page .figure-trigger')?.click();
+  });
+</script>
+<style>
+.truss-page{max-width:1380px;padding-top:calc(var(--nav-h) + 64px);padding-bottom:22px;color:#ede8e1}.truss-hero{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:64px;align-items:center}.breadcrumb{font:11px/1.7 var(--font-mono);color:#a8ada5;margin-bottom:34px;display:flex;gap:10px}.breadcrumb a:hover{color:#ede8e1}.eyebrow{font:10px/1.6 var(--font-mono);letter-spacing:.09em;color:#acb2a8}.accent{color:#ee8750}h1{font-size:clamp(38px,4.4vw,64px);line-height:1.04;letter-spacing:-.045em;font-weight:500;margin:18px 0 27px}.award{display:inline-block;border:1px solid #b74c23;color:#f09057;padding:11px 19px;font:16px/1.3 var(--font-mono);margin-bottom:30px}.lead{font-size:18px;line-height:1.7;letter-spacing:-.015em;max-width:460px}.metadata{display:grid;grid-template-columns:1fr 1fr;gap:22px;padding-top:26px;margin-top:34px;border-top:1px solid #ffffff25}.metadata>div+div{border-left:1px solid #ffffff20;padding-left:22px}dt{font:10px/1.5 var(--font-mono);color:#a8ada5;margin-bottom:9px}dd{margin:0;font-size:14px}.certificate-card{padding:24px;border:1px solid #ffffff20;background:linear-gradient(125deg,#1c2319,#151a14);border-radius:4px;min-width:0}.certificate-card :global(.media-gallery){margin:16px 0}.certificate-card :global(.figure-grid){display:block}.certificate-card :global(.figure-trigger){max-width:none;width:100%}.certificate-card :global(.figure-trigger:focus-visible){outline:2px solid #e85c1a;outline-offset:4px}.certificate-caption{display:flex;align-items:center;justify-content:space-between;gap:16px;font:10px/1.6 var(--font-mono);color:#aeb4a6}.certificate-caption button{font:inherit;background:none;border:0;color:#ede8e1;cursor:pointer;min-height:44px;padding:0}.certificate-caption button span{color:#ef8146;font-size:20px;margin-left:10px}.experience-note{display:grid;grid-template-columns:1.5fr 1fr;gap:60px;border-top:1px solid #ffffff25;border-bottom:1px solid #ffffff25;padding:32px 0;margin-top:46px}.challenge h2{font-size:clamp(25px,2.6vw,35px);line-height:1.2;letter-spacing:-.03em;margin:13px 0}.challenge>p:last-child{font-size:16px;color:#b9beb4;line-height:1.8;max-width:680px}.team{border-left:1px solid #ffffff20;padding-left:36px}.team ul{list-style:none;padding:0;margin:14px 0;display:grid;gap:6px;font-size:17px}.team-result{font-size:13px;color:#b9beb4;margin-top:18px}.archive-link{display:flex;justify-content:flex-end;padding-top:22px;font:11px var(--font-mono);color:#bdc2b7}.archive-link span{color:#ef8146;margin-left:10px}a:focus-visible,button:focus-visible{outline:2px solid #e85c1a;outline-offset:5px}@media(max-width:950px){.truss-hero{gap:32px}.truss-page{padding-top:calc(var(--nav-h) + 40px)}.certificate-card{padding:16px}.lead{font-size:16px}}@media(max-width:720px){.truss-hero,.experience-note{grid-template-columns:1fr}.truss-hero{gap:32px}.breadcrumb{margin-bottom:25px}h1{font-size:46px}.metadata{margin-top:24px}.award{margin-bottom:22px}.experience-note{gap:25px;margin-top:32px;padding:25px 0}.team{border-left:0;border-top:1px solid #ffffff20;padding:25px 0 0}.certificate-caption{gap:8px;font-size:9px}.team ul{font-size:16px}}
+</style>

@@ -1,0 +1,371 @@
+---
+import { MEDIA_BASE_URL } from "../../consts";
+import { getMediaPresentation } from "../../config/mediaPresentation";
+
+export interface Props {
+  media: string[];
+  title?: string;
+}
+
+const { media, title } = Astro.props;
+---
+
+{media.length > 0 && (
+  <section class="media-gallery" aria-labelledby="media-gallery-title">
+    <div class="figure-grid">
+      {media.map((item, index) => {
+        const src = `${MEDIA_BASE_URL}/${item}`;
+        const config = getMediaPresentation(item);
+        const isRotated = config.rotation % 180 !== 0;
+        const effWidth = isRotated ? config.frameHeight : config.frameWidth;
+        const effHeight = isRotated ? config.frameWidth : config.frameHeight;
+        
+        return (
+          <figure>
+            <button
+              type="button"
+              class="figure-trigger"
+              data-figure-title={title || `Document ${index + 1}`}
+              data-figure-caption="Official Document"
+              data-rotation={config.rotation}
+              aria-label="Enlarge document"
+              aria-haspopup="dialog"
+              style={`
+                --eff-w: ${effWidth}px;
+                --eff-h: ${effHeight}px;
+                --frame-w-css: ${isRotated ? '100cqh' : '100cqw'};
+                --frame-h-css: ${isRotated ? '100cqw' : '100cqh'};
+                --rot: ${config.rotation}deg;
+                --scl: ${config.scale};
+                --fit: ${config.objectFit};
+                --pos: ${config.objectPosition};
+                --crop-t: ${config.cropTop}%;
+                --crop-r: ${config.cropRight}%;
+                --crop-b: ${config.cropBottom}%;
+                --crop-l: ${config.cropLeft}%;
+              `}
+            >
+              <div class="figure-frame">
+                <img
+                  src={src}
+                  alt="Official Document"
+                  loading="lazy"
+                />
+              </div>
+              <span class="enlarge-mark" aria-hidden="true">
+                ⤢
+              </span>
+            </button>
+          </figure>
+        );
+      })}
+    </div>
+  </section>
+
+  <dialog
+    class="figure-dialog"
+    aria-labelledby="figure-dialog-title"
+    data-lenis-prevent
+  >
+    <div class="figure-popup">
+      <button
+        type="button"
+        class="figure-close"
+        aria-label="Close image"
+        autofocus
+      >
+        ×
+      </button>
+      <div class="figure-expanded-container">
+        <!-- SVG will be injected here to handle perfect bounding boxes for rotated images -->
+      </div>
+      <div class="popup-caption">
+        <h2 id="figure-dialog-title"></h2>
+        <p id="figure-dialog-caption"></p>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    const dialogs = document.querySelectorAll<HTMLDialogElement>(".figure-dialog");
+    
+    dialogs.forEach(dialog => {
+      if (dialog.dataset.initialized) return;
+      dialog.dataset.initialized = "true";
+
+      const panel = dialog.querySelector<HTMLElement>(".figure-popup")!;
+      const enlarged = dialog.querySelector<HTMLImageElement>(".figure-expanded")!;
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+      let origin: HTMLButtonElement | null = null;
+      let closing = false;
+      let previousOverflow = "";
+      let animation: Animation | null = null;
+
+      function cardTransform() {
+        if (!origin) return "none";
+        const card = origin.getBoundingClientRect();
+        const target = panel.getBoundingClientRect();
+        return `translate(${card.left + card.width / 2 - target.left - target.width / 2}px, ${card.top + card.height / 2 - target.top - target.height / 2}px) scale(${card.width / target.width}, ${card.height / target.height})`;
+      }
+
+      document
+        .querySelectorAll<HTMLButtonElement>(".figure-trigger")
+        .forEach((button) => {
+          if (button.dataset.initialized) return;
+          button.dataset.initialized = "true";
+
+          button.addEventListener("click", () => {
+            if (dialog.open) return;
+            origin = button;
+            const image = button.querySelector("img")!;
+            
+            const rotation = parseInt(button.dataset.rotation || "0", 10);
+            const isRotated = rotation % 180 !== 0;
+            const nw = image.naturalWidth || image.width || 800;
+            const nh = image.naturalHeight || image.height || 600;
+            const effWidth = isRotated ? nh : nw;
+            const effHeight = isRotated ? nw : nh;
+
+            let transform = "";
+            if (rotation === 90) transform = `translate(${effWidth}, 0) rotate(90)`;
+            else if (rotation === -90 || rotation === 270) transform = `translate(0, ${effHeight}) rotate(-90)`;
+            else if (rotation === 180) transform = `translate(${effWidth}, ${effHeight}) rotate(180)`;
+            else if (rotation !== 0) transform = `rotate(${rotation})`;
+
+            const container = dialog.querySelector(".figure-expanded-container")!;
+            container.innerHTML = `
+              <svg viewBox="0 0 ${effWidth} ${effHeight}" style="width: ${effWidth}px; max-width: 100%; height: auto; max-height: calc(100dvh - 215px);">
+                <image href="${image.currentSrc || image.src}" width="${nw}" height="${nh}" transform="${transform}" />
+              </svg>
+            `;
+
+            dialog.querySelector("#figure-dialog-title")!.textContent =
+              button.dataset.figureTitle || "";
+            dialog.querySelector("#figure-dialog-caption")!.textContent =
+              button.dataset.figureCaption || "";
+            previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = "hidden";
+            dialog.classList.remove("is-closing");
+            dialog.showModal();
+            animation = panel.animate(
+              [
+                { transform: cardTransform(), opacity: 0 },
+                { transform: "none", opacity: 1 },
+              ],
+              {
+                duration: reduced.matches ? 0 : 300,
+                easing: "cubic-bezier(.2,.75,.25,1)",
+              },
+            );
+          });
+        });
+
+      async function closeFigure() {
+        if (!dialog.open || closing) return;
+        closing = true;
+        animation?.cancel();
+        dialog.classList.add("is-closing");
+        animation = panel.animate(
+          [
+            { transform: "none", opacity: 1 },
+            { transform: cardTransform(), opacity: 0 },
+          ],
+          {
+            duration: reduced.matches ? 0 : 240,
+            easing: "cubic-bezier(.4,0,.6,1)",
+            fill: "forwards",
+          },
+        );
+        try {
+          await animation.finished;
+        } catch {}
+        dialog.close();
+        animation.cancel();
+        document.body.style.overflow = previousOverflow;
+        origin?.focus({ preventScroll: true });
+        closing = false;
+      }
+
+      dialog.querySelector(".figure-close")!.addEventListener("click", closeFigure);
+      dialog.addEventListener("click", (event) => {
+        if (event.target === dialog) closeFigure();
+      });
+      dialog.addEventListener("cancel", (event) => {
+        event.preventDefault();
+        closeFigure();
+      });
+    });
+  </script>
+
+  <style>
+    .media-gallery {
+      margin: 40px 0;
+    }
+    .figure-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+    figure {
+      margin: 0;
+      flex: 1 1 auto;
+    }
+    .figure-trigger {
+      position: relative;
+      width: 100%;
+      max-width: var(--eff-w);
+      aspect-ratio: calc(var(--eff-w) / var(--eff-h));
+      container-type: size;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #192019;
+      border: 1px solid #ffffff20;
+      cursor: zoom-in;
+    }
+    .figure-frame {
+      width: var(--frame-w-css);
+      height: var(--frame-h-css);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(var(--scl)) rotate(var(--rot));
+    }
+    .figure-frame img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: var(--fit);
+      object-position: var(--pos);
+      clip-path: inset(var(--crop-t) var(--crop-r) var(--crop-b) var(--crop-l));
+    }
+    .enlarge-mark {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+      color: #ede8e1;
+      background: #101412df;
+      font-size: 20px;
+      padding: 2px 8px;
+    }
+    button:focus-visible {
+      outline: 2px solid #e85c1a;
+      outline-offset: 4px;
+    }
+    .figure-dialog {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      max-width: none;
+      max-height: none;
+      margin: 0;
+      padding: 24px;
+      border: 0;
+      background: transparent;
+      color: #ede8e1;
+      overflow: auto;
+      overscroll-behavior: contain;
+      z-index: 1000;
+    }
+    .figure-dialog[open] {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .figure-dialog::backdrop {
+      background: #070b09e8;
+      animation: backdrop-in 0.3s ease;
+    }
+    .figure-dialog.is-closing::backdrop {
+      animation: backdrop-out 0.24s ease forwards;
+    }
+    .figure-popup {
+      position: relative;
+      max-width: 1000px;
+      width: fit-content;
+      max-height: calc(100dvh - 48px);
+      background: #151c17;
+      border: 1px solid #ffffff30;
+      padding: 16px;
+      box-shadow: 0 20px 80px #0008;
+      transform-origin: center;
+      overflow: auto;
+    }
+    .figure-expanded-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      margin: auto;
+    }
+    .figure-expanded-container svg {
+      display: block;
+    }
+    .popup-caption {
+      max-width: 800px;
+      padding: 14px 4px 2px;
+    }
+    .popup-caption h2 {
+      font-size: 19px;
+      margin: 0 0 6px;
+    }
+    .popup-caption p {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #b0b6ad;
+      margin: 0;
+    }
+    .figure-close {
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      width: 44px;
+      height: 44px;
+      border: 1px solid #ffffff55;
+      border-radius: 50%;
+      background: #101412ee;
+      color: #fff;
+      font-size: 28px;
+      cursor: pointer;
+      z-index: 1;
+    }
+    @keyframes backdrop-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    @keyframes backdrop-out {
+      to {
+        opacity: 0;
+      }
+    }
+    @media (max-width: 700px) {
+      .figure-grid {
+        display: flex;
+        flex-direction: column;
+      }
+      .figure-trigger {
+        width: 100%;
+        max-width: 100%;
+      }
+      .figure-dialog {
+        padding: 12px;
+      }
+      .figure-popup {
+        padding: 12px;
+        max-height: calc(100dvh - 24px);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .figure-dialog::backdrop,
+      .figure-dialog.is-closing::backdrop {
+        animation: none;
+      }
+    }
+  </style>
+)}

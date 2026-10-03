@@ -8,6 +8,7 @@ dateDisplay: "2023"
 organization: "COMSATS University"
 priority: 3
 verificationStatus: "official-document"
+media: ["01-honors-awards/display/2nd-position-truss-bridge-competition.webp"]
 summary: "Secured 2nd position in the structural Truss Bridge design and load-testing competition."
 ---
 

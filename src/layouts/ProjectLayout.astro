@@ -2,6 +2,7 @@
 import Layout from './Layout.astro';
 import type { CollectionEntry } from 'astro:content';
 import DocumentLink from '../components/project/DocumentLink.astro';
+import MediaGallery from '../components/project/MediaGallery.astro';
 
 interface Props {
   entry: any; // We'll pass the whole entry
@@ -12,8 +13,10 @@ const { data } = entry;
 ---
 
 <Layout title={`${data.title} | Faizan Manshad`} description={data.deck || data.summary}>
-  <article class="container project-article">
-    <header class="project-header">
+  <article class={`container project-article ${data.media && data.media.length > 0 ? 'has-media' : ''}`}>
+    <div class="project-layout-grid">
+      <div class="project-text-column">
+        <header class="project-header">
       <div class="header-meta mono text-muted">
         {data.dateDisplay && <span>{data.dateDisplay}</span>}
         {data.type && <span> / {data.type}</span>}
@@ -46,14 +49,6 @@ const { data } = entry;
             <span class="detail-value">{data.tools.join(', ')}</span>
           </div>
         )}
-        {data.verificationStatus && (
-          <div class="detail-group">
-            <span class="detail-label text-muted mono">STATUS</span>
-            <span class="detail-value verification-status" data-status={data.verificationStatus}>
-              {data.verificationStatus.replace(/-/g, ' ')}
-            </span>
-          </div>
-        )}
       </div>
       
       {data.links && data.links.length > 0 && (
@@ -65,10 +60,17 @@ const { data } = entry;
       )}
     </header>
 
-    <div class="project-content">
-      <slot />
-    </div>
+        <div class="project-content">
+          <slot />
+        </div>
+      </div>
 
+      <div class="project-media-column">
+        {data.media && data.media.length > 0 && (
+          <MediaGallery media={data.media} title={data.title} />
+        )}
+      </div>
+    </div>
   </article>
 </Layout>
 
@@ -123,17 +125,6 @@ const { data } = entry;
     font-weight: 500;
   }
 
-  .verification-status {
-    text-transform: capitalize;
-  }
-  .verification-status[data-status="user-reported"] {
-    color: var(--c-text-muted);
-  }
-  .verification-status[data-status="primary-curated-source"],
-  .verification-status[data-status="official-document"] {
-    color: var(--c-text-main);
-  }
-
   .project-links {
     margin-top: var(--s-8);
     display: flex;
@@ -158,5 +149,27 @@ const { data } = entry;
 
   .back-link {
     font-weight: 500;
+  }
+
+  .project-layout-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-16);
+  }
+
+  @media (min-width: 1024px) {
+    .project-article.has-media .project-layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-16);
+      align-items: start;
+    }
+    .project-article.has-media .project-media-column {
+      position: sticky;
+      top: calc(var(--nav-h) + var(--s-8));
+    }
+    .project-article.has-media .project-content {
+      max-width: none;
+    }
   }
 </style>
