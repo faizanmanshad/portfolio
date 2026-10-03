@@ -87,6 +87,11 @@ const journey = defineCollection({
   schema: commonSchema,
 });
 
+const education = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/education" }),
+  schema: commonSchema,
+});
+
 export const collections = {
   projects,
   experience,
@@ -94,4 +99,5 @@ export const collections = {
   recognition,
   development,
   journey,
+  education,
 };

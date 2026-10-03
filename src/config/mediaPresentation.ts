@@ -39,6 +39,13 @@ export const defaultPresentation: MediaPresentation = {
  * You only need to provide the fields you want to override from the defaults.
  */
 export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>> = {
+  // Education documents: edit each entry independently. Rotation is clockwise.
+  "07-transcript-degree/display/degree-front.webp": { rotation: 90 },
+  "07-transcript-degree/display/transcript-front.webp": { rotation: 0 },
+  "07-transcript-degree/display/hssc-certificate.webp": { rotation: 0 },
+  "07-transcript-degree/display/hssc-marksheet.webp": { rotation: 0 },
+  "07-transcript-degree/display/ssc-certificate.webp": { rotation: 0 },
+  "07-transcript-degree/display/ssc-marksheet.webp": { rotation: 0 },
   "01-honors-awards/display/2nd-position-truss-bridge-competition.webp": {
     frameWidth: 320,
     frameHeight: 420,

@@ -1,0 +1,192 @@
+---
+import type { CollectionEntry } from "astro:content";
+import Layout from "./Layout.astro";
+import MediaGallery from "../components/project/MediaGallery.astro";
+interface Props {
+  entry: CollectionEntry<"education">;
+}
+const { entry } = Astro.props;
+const details = {
+  "bs-civil-engineering": {
+    title: "BS Civil Engineering",
+    level: "UNDERGRADUATE",
+    place: "Wah Campus",
+    highlight: "CGPA 3.95 / 4.00 (Gold Medalist)",
+    description:
+      "A foundation in civil engineering, with an interest in structures and the built environment.",
+  },
+  hssc: {
+    title: "HSSC (Pre-Engineering)",
+    level: "HIGHER SECONDARY, Wah Cantt",
+    place: "FBISE, Islamabad",
+    highlight: "904 / 1100 (Grade A1)",
+    description:
+      "Pre-engineering studies focused on mathematics, physics and chemistry.",
+  },
+  ssc: {
+    title: "SSC (Computer Science)",
+    level: "SECONDARY EDUCATION",
+    place: "FBISE, Islamabad",
+    highlight: "924 / 1100 (Grade A1)",
+    description:
+      "Secondary education with Computer Science, alongside mathematics, physics and chemistry.",
+  },
+}[entry.id]!;
+const labels = (entry.data.media || []).map((path) =>
+  path.includes("marksheet")
+    ? "Mark sheet"
+    : path.split("/").pop()!.includes("transcript")
+      ? "Transcript"
+      : "Certificate",
+);
+---
+
+<Layout
+  title={`${details.title} | Faizan Manshad`}
+  description={details.description}
+>
+  <main class="education-page container">
+    <a class="archive" href="/academic/#education">
+      Education / Academic archive ↗
+    </a>
+    <div class="education-grid">
+      <section>
+        <p class="eyebrow">
+          {details.level} <span> / {entry.data.dateDisplay}</span>
+        </p>
+        <h1>{details.title}</h1>
+        <p class="institution">{entry.data.organization}</p>
+        <p class="location">{details.place}</p>
+        <p class="highlight">{details.highlight}</p>
+        <p class="intro">{details.description}</p>
+        <div class="education-details">
+          <slot />
+        </div>
+      </section>
+      <aside class="documents" aria-label="Academic documents">
+        <div class="document-heading">
+          <span>DOCUMENT ARCHIVE</span>
+          <span>Click to enlarge ↗</span>
+        </div>
+        <MediaGallery media={entry.data.media || []} labels={labels} carousel />
+      </aside>
+    </div>
+  </main>
+</Layout>
+<style>
+  .education-page {
+    max-width: 1320px;
+    padding-top: calc(var(--nav-h) + 55px);
+    padding-bottom: 60px;
+  }
+  .archive,
+  .eyebrow,
+  .document-heading {
+    font: 11px/1.6 var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+  .archive {
+    color: #aaa;
+    margin-bottom: 44px;
+    display: inline-block;
+  }
+  .education-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 6vw, 90px);
+    align-items: start;
+  }
+  .eyebrow {
+    color: #ed8851;
+  }
+  .eyebrow span {
+    color: #999;
+  }
+  h1 {
+    font-size: clamp(36px, 4.3vw, 60px);
+    font-weight: 500;
+    line-height: 1.08;
+    letter-spacing: -0.045em;
+    margin: 18px 0 26px;
+  }
+  .institution {
+    font-size: 20px;
+    line-height: 1.4;
+  }
+  .location {
+    color: #a8ada5;
+    margin-top: 7px;
+    font-size: 14px;
+  }
+  .highlight {
+    display: inline-block;
+    color: #ed985f;
+    border: 1px solid #b85d344f;
+    padding: 10px 15px;
+    margin: 28px 0 22px;
+    font-size: 14px;
+  }
+  .intro {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #b8bdb5;
+    max-width: 520px;
+  }
+  .education-details {
+    margin-top: 30px;
+    padding-top: 24px;
+    border-top: 1px solid #ffffff20;
+  }
+  .education-details :global(h2) {
+    font-size: 19px;
+    font-weight: 500;
+    margin: 0 0 16px;
+  }
+  .education-details :global(ul) {
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+  .education-details :global(li),
+  .education-details :global(p) {
+    font-size: 14px;
+    line-height: 1.8;
+    color: #b8bdb5;
+  }
+  .education-details :global(strong) {
+    color: #ede8e1;
+    font-weight: 500;
+  }
+  .documents {
+    min-width: 0;
+    padding: 22px;
+    background: #171e18;
+    border: 1px solid #ffffff20;
+    border-radius: 4px;
+  }
+  .document-heading {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: #aeb5aa;
+    font-size: 10px;
+  }
+  @media (max-width: 760px) {
+    .education-grid {
+      grid-template-columns: 1fr;
+    }
+    .education-page {
+      padding-top: calc(var(--nav-h) + 30px);
+    }
+    .archive {
+      margin-bottom: 30px;
+    }
+    .documents {
+      padding: 16px;
+    }
+    h1 {
+      font-size: 40px;
+    }
+  }
+</style>

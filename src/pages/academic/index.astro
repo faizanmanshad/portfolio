@@ -10,6 +10,7 @@ const projects = sort(await getCollection("projects"));
 const recognition = sort(await getCollection("recognition"));
 const journey = sort(await getCollection("journey"));
 const research = sort(await getCollection("research"));
+const education = sort(await getCollection("education"));
 const sections = [
   "Profile",
   "Education",
@@ -122,12 +123,21 @@ import { SITE_METADATA } from "../../consts";
             <span>01 /</span> Education
           </h2>
         </div>
-        <div class="education-record" data-academic-reveal>
-          <div>
-            <h3>BS Civil Engineering</h3>
-            <p class="muted">COMSATS University Islamabad</p>
-          </div>
-          <span class="eyebrow">ENGINEERING / BUILT ENVIRONMENT</span>
+        <div class="record-list">
+          {education.map((item) => (
+            <a
+              class="dossier-record"
+              data-academic-reveal
+              href={`/education/${item.id}/`}
+            >
+              <span class="record-date">{item.data.dateDisplay}</span>
+              <div>
+                <h3>{item.data.shortTitle || item.data.title}</h3>
+                <p class="muted">{item.data.organization}</p>
+              </div>
+              <span class="record-arrow" aria-hidden="true">↗</span>
+            </a>
+          ))}
         </div>
         <div class="interests" data-academic-reveal>
           <p class="eyebrow">AREAS OF INTEREST</p>

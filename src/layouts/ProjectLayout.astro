@@ -10,10 +10,13 @@ interface Props {
 
 const { entry } = Astro.props;
 const { data } = entry;
+const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education';
+const hasMediaContent = data.media && data.media.length > 0;
+const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
 ---
 
 <Layout title={`${data.title} | Faizan Manshad`} description={data.deck || data.summary}>
-  <article class={`container project-article ${data.media && data.media.length > 0 ? 'has-media' : ''}`}>
+  <article class={`container project-article ${shouldShowSideBySide ? 'has-media' : ''}`}>
     <div class="project-layout-grid">
       <div class="project-text-column">
         <header class="project-header">
@@ -66,9 +69,13 @@ const { data } = entry;
       </div>
 
       <div class="project-media-column">
-        {data.media && data.media.length > 0 && (
+        {hasMediaContent ? (
           <MediaGallery media={data.media} title={data.title} />
-        )}
+        ) : isSideBySideEnabled ? (
+          <div class="empty-media-placeholder">
+            <span>Image will be added soon</span>
+          </div>
+        ) : null}
       </div>
     </div>
   </article>
@@ -76,7 +83,7 @@ const { data } = entry;
 
 <style>
   .project-article {
-    padding-top: calc(var(--nav-h) + var(--s-12));
+    padding-top: calc(var(--nav-h) + var(--s-6));
     padding-bottom: var(--s-16);
   }
 
@@ -171,5 +178,19 @@ const { data } = entry;
     .project-article.has-media .project-content {
       max-width: none;
     }
+  }
+
+  .empty-media-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background: #192019;
+    border: 1px dashed #ffffff20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--c-text-muted);
+    font-family: var(--f-mono);
+    font-size: 0.875rem;
+    margin-top: var(--s-4);
   }
 </style>

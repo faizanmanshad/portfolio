@@ -5,13 +5,16 @@ import { getMediaPresentation } from "../../config/mediaPresentation";
 export interface Props {
   media: string[];
   title?: string;
+  labels?: string[];
+  carousel?: boolean;
 }
 
-const { media, title } = Astro.props;
+const { media, title, labels = [], carousel = false } = Astro.props;
 ---
 
 {media.length > 0 && (
-  <section class="media-gallery" aria-labelledby="media-gallery-title">
+  <div class="media-gallery-wrapper">
+    <section class:list={["media-gallery", { "document-carousel": carousel }]} aria-label="Documents" aria-roledescription={carousel ? "carousel" : undefined}>
     <div class="figure-grid">
       {media.map((item, index) => {
         const src = `${MEDIA_BASE_URL}/${item}`;
@@ -21,11 +24,11 @@ const { media, title } = Astro.props;
         const effHeight = isRotated ? config.frameWidth : config.frameHeight;
         
         return (
-          <figure>
+          <figure hidden={carousel && index !== 0}>
             <button
               type="button"
               class="figure-trigger"
-              data-figure-title={title || `Document ${index + 1}`}
+              data-figure-title={labels[index] || title || `Document ${index + 1}`}
               data-figure-caption="Official Document"
               data-rotation={config.rotation}
               aria-label="Enlarge document"
@@ -48,8 +51,8 @@ const { media, title } = Astro.props;
               <div class="figure-frame">
                 <img
                   src={src}
-                  alt="Official Document"
-                  loading="lazy"
+                  alt={labels[index] || "Official Document"}
+                  loading={carousel ? "eager" : "lazy"}
                 />
               </div>
               <span class="enlarge-mark" aria-hidden="true">
@@ -60,6 +63,12 @@ const { media, title } = Astro.props;
         );
       })}
     </div>
+    {carousel && <div class="carousel-controls">
+      <button type="button" data-prev aria-label="Previous document">&#8592;</button>
+      <span data-slide-label>{labels[0] || 'Document'} · 1 / {media.length}</span>
+      <button type="button" data-next aria-label="Next document">&#8594;</button>
+      <button type="button" data-pause aria-label="Pause automatic rotation">Pause</button>
+    </div>}
   </section>
 
   <dialog
@@ -80,11 +89,19 @@ const { media, title } = Astro.props;
         <!-- SVG will be injected here to handle perfect bounding boxes for rotated images -->
       </div>
       <div class="popup-caption">
-        <h2 id="figure-dialog-title"></h2>
+        <div class="popup-caption-header">
+          <h2 id="figure-dialog-title"></h2>
+          <div class="figure-nav" style="display: none;">
+            <button type="button" data-modal-prev aria-label="Previous image">&#8592;</button>
+            <span data-modal-count></span>
+            <button type="button" data-modal-next aria-label="Next image">&#8594;</button>
+          </div>
+        </div>
         <p id="figure-dialog-caption"></p>
       </div>
     </div>
   </dialog>
+  </div>
 
   <script>
     const dialogs = document.querySelectorAll<HTMLDialogElement>(".figure-dialog");
@@ -94,9 +111,11 @@ const { media, title } = Astro.props;
       dialog.dataset.initialized = "true";
 
       const panel = dialog.querySelector<HTMLElement>(".figure-popup")!;
-      const enlarged = dialog.querySelector<HTMLImageElement>(".figure-expanded")!;
+      const wrapper = dialog.closest('.media-gallery-wrapper')!;
+      const triggers = Array.from(wrapper.querySelectorAll<HTMLButtonElement>('.figure-trigger'));
       const reduced = matchMedia("(prefers-reduced-motion: reduce)");
       let origin: HTMLButtonElement | null = null;
+      let currentIndex = 0;
       let closing = false;
       let previousOverflow = "";
       let animation: Animation | null = null;
@@ -108,57 +127,80 @@ const { media, title } = Astro.props;
         return `translate(${card.left + card.width / 2 - target.left - target.width / 2}px, ${card.top + card.height / 2 - target.top - target.height / 2}px) scale(${card.width / target.width}, ${card.height / target.height})`;
       }
 
-      document
-        .querySelectorAll<HTMLButtonElement>(".figure-trigger")
-        .forEach((button) => {
-          if (button.dataset.initialized) return;
-          button.dataset.initialized = "true";
+      function openModalForIndex(index: number, isInitialOpen = false) {
+        currentIndex = index;
+        const button = triggers[currentIndex];
+        origin = button;
+        
+        const image = button.querySelector("img")!;
+        const rotation = parseInt(button.dataset.rotation || "0", 10);
+        const isRotated = rotation % 180 !== 0;
+        const nw = image.naturalWidth || image.width || 800;
+        const nh = image.naturalHeight || image.height || 600;
+        const effWidth = isRotated ? nh : nw;
+        const effHeight = isRotated ? nw : nh;
 
-          button.addEventListener("click", () => {
-            if (dialog.open) return;
-            origin = button;
-            const image = button.querySelector("img")!;
-            
-            const rotation = parseInt(button.dataset.rotation || "0", 10);
-            const isRotated = rotation % 180 !== 0;
-            const nw = image.naturalWidth || image.width || 800;
-            const nh = image.naturalHeight || image.height || 600;
-            const effWidth = isRotated ? nh : nw;
-            const effHeight = isRotated ? nw : nh;
+        if (button.closest('.document-carousel')) {
+          panel.style.width = `min(${effWidth + 34}px, calc(100vw - 48px), calc((100dvh - 215px) * ${effWidth / effHeight} + 34px))`;
+        }
+        let transform = "";
+        if (rotation === 90) transform = `translate(${effWidth}, 0) rotate(90)`;
+        else if (rotation === -90 || rotation === 270) transform = `translate(0, ${effHeight}) rotate(-90)`;
+        else if (rotation === 180) transform = `translate(${effWidth}, ${effHeight}) rotate(180)`;
+        else if (rotation !== 0) transform = `rotate(${rotation})`;
 
-            let transform = "";
-            if (rotation === 90) transform = `translate(${effWidth}, 0) rotate(90)`;
-            else if (rotation === -90 || rotation === 270) transform = `translate(0, ${effHeight}) rotate(-90)`;
-            else if (rotation === 180) transform = `translate(${effWidth}, ${effHeight}) rotate(180)`;
-            else if (rotation !== 0) transform = `rotate(${rotation})`;
+        const container = dialog.querySelector(".figure-expanded-container")!;
+        container.innerHTML = `
+          <svg viewBox="0 0 ${effWidth} ${effHeight}" style="width: ${effWidth}px; max-width: 100%; height: auto; max-height: calc(100dvh - 215px);">
+            <image href="${image.currentSrc || image.src}" width="${nw}" height="${nh}" transform="${transform}" />
+          </svg>
+        `;
 
-            const container = dialog.querySelector(".figure-expanded-container")!;
-            container.innerHTML = `
-              <svg viewBox="0 0 ${effWidth} ${effHeight}" style="width: ${effWidth}px; max-width: 100%; height: auto; max-height: calc(100dvh - 215px);">
-                <image href="${image.currentSrc || image.src}" width="${nw}" height="${nh}" transform="${transform}" />
-              </svg>
-            `;
+        dialog.querySelector("#figure-dialog-title")!.textContent = button.dataset.figureTitle || "";
+        dialog.querySelector("#figure-dialog-caption")!.textContent = button.dataset.figureCaption || "";
+          
+        const nav = dialog.querySelector<HTMLElement>('.figure-nav')!;
+        if (triggers.length > 1) {
+          nav.style.display = 'flex';
+          dialog.querySelector('[data-modal-count]')!.textContent = `${currentIndex + 1} / ${triggers.length}`;
+        } else {
+          nav.style.display = 'none';
+        }
 
-            dialog.querySelector("#figure-dialog-title")!.textContent =
-              button.dataset.figureTitle || "";
-            dialog.querySelector("#figure-dialog-caption")!.textContent =
-              button.dataset.figureCaption || "";
-            previousOverflow = document.body.style.overflow;
-            document.body.style.overflow = "hidden";
-            dialog.classList.remove("is-closing");
-            dialog.showModal();
-            animation = panel.animate(
-              [
-                { transform: cardTransform(), opacity: 0 },
-                { transform: "none", opacity: 1 },
-              ],
-              {
-                duration: reduced.matches ? 0 : 300,
-                easing: "cubic-bezier(.2,.75,.25,1)",
-              },
-            );
-          });
+        if (isInitialOpen) {
+          previousOverflow = document.body.style.overflow;
+          document.body.style.overflow = "hidden";
+          dialog.classList.remove("is-closing");
+          dialog.showModal();
+          animation = panel.animate(
+            [
+              { transform: cardTransform(), opacity: 0 },
+              { transform: "none", opacity: 1 },
+            ],
+            {
+              duration: reduced.matches ? 0 : 300,
+              easing: "cubic-bezier(.2,.75,.25,1)",
+            },
+          );
+        }
+      }
+
+      triggers.forEach((button, i) => {
+        if (button.dataset.clickInitialized) return;
+        button.dataset.clickInitialized = "true";
+        button.addEventListener("click", () => {
+          if (dialog.open) return;
+          openModalForIndex(i, true);
         });
+      });
+
+      dialog.querySelector('[data-modal-prev]')?.addEventListener('click', () => {
+        openModalForIndex((currentIndex - 1 + triggers.length) % triggers.length);
+      });
+      
+      dialog.querySelector('[data-modal-next]')?.addEventListener('click', () => {
+        openModalForIndex((currentIndex + 1) % triggers.length);
+      });
 
       async function closeFigure() {
         if (!dialog.open || closing) return;
@@ -197,7 +239,60 @@ const { media, title } = Astro.props;
     });
   </script>
 
+  <script>
+    document.querySelectorAll<HTMLElement>('.document-carousel').forEach(gallery => {
+      const slides = Array.from(gallery.querySelectorAll<HTMLElement>('figure'));
+      let index = 0;
+      let paused = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let startX = 0;
+      const pause = gallery.querySelector<HTMLButtonElement>('[data-pause]')!;
+      const updatePause = () => {
+        pause.textContent = paused ? 'Play' : 'Pause';
+        pause.setAttribute('aria-label', `${paused ? 'Start' : 'Pause'} automatic rotation`);
+      };
+      updatePause();
+      const show = (next: number) => {
+        slides[index].hidden = true;
+        index = (next + slides.length) % slides.length;
+        slides[index].hidden = false;
+        gallery.querySelector('[data-slide-label]')!.textContent = `${slides[index].querySelector<HTMLElement>('.figure-trigger')!.dataset.figureTitle} · ${index + 1} / ${slides.length}`;
+      };
+      gallery.querySelector('[data-prev]')!.addEventListener('click', () => show(index - 1));
+      gallery.querySelector('[data-next]')!.addEventListener('click', () => show(index + 1));
+      pause.addEventListener('click', () => { paused = !paused; updatePause(); });
+      gallery.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
+      gallery.addEventListener('touchend', e => {
+        const delta = e.changedTouches[0].clientX - startX;
+        if (Math.abs(delta) > 50) { paused = true; updatePause(); show(index + (delta < 0 ? 1 : -1)); }
+      }, { passive: true });
+      gallery.querySelectorAll<HTMLImageElement>('img').forEach(img => {
+        const fit = () => {
+          if (!img.naturalWidth) return;
+          const trigger = img.closest<HTMLElement>('.figure-trigger')!;
+          const rotated = Number(trigger.dataset.rotation) % 180 !== 0;
+          trigger.style.setProperty('--eff-w', `${rotated ? img.naturalHeight : img.naturalWidth}px`);
+          trigger.style.setProperty('--eff-h', `${rotated ? img.naturalWidth : img.naturalHeight}px`);
+        };
+        img.addEventListener('load', fit); if (img.complete) fit();
+      });
+      const timer = window.setInterval(() => {
+        if (!gallery.isConnected) { clearInterval(timer); return; }
+        if (!paused && !document.hidden && !document.querySelector('dialog[open]') && !gallery.matches(':hover, :focus-within')) show(index + 1);
+      }, 6000);
+    });
+  </script>
   <style>
+    .document-carousel{margin:20px 0 0}
+    .document-carousel .figure-grid{display:grid;min-height:460px;align-items:center}
+    .document-carousel figure[hidden]{display:none}
+    .document-carousel figure{animation:document-in .35s ease}
+    .document-carousel .figure-trigger{margin:auto;width:min(100%,calc(460px * var(--eff-w) / var(--eff-h)));max-width:100%;touch-action:pan-y}
+    .carousel-controls{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:18px;font:11px var(--font-mono);color:#bbc2b5}
+    .carousel-controls button{min-width:40px;min-height:44px;background:transparent;border:1px solid #ffffff25;color:#ede8e1;cursor:pointer;padding:6px}
+    .carousel-controls [data-pause]{font-size:10px;margin-left:auto}
+    @keyframes document-in{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+    @media(prefers-reduced-motion:reduce){.document-carousel figure{animation:none}}
+
     .media-gallery {
       margin: 40px 0;
     }
@@ -302,6 +397,26 @@ const { media, title } = Astro.props;
     }
     .figure-expanded-container svg {
       display: block;
+    }
+    .popup-caption-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+    }
+    .figure-nav {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font: 11px var(--font-mono);
+      color: #bbc2b5;
+    }
+    .figure-nav button {
+      background: transparent;
+      border: 1px solid #ffffff25;
+      color: #ede8e1;
+      cursor: pointer;
+      padding: 4px 10px;
     }
     .popup-caption {
       max-width: 800px;
