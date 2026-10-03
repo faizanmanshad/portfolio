@@ -2,4 +2,4 @@
   X-Frame-Options: DENY
   Access-Control-Allow-Origin: https://faizanmanshad.com
   Content-Security-Policy: frame-ancestors 'none';
-  Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com; img-src 'self' data: https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:;
+Content-Security-Policy-Report-Only: default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://contact-api.faizanmanshad.com; img-src 'self' data: https://www.google-analytics.com https://media.faizanmanshad.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:;
