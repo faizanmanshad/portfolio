@@ -47,7 +47,7 @@ Consequences: Content will be managed via Astro Content Collections. Client-side
 
 ## 2026-09-22 — Content Sourcing
 Context: Missing `Faizan_Master_Academic_and_Professional_Portfolio-Comprehensive.md` and `Academic Porfolio.md` files.
-Decision: Use the facts provided in section 11 of the master specification (`FAIZAN_MANSHAD_PORTFOLIO_ANTIGRAVITY_MASTER.md`) as the seed data for Phase 1.
+Decision: Use the facts provided in section 11 of the master specification (`tmp/FAIZAN_MANSHAD_PORTFOLIO_ANTIGRAVITY_MASTER.md`) as the seed data for Phase 1.
 Why: Allows unblocking development and getting the basic structure and routing in place.
 Alternatives considered: Block development and wait for user to provide files.
 Consequences: Initial content may be incomplete and will need to be updated once the full source files are provided.
