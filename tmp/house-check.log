@@ -1,0 +1,331 @@
+
+> magenta-mass@0.0.1 check
+> astro check
+
+19:12:21 [content] Syncing content
+19:12:22 [WARN] [glob-loader] The base directory "E:\Faizan Manshad Portfolio\src\content\development\" does not exist.
+19:12:22 [content] Synced content
+19:12:22 [types] Generated 613ms
+19:12:22 [check] Getting diagnostics for Astro files in E:\Faizan Manshad Portfolio...
+[96msrc/content.config.ts[0m:[93m71[0m:[93m17[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m71[0m     supervisor: z.string().optional(),
+[7m  [0m [93m                ~[0m
+[96msrc/content.config.ts[0m:[93m70[0m:[93m12[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m70[0m     award: z.string().optional(),
+[7m  [0m [93m           ~[0m
+[96msrc/content.config.ts[0m:[93m69[0m:[93m18[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m69[0m     publication: z.string().optional(),
+[7m  [0m [93m                 ~[0m
+[96msrc/content.config.ts[0m:[93m57[0m:[93m19[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m57[0m     team: z.array(z.string()).default([]),
+[7m  [0m [93m                  ~[0m
+[96msrc/content.config.ts[0m:[93m57[0m:[93m11[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m57[0m     team: z.array(z.string()).default([]),
+[7m  [0m [93m          ~[0m
+[96msrc/content.config.ts[0m:[93m56[0m:[93m14[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m56[0m     results: z.string().optional(),
+[7m  [0m [93m             ~[0m
+[96msrc/content.config.ts[0m:[93m55[0m:[93m29[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m55[0m     codesStandards: z.array(z.string()).default([]),
+[7m  [0m [93m                            ~[0m
+[96msrc/content.config.ts[0m:[93m55[0m:[93m21[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m55[0m     codesStandards: z.array(z.string()).default([]),
+[7m  [0m [93m                    ~[0m
+[96msrc/content.config.ts[0m:[93m54[0m:[93m23[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m54[0m     technicalDetails: z.string().optional(),
+[7m  [0m [93m                      ~[0m
+[96msrc/content.config.ts[0m:[93m53[0m:[93m27[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m53[0m     deliverables: z.array(z.string()).default([]),
+[7m  [0m [93m                          ~[0m
+[96msrc/content.config.ts[0m:[93m53[0m:[93m19[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m53[0m     deliverables: z.array(z.string()).default([]),
+[7m  [0m [93m                  ~[0m
+[96msrc/content.config.ts[0m:[93m52[0m:[93m15[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m52[0m     workflow: z.string().optional(),
+[7m  [0m [93m              ~[0m
+[96msrc/content.config.ts[0m:[93m51[0m:[93m18[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m51[0m     methodology: z.string().optional(),
+[7m  [0m [93m                 ~[0m
+[96msrc/content.config.ts[0m:[93m50[0m:[93m31[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m50[0m     responsibilities: z.array(z.string()).default([]),
+[7m  [0m [93m                              ~[0m
+[96msrc/content.config.ts[0m:[93m50[0m:[93m23[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m50[0m     responsibilities: z.array(z.string()).default([]),
+[7m  [0m [93m                      ~[0m
+[96msrc/content.config.ts[0m:[93m49[0m:[93m14[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m49[0m     context: z.string().optional(),
+[7m  [0m [93m             ~[0m
+[96msrc/content.config.ts[0m:[93m48[0m:[93m16[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m48[0m     challenge: z.string().optional(),
+[7m  [0m [93m               ~[0m
+[96msrc/content.config.ts[0m:[93m42[0m:[93m17[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m42[0m   privacyLevel: z.string().default('public'),
+[7m  [0m [93m                ~[0m
+[96msrc/content.config.ts[0m:[93m41[0m:[93m21[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m41[0m   evidence: z.array(z.string()).default([]),
+[7m  [0m [93m                    ~[0m
+[96msrc/content.config.ts[0m:[93m41[0m:[93m13[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m41[0m   evidence: z.array(z.string()).default([]),
+[7m  [0m [93m            ~[0m
+[96msrc/content.config.ts[0m:[93m40[0m:[93m23[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m40[0m   relatedIds: z.array(z.string()).default([]),
+[7m  [0m [93m                      ~[0m
+[96msrc/content.config.ts[0m:[93m40[0m:[93m15[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m40[0m   relatedIds: z.array(z.string()).default([]),
+[7m  [0m [93m              ~[0m
+[96msrc/content.config.ts[0m:[93m37[0m:[93m12[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m37[0m       url: z.string(),
+[7m  [0m [93m           ~[0m
+[96msrc/content.config.ts[0m:[93m36[0m:[93m14[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m36[0m       label: z.string(),
+[7m  [0m [93m             ~[0m
+[96msrc/content.config.ts[0m:[93m35[0m:[93m5[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m35[0m     z.object({
+[7m  [0m [93m    ~[0m
+[96msrc/content.config.ts[0m:[93m34[0m:[93m10[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m34[0m   links: z.array(
+[7m  [0m [93m         ~[0m
+[96msrc/content.config.ts[0m:[93m33[0m:[93m21[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m33[0m   outcomes: z.array(z.string()).default([]),
+[7m  [0m [93m                    ~[0m
+[96msrc/content.config.ts[0m:[93m33[0m:[93m13[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m33[0m   outcomes: z.array(z.string()).default([]),
+[7m  [0m [93m            ~[0m
+[96msrc/content.config.ts[0m:[93m32[0m:[93m20[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m32[0m   methods: z.array(z.string()).default([]),
+[7m  [0m [93m                   ~[0m
+[96msrc/content.config.ts[0m:[93m32[0m:[93m12[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m32[0m   methods: z.array(z.string()).default([]),
+[7m  [0m [93m           ~[0m
+[96msrc/content.config.ts[0m:[93m31[0m:[93m18[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m31[0m   tools: z.array(z.string()).default([]),
+[7m  [0m [93m                 ~[0m
+[96msrc/content.config.ts[0m:[93m31[0m:[93m10[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m31[0m   tools: z.array(z.string()).default([]),
+[7m  [0m [93m         ~[0m
+[96msrc/content.config.ts[0m:[93m30[0m:[93m18[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m30[0m   media: z.array(z.string()).default([]),
+[7m  [0m [93m                 ~[0m
+[96msrc/content.config.ts[0m:[93m30[0m:[93m10[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m30[0m   media: z.array(z.string()).default([]),
+[7m  [0m [93m         ~[0m
+[96msrc/content.config.ts[0m:[93m29[0m:[93m14[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m29[0m   thumbnail: z.string().optional(),
+[7m  [0m [93m             ~[0m
+[96msrc/content.config.ts[0m:[93m28[0m:[93m14[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m28[0m   heroMedia: z.string().optional(),
+[7m  [0m [93m             ~[0m
+[96msrc/content.config.ts[0m:[93m27[0m:[93m12[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m27[0m   summary: z.string().optional(),
+[7m  [0m [93m           ~[0m
+[96msrc/content.config.ts[0m:[93m20[0m:[93m23[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m20[0m   verificationStatus: z.enum([
+[7m  [0m [93m                      ~[0m
+[96msrc/content.config.ts[0m:[93m19[0m:[93m13[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m19[0m   priority: z.number().default(0),
+[7m  [0m [93m            ~[0m
+[96msrc/content.config.ts[0m:[93m18[0m:[93m13[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m18[0m   featured: z.boolean().default(false),
+[7m  [0m [93m            ~[0m
+[96msrc/content.config.ts[0m:[93m17[0m:[93m9[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m17[0m   role: z.string().optional(),
+[7m  [0m [93m        ~[0m
+[96msrc/content.config.ts[0m:[93m16[0m:[93m13[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m16[0m   location: z.string().optional(),
+[7m  [0m [93m            ~[0m
+[96msrc/content.config.ts[0m:[93m15[0m:[93m17[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m15[0m   organization: z.string().optional(),
+[7m  [0m [93m                ~[0m
+[96msrc/content.config.ts[0m:[93m14[0m:[93m12[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m14[0m   ongoing: z.boolean().default(false),
+[7m  [0m [93m           ~[0m
+[96msrc/content.config.ts[0m:[93m13[0m:[93m16[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m13[0m   dateDisplay: z.string().optional(),
+[7m  [0m [93m               ~[0m
+[96msrc/content.config.ts[0m:[93m12[0m:[93m12[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m12[0m   dateEnd: z.coerce.date().optional(),
+[7m  [0m [93m           ~[0m
+[96msrc/content.config.ts[0m:[93m11[0m:[93m14[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m11[0m   dateStart: z.coerce.date().optional(),
+[7m  [0m [93m             ~[0m
+[96msrc/content.config.ts[0m:[93m10[0m:[93m17[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m10[0m   tags: z.array(z.string()).default([]),
+[7m  [0m [93m                ~[0m
+[96msrc/content.config.ts[0m:[93m10[0m:[93m9[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m10[0m   tags: z.array(z.string()).default([]),
+[7m  [0m [93m        ~[0m
+[96msrc/content.config.ts[0m:[93m9[0m:[93m20[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m9[0m   domains: z.array(z.string()).default([]),
+[7m [0m [93m                   ~[0m
+[96msrc/content.config.ts[0m:[93m9[0m:[93m12[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m9[0m   domains: z.array(z.string()).default([]),
+[7m [0m [93m           ~[0m
+[96msrc/content.config.ts[0m:[93m8[0m:[93m9[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m8[0m   type: z.string().optional(),
+[7m [0m [93m        ~[0m
+[96msrc/content.config.ts[0m:[93m7[0m:[93m9[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m7[0m   deck: z.string().optional(),
+[7m [0m [93m        ~[0m
+[96msrc/content.config.ts[0m:[93m6[0m:[93m15[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m6[0m   shortTitle: z.string().optional(),
+[7m [0m [93m              ~[0m
+[96msrc/content.config.ts[0m:[93m5[0m:[93m10[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m5[0m   title: z.string(),
+[7m [0m [93m         ~[0m
+[96msrc/content.config.ts[0m:[93m4[0m:[93m22[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m4[0m const commonSchema = z.object({
+[7m [0m [93m                     ~[0m
+[96msrc/content.config.ts[0m:[93m1[0m:[93m28[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
+
+[7m1[0m import { defineCollection, z } from 'astro:content';
+[7m [0m [93m                           ~[0m
+
+[96msrc/components/Nav.astro[0m:[93m19[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'isIndex' is declared but its value is never read.
+
+[7m19[0m const isIndex = currentPath.startsWith("/academic");
+[7m  [0m [93m      ~~~~~~~[0m
+[96msrc/components/Nav.astro[0m:[93m18[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'isExplore' is declared but its value is never read.
+
+[7m18[0m const isExplore = mode === "explore" || currentPath === "/";
+[7m  [0m [93m      ~~~~~~~~~[0m
+
+[96msrc/components/explore/ExploreFinale.astro[0m:[93m8[0m:[93m43[0m - [93mwarning[0m[90m ts(6133): [0m'i' is declared but its value is never read.
+
+[7m8[0m       {Array.from({ length: 50 }).map((_, i) => {
+[7m [0m [93m                                          ~[0m
+
+[96msrc/components/explore/ExplorePortal.astro[0m:[93m15[0m:[93m43[0m - [93mwarning[0m[90m ts(6133): [0m'i' is declared but its value is never read.
+
+[7m15[0m       {Array.from({ length: 60 }).map((_, i) => {
+[7m  [0m [93m                                          ~[0m
+
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m414[0m:[93m13[0m - [93mwarning[0m[90m ts(6133): [0m'state' is declared but its value is never read.
+
+[7m414[0m   useFrame((state, delta) => {
+[7m   [0m [93m            ~~~~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m338[0m:[93m19[0m - [93mwarning[0m[90m ts(6133): [0m'gl' is declared but its value is never read.
+
+[7m338[0m   const { camera, gl } = useThree();
+[7m   [0m [93m                  ~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m259[0m:[93m9[0m - [93mwarning[0m[90m ts(6133): [0m'mat' is declared but its value is never read.
+
+[7m259[0m   const mat = useMemo(() => new THREE.LineBasicMaterial({
+[7m   [0m [93m        ~~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m185[0m:[93m11[0m - [93mwarning[0m[90m ts(6133): [0m'mid' is declared but its value is never read.
+
+[7m185[0m     const mid = start.clone().lerp(end, 0.5);
+[7m   [0m [93m          ~~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m184[0m:[93m17[0m - [93mwarning[0m[90m ts(6133): [0m'length' is declared but its value is never read.
+
+[7m184[0m   const { path, length } = useMemo(() => {
+[7m   [0m [93m                ~~~~~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m109[0m:[93m11[0m - [93mwarning[0m[90m ts(6133): [0m'majorInt' is declared but its value is never read.
+
+[7m109[0m     const majorInt = 1.5;  // major line every 1.5u
+[7m   [0m [93m          ~~~~~~~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m105[0m:[93m9[0m - [93mwarning[0m[90m ts(6133): [0m'geometry' is declared but its value is never read.
+
+[7m105[0m   const geometry = useMemo(() => {
+[7m   [0m [93m        ~~~~~~~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m26[0m:[93m3[0m - [93mwarning[0m[90m ts(6133): [0m'useCallback' is declared but its value is never read.
+
+[7m26[0m   useCallback,
+[7m  [0m [93m  ~~~~~~~~~~~[0m
+[96msrc/components/explore/ExploreScene.tsx[0m:[93m21[0m:[93m8[0m - [93mwarning[0m[90m ts(6133): [0m'React' is declared but its value is never read.
+
+[7m21[0m import React, {
+[7m  [0m [93m       ~~~~~[0m
+
+[96msrc/components/explore/TerrainScene.tsx[0m:[93m59[0m:[93m13[0m - [93mwarning[0m[90m ts(6133): [0m'state' is declared but its value is never read.
+
+[7m59[0m   useFrame((state, delta) => {
+[7m  [0m [93m            ~~~~~[0m
+[96msrc/components/explore/TerrainScene.tsx[0m:[93m13[0m:[93m7[0m - [93mwarning[0m[90m ts(6133): [0m'FONT_URL' is declared but its value is never read.
+
+[7m13[0m const FONT_URL = "https://fonts.gstatic.com/s/ibmplexmono/v19/-F63fjptAgt5VM-kVkqdyU8n1iIq129k.woff";
+[7m  [0m [93m      ~~~~~~~~[0m
+[96msrc/components/explore/TerrainScene.tsx[0m:[93m8[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'Text' is declared but its value is never read.
+
+[7m8[0m import { Text } from '@react-three/drei';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+[96msrc/components/explore/TerrainScene.tsx[0m:[93m7[0m:[93m28[0m - [93mwarning[0m[90m ts(6133): [0m'useThree' is declared but its value is never read.
+
+[7m7[0m import { Canvas, useFrame, useThree } from '@react-three/fiber';
+[7m [0m [93m                           ~~~~~~~~[0m
+
+[96msrc/components/index/IndexRow.astro[0m:[93m11[0m:[93m42[0m - [93mwarning[0m[90m ts(6133): [0m'thumbnail' is declared but its value is never read.
+
+[7m11[0m const { year, title, domain, role, href, thumbnail } = Astro.props;
+[7m  [0m [93m                                         ~~~~~~~~~[0m
+
+[96msrc/components/studio/StudioScene.tsx[0m:[93m59[0m:[93m19[0m - [93mwarning[0m[90m ts(6385): [0m'MutableRefObject' is deprecated.
+
+[7m59[0m   sceneRef: React.MutableRefObject<any>;
+[7m  [0m [93m                  ~~~~~~~~~~~~~~~~[0m
+
+[96msrc/layouts/ProjectLayout.astro[0m:[93m3[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'CollectionEntry' is declared but its value is never read.
+
+[7m3[0m import type { CollectionEntry } from 'astro:content';
+[7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+Result (49 files): 
+- 0 errors
+- 0 warnings
+- 77 hints
+

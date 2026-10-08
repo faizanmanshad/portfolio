@@ -24,13 +24,13 @@
   position: absolute;
   inset: 0 0 108px;
   cursor: grab;
-  touch-action: pan-y;
+  touch-action: none;
 }
 .studio-canvas:active {
   cursor: grabbing;
 }
 .studio-canvas canvas {
-  touch-action: pan-y !important;
+  touch-action: none !important;
 }
 .is-intro .studio-tools,
 .is-intro .studio-topics,
@@ -257,3 +257,50 @@
     padding: 7px;
   }
 }
+
+/* Keep controls reachable and the focused workstation visible on small screens. */
+@media (max-width:700px) {
+  .studio-tools { gap:6px; }
+  .studio-tools .rotation-buttons { display:grid; grid-template-columns:repeat(2,28px); padding:0; }
+  .studio-tools .rotation-buttons button { padding:4px; min-height:28px; }
+  .studio-tools > div:first-child { gap:0; }
+  .studio-tools > div:first-child button { padding:9px 6px; }
+  .studio-canvas { bottom:145px; }
+  .model-story { top:auto; bottom:150px; right:12px; width:min(260px,80%); max-height:145px; overflow:auto; padding:14px 30px 14px 14px; }
+  .model-story h2 { font-size:18px; }
+  .model-story > p:not(.label) { font-size:11px; }
+}
+/* Guided visit: one story at a time, with the scene kept clear of text. */
+.journey-start{position:absolute;bottom:12px;left:7%;right:3%;display:flex;align-items:center;gap:18px;font:10px var(--font-mono);color:#a6ac9e}
+.journey-start button{border:1px solid #837359;background:#1c251f;color:#e8dfcf;padding:12px 16px;font:inherit;cursor:pointer}
+.studio-interactive.is-touring{position:fixed;inset:0;z-index:100;width:100vw;height:100dvh;background:#101412}
+.is-touring .studio-canvas{inset:0 365px 80px 0}
+.is-touring .studio-tools{left:24px;right:385px;bottom:18px}
+.journey-panel{position:absolute;right:20px;top:50%;transform:translateY(-50%);width:330px;padding:22px;background:#1a201bdd;border:1px solid #5c645044;border-radius:5px;color:#e6dece}
+.journey-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;font:10px/1.6 var(--font-mono);color:#aeb69f}
+.journey-heading button{font-size:26px;min-width:40px;min-height:40px;border:0;background:transparent;color:#e6dece;cursor:pointer}
+.journey-copy .label{font:10px/1.7 var(--font-mono);color:#d89a69;margin:16px 0 10px}
+.journey-copy h2{font-size:26px;line-height:1.15;letter-spacing:-.035em;margin:0 0 16px}
+.journey-copy>p:not(.label){font-size:14px;line-height:1.7;color:#aeb5a7}
+.journey-copy a{display:inline-block;font:11px var(--font-mono);color:#d8aa7d;margin:20px 0}
+.journey-progress{height:2px;background:#ffffff15;margin:8px 0 18px}.journey-progress span{display:block;height:100%;background:#d09a6a;transition:width .3s}
+.journey-panel nav{display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between}
+.journey-panel nav button{font:12px var(--font-mono);min-height:44px;padding:10px;border:1px solid #ffffff25;background:#273026;color:#e7dfd1;cursor:pointer}
+.journey-panel button:disabled{opacity:.35;cursor:default}
+.journey-skip{order:3;width:100%;font:10px var(--font-mono);color:#aeb69f;display:grid;gap:8px}
+.journey-skip select{width:100%;min-width:0;background:#151a16;border:1px solid #ffffff25;color:#dad7c7;font:12px var(--font-sans);padding:8px}
+.journey-panel button:focus-visible,.journey-start button:focus-visible{outline:2px solid #e97939;outline-offset:3px}
+@media(max-width:700px){
+ .journey-start{left:16px;right:16px;gap:10px;font-size:9px}.journey-start>span{max-width:100px;line-height:1.5}
+ .is-touring .studio-canvas{inset:0 0 310px}
+ .is-touring .studio-tools{top:10px;bottom:auto;left:12px;right:12px;padding:0;border:0}
+ .journey-panel{top:auto;bottom:10px;left:10px;right:10px;width:auto;transform:none;padding:12px 16px;max-height:290px;overflow:auto}
+ .journey-copy h2{font-size:21px;margin-bottom:8px}.journey-copy .label{margin:4px 0 7px}.journey-copy>p:not(.label){font-size:12px;line-height:1.5}
+ .journey-copy a{margin:10px 0}.journey-heading button{min-height:32px}.journey-progress{margin:4px 0 10px}.journey-skip{display:none}
+}
+@media(prefers-reduced-motion:reduce){.journey-progress span{transition:none}}
+body:has(.is-touring) .site-nav { visibility: hidden; pointer-events: none; }
+
+.studio-hero:has(.is-touring){overflow:visible;isolation:auto;z-index:1000}
+
+html:has(.is-touring),body:has(.is-touring){overflow:hidden!important}

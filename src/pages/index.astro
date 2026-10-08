@@ -12,27 +12,21 @@ const research = await getCollection("research");
 const urbana = experience.find((item) => item.id === "urbana")!;
 const openspace = experience.find((item) => item.id === "openspace")!;
 const ar = research.find((item) => item.id === "bim-to-ar")!;
-const records = {
-  structure: {
-    title: "From drawing to structure",
-    label: "Structures & BIM",
-    description:
-      "Architectural and structural modelling, engineering drawings, and the details that connect a design to its construction.",
-    href: "/projects/",
-  },
-  practice: {
-    title: openspace.data.shortTitle || openspace.data.title,
-    label: "Digital construction",
-    description: openspace.data.summary || "",
-    href: `/experience/${openspace.id}/`,
-  },
-  research: {
-    title: ar.data.shortTitle || ar.data.title,
-    label: "Research & AR",
-    description: ar.data.summary || "",
-    href: `/research/${ar.id}/`,
-  },
-};
+// Build the guided visit from the same public records used by the archives.
+const journeyCollections = await Promise.all([
+  getCollection('education'), getCollection('recognition'), getCollection('journey'),
+  getCollection('experience'), getCollection('projects'), getCollection('research'),
+]);
+const categoryNames: Record<string,string> = {education:'Education',recognition:'Recognition',journey:'Community',experience:'Professional practice',projects:'Projects',research:'Research'};
+const datedJourney = journeyCollections.flat().map(item => {
+  const year = item.data.dateDisplay?.match(/(?:19|20)\d{2}/)?.[0];
+  const order = item.data.dateStart?.getTime() ?? (year ? Date.UTC(Number(year),0,1) : Infinity);
+  return {order, id:`${item.collection}/${item.id}`, title:item.data.shortTitle || item.data.title,
+    description:item.data.summary || item.data.domains?.join(' · ') || item.data.organization || '',
+    date:item.data.dateDisplay || (item.data.dateStart ? String(item.data.dateStart.getFullYear()) : 'Date not recorded'),
+    href:`/${item.collection}/${item.id}/`, category:categoryNames[item.collection] || item.collection};
+}).sort((a,b)=>a.order-b.order || a.id.localeCompare(b.id));
+const journey = datedJourney.map(({order,...record})=>record);
 import { SITE_METADATA } from "../consts";
 ---
 
@@ -97,7 +91,7 @@ import { SITE_METADATA } from "../consts";
           <br class="desktop-break" /> and emerging technology meet.
         </p>
         <button class="explore-model" id="explore-model">
-          EXPLORE THE MODEL <span>↗</span>
+          EXPLORE MY JOURNEY <span>↗</span>
         </button>
         <a class="skip-model" href="#selected-work">
           Or, go straight to the work ↓
@@ -107,11 +101,11 @@ import { SITE_METADATA } from "../consts";
         <span class="model-coordinate" aria-hidden="true">
           PERSPECTIVE / 01
         </span>
-        <StudioScene records={records} client:load>
+        <StudioScene journey={journey} client:load>
           <div slot="fallback" class="studio-static">
             <img
-              src="/images/studio-fallback.svg"
-              alt="Isometric architectural drawing of a pavilion and bridge"
+              src="/images/house-reference.png"
+              alt="Reference illustration of the Pakistani house"
             />
             <p class="label">STRUCTURES / CONSTRUCTION / RESEARCH</p>
           </div>
@@ -121,7 +115,7 @@ import { SITE_METADATA } from "../consts";
         <span>
           <i></i> THE STUDIO — ONE MODEL, MANY STORIES
         </span>
-        <span>DRAG TO ROTATE · SELECT A DETAIL</span>
+        <span>DRAG TO ROTATE · START THE JOURNEY</span>
       </div>
       <span class="studio-model-note">
         An illustrative model. A window into my practice.
@@ -134,13 +128,13 @@ import { SITE_METADATA } from "../consts";
         <div>
           <span class="principle-symbol">⌖</span>
           <h2>Look closer.</h2>
-          <p>Select a connection. Discover the work and thinking behind it.</p>
+          <p>Enter the house. Follow my education, projects and practice, one step at a time.</p>
         </div>
         <div>
           <span class="principle-symbol">↻</span>
           <h2>Change perspective.</h2>
           <p>
-            Turn the model. Switch to its blueprint. See how the pieces relate.
+            Turn the house. Explore its floors. See how the pieces relate.
           </p>
         </div>
         <div>
@@ -303,14 +297,6 @@ import { SITE_METADATA } from "../consts";
   });
   document.getElementById("explore-model")?.addEventListener("click", () => {
     window.dispatchEvent(new Event("studio:explore"));
-    document
-      .querySelector(".studio-model")
-      ?.scrollIntoView({
-        behavior: matchMedia("(prefers-reduced-motion: reduce)").matches
-          ? "instant"
-          : "smooth",
-        block: "center",
-      });
   });
 </script>
 <style>

@@ -64,7 +64,7 @@ import { SITE_METADATA } from "../../consts";
   <main class="dossier">
     <aside class="dossier-index" aria-label="Academic sections">
       <div class="mobile-section-picker">
-        <label for="academic-section">JUMP TO SECTION</label>
+        <label for="academic-section">SECTIONS</label>
         <select id="academic-section">
           {sections.map((name, i) => <option value={name.toLowerCase()}>{String(i).padStart(2, "0")} / {name}</option>)}
         </select>
@@ -118,7 +118,7 @@ import { SITE_METADATA } from "../../consts";
         </figure>
       </header>
       <section id="education" data-academic-section>
-        <div class="section-top" data-academic-reveal>
+        <div class="section-top">
           <h2>
             <span>01 /</span> Education
           </h2>
@@ -148,7 +148,7 @@ import { SITE_METADATA } from "../../consts";
         </div>
       </section>
       <section id="research" data-academic-section>
-        <div class="section-top" data-academic-reveal>
+        <div class="section-top">
           <h2>
             <span>02 /</span> Research & experimentation
           </h2>
@@ -189,7 +189,7 @@ import { SITE_METADATA } from "../../consts";
       </section>
       {groups.map((group) => (
         <section id={group.id} data-academic-section>
-          <div class="section-top" data-academic-reveal>
+          <div class="section-top">
             <h2>
               <span>{group.number} /</span> {group.title}
             </h2>
@@ -756,5 +756,38 @@ import { SITE_METADATA } from "../../consts";
       transform: none;
       transition: none;
     }
+  }
+
+  /* Chapter hierarchy is local to the academic overview. */
+  .dossier-content > section {
+    --chapter-accent: #c89d78;
+    --chapter-fill: #171c18;
+    background: var(--chapter-fill);
+    border: 1px solid #ffffff1c;
+    border-top: 3px solid var(--chapter-accent);
+    border-radius: 6px;
+    padding: 0 28px 28px;
+    margin-bottom: 44px;
+    overflow: clip;
+  }
+  .section-top { border-top:0; border-bottom:1px solid #ffffff25; padding:28px 0; margin-bottom:10px; align-items:center; }
+  .section-top h2 { display:flex; align-items:center; gap:18px; font-size:clamp(23px,2.3vw,30px); line-height:1.2; }
+  .section-top h2 span { color:var(--chapter-accent); font:28px/1 var(--font-mono); margin:0; white-space:nowrap; }
+  .section-top > a { flex-shrink:0; color:var(--chapter-accent); line-height:1.6; }
+  .research-feature { margin-top:24px; }
+  .record-list .dossier-record:last-child { border-bottom:0; }
+  .dossier-record:hover { background:#ffffff03; }
+  @media(max-width:700px) {
+    .dossier { padding-left:5vw; padding-right:5vw; }
+    .dossier-content > section { padding:0 18px 22px; margin-bottom:32px; scroll-margin-top:calc(var(--nav-h) + 86px); }
+    .section-top { display:block; padding:23px 0 20px; }
+    .section-top h2 { font-size:25px; align-items:flex-start; gap:14px; }
+    .section-top h2 span { font-size:23px; padding-top:3px; }
+    .section-top > a { display:inline-block; max-width:none; margin:14px 0 0; text-align:left; font-size:12px; }
+    .dossier-record { padding:22px 0; }
+    .dossier-record h3 { font-size:18px; }
+    .mobile-section-picker { gap:0; padding:8px 0; border:0; grid-template-columns:76px minmax(0,1fr); }
+    .mobile-section-picker label { font:11px var(--font-mono); letter-spacing:.04em; color:#ddd8cf; background:#263028; border:1px solid #ffffff30; border-right:0; border-radius:5px 0 0 5px; height:40px; display:grid; place-items:center; }
+    .mobile-section-picker select { height:40px; min-height:40px; border-radius:0 5px 5px 0; padding:0 10px; font-size:14px; background:#1b241e; }
   }
 </style>
