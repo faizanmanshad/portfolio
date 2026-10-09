@@ -2,11 +2,11 @@
 > magenta-mass@0.0.1 check
 > astro check
 
-19:12:21 [content] Syncing content
-19:12:22 [WARN] [glob-loader] The base directory "E:\Faizan Manshad Portfolio\src\content\development\" does not exist.
-19:12:22 [content] Synced content
-19:12:22 [types] Generated 613ms
-19:12:22 [check] Getting diagnostics for Astro files in E:\Faizan Manshad Portfolio...
+11:01:01 [content] Syncing content
+11:01:01 [WARN] [glob-loader] The base directory "E:\Faizan Manshad Portfolio\src\content\development\" does not exist.
+11:01:01 [content] Synced content
+11:01:01 [types] Generated 397ms
+11:01:01 [check] Getting diagnostics for Astro files in E:\Faizan Manshad Portfolio...
 [96msrc/content.config.ts[0m:[93m71[0m:[93m17[0m - [93mwarning[0m[90m ts(6385): [0m'z' is deprecated.
 
 [7m71[0m     supervisor: z.string().optional(),
@@ -314,9 +314,9 @@
 [7m11[0m const { year, title, domain, role, href, thumbnail } = Astro.props;
 [7m  [0m [93m                                         ~~~~~~~~~[0m
 
-[96msrc/components/studio/StudioScene.tsx[0m:[93m59[0m:[93m19[0m - [93mwarning[0m[90m ts(6385): [0m'MutableRefObject' is deprecated.
+[96msrc/components/studio/StudioScene.tsx[0m:[93m61[0m:[93m19[0m - [93mwarning[0m[90m ts(6385): [0m'MutableRefObject' is deprecated.
 
-[7m59[0m   sceneRef: React.MutableRefObject<any>;
+[7m61[0m   sceneRef: React.MutableRefObject<any>;
 [7m  [0m [93m                  ~~~~~~~~~~~~~~~~[0m
 
 [96msrc/layouts/ProjectLayout.astro[0m:[93m3[0m:[93m1[0m - [93mwarning[0m[90m ts(6133): [0m'CollectionEntry' is declared but its value is never read.
@@ -324,7 +324,7 @@
 [7m3[0m import type { CollectionEntry } from 'astro:content';
 [7m [0m [93m~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
 
-Result (49 files): 
+Result (50 files): 
 - 0 errors
 - 0 warnings
 - 77 hints

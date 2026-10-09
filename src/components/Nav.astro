@@ -15,8 +15,10 @@ interface Props {
 
 const { currentPath = "/", mode = "explore" } = Astro.props;
 
-const isExplore = mode === "explore" || currentPath === "/";
-const isIndex = currentPath.startsWith("/academic");
+const path = `${currentPath.replace(/\/+$/, "")}/`;
+const isActive = (href: string) => path.startsWith(href)
+  || (href === "/work/" && path.startsWith("/experience/"))
+  || (href === "/about/" && path.startsWith("/journey/"));
 
 const navLinks = [
   { label: "Work", href: "/work/" },
@@ -41,9 +43,9 @@ const navLinks = [
           href={link.href}
           class:list={[
             "nav-link",
-            { "nav-link--active": currentPath.startsWith(link.href) },
+            { "nav-link--active": isActive(link.href) },
           ]}
-          aria-current={currentPath.startsWith(link.href) ? "page" : undefined}
+          aria-current={isActive(link.href) ? "page" : undefined}
         >
           {link.label}
         </a>
@@ -93,8 +95,9 @@ const navLinks = [
           href={link.href}
           class:list={[
             "nav-mobile-link",
-            { "nav-mobile-link--active": currentPath.startsWith(link.href) },
+            { "nav-mobile-link--active": isActive(link.href) },
           ]}
+          aria-current={isActive(link.href) ? "page" : undefined}
         >
           {link.label}
         </a>
@@ -242,12 +245,19 @@ const navLinks = [
     color: var(--c-index-text);
   }
 
-  .nav-link--active {
-    color: var(--c-text) !important;
+  .nav-link--active,
+  .site-nav[data-mode="index"] .nav-link--active {
+    color: var(--c-accent) !important;
   }
 
-  .site-nav[data-mode="index"] .nav-link--active {
-    color: var(--c-index-text) !important;
+  .nav-link--active::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: currentColor;
   }
 
   /* ── Mode switch ───────────────────────────────────────── */
@@ -373,9 +383,13 @@ const navLinks = [
     transition: color var(--t-micro) var(--ease-out);
   }
 
-  .nav-mobile-link--active,
   .nav-mobile-link:hover {
     color: var(--c-text);
+  }
+
+  .nav-mobile-link--active {
+    color: var(--c-accent) !important;
+    border-bottom-color: var(--c-accent);
   }
 
   .mobile-mode-row {

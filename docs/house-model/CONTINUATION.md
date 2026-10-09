@@ -26,3 +26,12 @@ Astro check: 49 files, zero errors/warnings (77 existing hints). Production buil
 
 ## Commands
 Run npm run check and npm run build from E:/Faizan Manshad Portfolio. In this environment sandboxed Astro can fail loading picomatch with require-is-not-defined; the same commands pass with approved execution outside the sandbox. Set ASTRO_TELEMETRY_DISABLED=1. Development server uses localhost:4321. No deployment or commit has been performed.
+
+## Follow-up — 2026-10-09
+Completed Academic check: all six chapter fills #171c18; mobile selector 40px / 14px. Latest request: fit mobile house, close floor gaps, soften palette, make interior more spacious, smooth journey entrance, direct milestone skips.
+- houseSpace.ts now centralizes HOUSE_SCALE=[1.12,1,1.25] (40% more plan area with same floor heights), coordinate mapping and overview spans. Desk uses inverse horizontal scaling to retain original furniture size.
+- HouseModel has continuous perimeter ring beams at y=1.82 per level, closing side/rear wall-to-slab gaps; muted olive limestone/plaster and brown brick; less yellow lighting.
+- Mobile model container no longer extends beyond its parent. Overview frustum has margins for rotation.
+- Entry perspective camera takes the overview orientation and matching view height, then eases via an outside approach toward the gate for 3.6 seconds.
+- Non-adjacent milestone selection uses a brief fade and direct placement (no intermediate route). Next/Previous retain doorway routes. Camera cleanup restores opacity if interrupted.
+- Production browser verification at localhost:4322: mobile fit and side seams, gradual entry, direct jump from SSC to Urbana. Academic styles checked via DOM. Check passed 50 files, zero errors/warnings; build passed 27 pages. Dev server had a dynamic-module load failure; restarted after validating the production build. Preview4322 remains an alternate local review URL, not a deployment.

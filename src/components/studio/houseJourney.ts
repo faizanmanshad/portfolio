@@ -1,3 +1,4 @@
+import { housePoint } from './houseSpace';
 export type JourneyRecord = {
  id: string; title: string; description: string; href: string; date: string; category: string;
 };
@@ -24,7 +25,8 @@ export const HOUSE_ROUTE: TourStop[] = [
 ];
 export function journeyStop(index:number,count:number):TourStop {
  const stop= Math.round(index/Math.max(1,count-1)*(HOUSE_ROUTE.length-1));
- return HOUSE_ROUTE[Math.min(HOUSE_ROUTE.length-1,Math.max(0,stop))];
+ const view=HOUSE_ROUTE[Math.min(HOUSE_ROUTE.length-1,Math.max(0,stop))];
+ return {...view,position:housePoint(view.position),target:housePoint(view.target)};
 }
 
 // Doorway waypoints, indexed by destination stop. Reverse travel uses the same path.
@@ -43,12 +45,12 @@ const passages: Record<number,[number,number,number][]> = {
 export function journeyPath(from:number|null,to:number,count:number):[number,number,number][] {
   const index=(n:number)=>Math.round(n/Math.max(1,count-1)*(HOUSE_ROUTE.length-1));
   const end=index(to);
-  if(from===null) return [HOUSE_ROUTE[end].position];
+  if(from===null || Math.abs(to-from)>1) return [housePoint(HOUSE_ROUTE[end].position)];
   const start=index(from), direction=end>=start?1:-1;
   const points:[number,number,number][]=[];
   for(let i=start;i!==end;i+=direction){
     const via=passages[direction>0?i+1:i]||[];
     points.push(...(direction>0?via:[...via].reverse()),HOUSE_ROUTE[i+direction].position);
   }
-  return points.length?points:[HOUSE_ROUTE[end].position];
+  return (points.length?points:[HOUSE_ROUTE[end].position]).map(housePoint);
 }

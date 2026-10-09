@@ -9,6 +9,7 @@ import {
 import {
   Canvas,
   useThree,
+  useFrame,
 } from "@react-three/fiber";
 import { gsap } from "gsap";
 import {
@@ -21,6 +22,7 @@ import {
 import * as THREE from "three";
 import "./studio.css";
 import HouseModel from "./HouseModel";
+import { OVERVIEW_SPAN, housePoint } from "./houseSpace";
 import { journeyStop, journeyPath, type JourneyRecord } from "./houseJourney";
 
 // Suppress THREE.Clock deprecation warning caused by @react-three/fiber
@@ -60,6 +62,14 @@ function Scene({
 }) {
   const { size, camera, invalidate, gl } = useThree();
   const controls = useRef<any>(null);
+  const entryPose=useRef({position:[7.8,6,9.5] as Point,quaternion:new THREE.Quaternion(),target:new THREE.Vector3(0,1.9,0)});
+  useFrame(()=>{
+    if(step!==null || !(camera instanceof THREE.OrthographicCamera) || !controls.current) return;
+    const target=controls.current.target;
+    const visibleHeight=size.height/Math.max(.1,camera.zoom);
+    const distance=visibleHeight/(2*Math.tan(THREE.MathUtils.degToRad(62)/2));
+    entryPose.current={position:camera.position.clone().sub(target).normalize().multiplyScalar(distance).add(target).toArray() as Point,quaternion:camera.quaternion.clone(),target:target.clone()};
+  });
 
   useEffect(() => {
     sceneRef.current = { camera, invalidate };
@@ -71,8 +81,8 @@ function Scene({
   useEffect(() => {
     if (introState !== "docking" && step === null && camera instanceof THREE.OrthographicCamera) {
       const isMobile = (size.width || window.innerWidth) < 768;
-      let zoomX = isMobile ? 8.5 : 10.3;
-      let zoomY = isMobile ? 5.8 : 7.1;
+      let zoomX = OVERVIEW_SPAN.width;
+      let zoomY = OVERVIEW_SPAN.height;
       if (introState === "loading" || introState === "revealing" || introState === "holding") {
         zoomX = isMobile ? 16.0 : 20.0;
         zoomY = isMobile ? 11.2 : 14.0;
@@ -94,21 +104,31 @@ function Scene({
     if (introState !== "complete" || !controls.current) return;
     if ((step !== null) !== (camera instanceof THREE.PerspectiveCamera)) return;
     const orbit = controls.current;
-    const baseZoom = Math.min(size.width / (size.width < 768 ? 8.5 : 10.3), size.height / (size.width < 768 ? 5.8 : 7.1));
+    const baseZoom = Math.min(size.width / OVERVIEW_SPAN.width, size.height / OVERVIEW_SPAN.height);
     const stop = step === null ? null : journeyStop(step,total);
     const view = stop ? {...stop,zoom:1} : {position:[7.8,6,9.5] as Point,target:[0,mode === "exploded" ? 3 : 1.9,0] as Point,zoom:mode === "exploded" ? .8 : 1};
     const aim = tourAim.current;
     flight.current?.kill();
-    const duration = reduced ? 0 : step === null ? 1.15 : 1.65;
+    const entering=stop && previousStep.current===null;
+    const skipping=step!==null && previousStep.current!==null && Math.abs(step-previousStep.current)>1;
+    if(entering) aim.copy(entryPose.current.target);
     const timeline = gsap.timeline({onUpdate:()=>{camera.updateProjectionMatrix(); if(stop) camera.lookAt(aim); else orbit.update(); invalidate();}});
     flight.current = timeline;
-    const path = stop && step !== null ? journeyPath(previousStep.current,step,total) : [view.position];
-    const travelDuration = reduced ? 0 : Math.max(duration, path.length * .65);
-    path.forEach((point,i)=>timeline.to(camera.position,{x:point[0],y:point[1],z:point[2],duration:travelDuration/path.length,ease:"sine.inOut"},i*travelDuration/path.length));
-    timeline.to(stop ? aim : orbit.target,{x:view.target[0],y:view.target[1],z:view.target[2],duration:travelDuration,ease:"power2.inOut"},0)
-      .to(camera,{zoom:stop ? 1 : baseZoom*view.zoom,duration:travelDuration,ease:"power2.inOut"},0);
+    // A direct selection fades to its destination, without replaying intermediate rooms.
+    if(skipping && !reduced){
+      timeline.to(gl.domElement,{opacity:0,duration:.22})
+        .add(()=>{camera.position.fromArray(view.position);aim.fromArray(view.target);camera.lookAt(aim);camera.zoom=1;camera.updateProjectionMatrix();invalidate();})
+        .to(gl.domElement,{opacity:1,duration:.4});
+    } else {
+      gsap.set(gl.domElement,{opacity:1});
+      const path:Point[]=entering ? [housePoint([0,2.2,6.8]),view.position] : stop && step!==null ? journeyPath(previousStep.current,step,total) : [view.position];
+      const travelDuration = reduced ? 0 : entering ? 3.6 : step===null ? 1.2 : Math.min(3.4,Math.max(2.1,path.length*.7));
+      path.forEach((point,i)=>timeline.to(camera.position,{x:point[0],y:point[1],z:point[2],duration:travelDuration/path.length,ease:"sine.inOut"},i*travelDuration/path.length));
+      timeline.to(stop ? aim : orbit.target,{x:view.target[0],y:view.target[1],z:view.target[2],duration:travelDuration,ease:"sine.inOut"},0)
+        .to(camera,{zoom:stop ? 1 : baseZoom*view.zoom,duration:travelDuration,ease:"sine.inOut"},0);
+    }
     previousStep.current=step;
-    return () => {timeline.kill();};
+    return () => {timeline.kill();gsap.set(gl.domElement,{opacity:1});};
   }, [step, total, reset, mode, introState, reduced, size.width, size.height, camera, invalidate]);
   useEffect(() => {
     const turn = (event: Event) => {
@@ -140,12 +160,12 @@ function Scene({
   }, [gl, ready, fail]);
   return (
     <>
-      {step !== null && <PerspectiveCamera makeDefault position={[.05,1.05,4.5]} fov={62} near={.035} far={80} />}
+      {step !== null && <PerspectiveCamera makeDefault position={entryPose.current.position} quaternion={entryPose.current.quaternion} fov={62} near={.035} far={80} />}
       <ambientLight intensity={0.75} />
       <directionalLight
         position={[-4, 9, 5]}
-        intensity={3.2}
-        color="#ffe9c9"
+        intensity={2.5}
+        color="#e5e3c9"
         castShadow
         shadow-mapSize={[1024, 1024]}
         shadow-camera-left={-7}
@@ -405,8 +425,8 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
               onCreated={({ gl, camera, size }) => {
                 gl.clippingPlanes = [clipPlane];
                 const isMobile = (size.width || window.innerWidth) < 768;
-                let zX = isMobile ? 8.5 : 10.3;
-                let zY = isMobile ? 5.8 : 7.1;
+                let zX = OVERVIEW_SPAN.width;
+                let zY = OVERVIEW_SPAN.height;
                 if (introState === "loading" || introState === "revealing" || introState === "holding") {
                   zX = isMobile ? 16.0 : 20.0;
                   zY = isMobile ? 11.2 : 14.0;

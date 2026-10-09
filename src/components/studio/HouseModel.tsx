@@ -1,9 +1,10 @@
 import { useMemo, useEffect, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as T from 'three';
+import { HOUSE_SCALE } from './houseSpace';
 
 type V = [number, number, number];
-const cream='#cbbd9f', green='#2b4036';
+const cream='#b9b49d', green='#293e35';
 function Box({p,s,c=cream,map}:{p:V;s:V;c?:string;map?:T.Texture}) {
  return <mesh position={p} castShadow receiveShadow><boxGeometry args={s}/><meshStandardMaterial color={c} map={map} roughness={.88}/></mesh>;
 }
@@ -17,15 +18,15 @@ function texture(kind:'brick'|'plaster'|'paving') {
  const canvas=document.createElement('canvas');canvas.width=canvas.height=512;
  const ctx=canvas.getContext('2d')!;let seed=37;
  const random=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
- ctx.fillStyle=kind==='brick'?'#b0a08b':kind==='plaster'?'#d4c9b2':'#a89d89';ctx.fillRect(0,0,512,512);
+ ctx.fillStyle=kind==='brick'?'#b0a08b':kind==='plaster'?'#c3c0a9':'#a89d89';ctx.fillRect(0,0,512,512);
  if(kind==='brick'||kind==='paving') {
  const w=kind==='brick'?85:128,h=kind==='brick'?35:85;
  for(let row=0;row<512/h;row++)for(let col=-1;col<512/w+1;col++){
- const n=Math.floor(random()*24);ctx.fillStyle=kind==='brick'?`rgb(${137+n},${91+n},${68+n})`:`rgb(${155+n},${143+n},${121+n})`;
+ const n=Math.floor(random()*24);ctx.fillStyle=kind==='brick'?`rgb(${125+n},${94+n},${75+n})`:`rgb(${155+n},${143+n},${121+n})`;
  ctx.fillRect(col*w+(row%2)*w/2+2,row*h+2,w-4,h-4);
  }
  } else {
- for(let i=0;i<2400;i++){ctx.fillStyle=`rgba(123,94,60,${random()*.11})`;ctx.fillRect(random()*512,random()*512,random()*18+1,random()*10+1)}
+ for(let i=0;i<2400;i++){ctx.fillStyle=`rgba(95,97,75,${random()*.11})`;ctx.fillRect(random()*512,random()*512,random()*18+1,random()*10+1)}
  }
  const result=new T.CanvasTexture(canvas);result.colorSpace=T.SRGBColorSpace;result.wrapS=result.wrapT=T.RepeatWrapping;result.anisotropy=4;return result;
 }
@@ -73,7 +74,7 @@ function ShadeCanopy() {
  useEffect(()=>()=>geometry.dispose(),[geometry]);
  return <mesh position={[0,1.23,0]} rotation={[-Math.PI/2,0,0]} geometry={geometry} castShadow receiveShadow><meshStandardMaterial color="#b39872" side={T.DoubleSide} roughness={1}/></mesh>;
 }
-function Desk(){return <group position={[.45,.1,-.35]} name="future-work-room-desk">
+function Desk(){return <group position={[.45,.1,-.35]} name="future-work-room-desk" scale={[1/HOUSE_SCALE[0],1,1/HOUSE_SCALE[2]]}>
  <Box p={[0,.55,0]} s={[1.3,.07,.6]} c="#a08255"/>{[-.53,.53].map(x=><Box key={x} p={[x,.28,0]} s={[.06,.5,.5]} c={green}/>)}
  <Box p={[.15,.81,-.16]} s={[.52,.34,.045]} c="#27322e"/><Box p={[.15,.81,-.13]} s={[.46,.28,.008]} c="#7faaa3"/><Box p={[.15,.63,-.16]} s={[.045,.16,.045]} c={green}/>
  <Box p={[-.38,.6,.02]} s={[.32,.025,.24]} c="#77847d"/><Box p={[-.38,.72,-.08]} s={[.32,.23,.025]} c="#6b8d84"/><Box p={[.15,.6,.16]} s={[.33,.025,.12]} c="#3b4540"/><Box p={[.43,.61,.17]} s={[.055,.035,.085]} c="#b5baa9"/>
@@ -97,6 +98,10 @@ export default function HouseModel({exploded,reduced,touring=false}:{exploded:bo
    <Box p={[-.65,.1,-.25]} s={[2.8,.2,3.55]} map={mats.paving} c="#ffffff"/>
    <Box p={[1.4,.1,.62]} s={[1.3,.2,1.81]} map={mats.paving} c="#ffffff"/>
    </> : <Box p={[0,.1,-.25]} s={[4.1,.2,3.55]} map={mats.paving} c="#ffffff"/>}
+   {/* Continuous ring beam closes the wall-to-slab joints on all four sides. */}
+   {[-1.92,1.92].map(x=><Box key={`side-beam${x}`} p={[x,1.82,-.25]} s={[.2,.22,3.38]} map={mats.brick} c="#ffffff"/>)}
+   <Box p={[0,1.82,-1.83]} s={[4.04,.22,.2]} map={mats.plaster} c="#ffffff"/>
+   <Box p={[0,1.82,1.35]} s={[4.04,.22,.23]} map={mats.plaster} c="#ffffff"/>
    {/* Interior partitions leave a central corridor and a proper doorway. */}
    <Box p={[0,.86,-1.14]} s={[.1,1.5,1.2]} c="#b9ad93"/>
    <Box p={[0,1.51,-.15]} s={[.1,.28,.8]} c="#b9ad93"/>
@@ -135,7 +140,7 @@ export default function HouseModel({exploded,reduced,touring=false}:{exploded:bo
 
    {upper&&<><Box p={[0,.1,1.7]} s={[4.25,.2,.8]} map={mats.plaster} c="#ffffff"/><group position={[0,.2,2.06]}><Rail width={4}/></group>{[-2,2].map(x=><group key={x} position={[x,.2,1.73]} rotation={[0,Math.PI/2,0]}><Rail width={.64}/></group>)}<Desk/></>}
  </group>}
- return <group name="pakistani-house" position={[0,-.35,0]}>
+ return <group name="pakistani-house" position={[0,-.35,0]} scale={HOUSE_SCALE}>
    <group name="site-and-entry">
     <Box p={[0,.55,-2.35]} s={[5.12,1.1,.2]} map={mats.plaster} c="#ffffff"/>
     <Box p={[0,1.14,-2.35]} s={[5.22,.08,.29]}/>
