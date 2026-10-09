@@ -10,7 +10,7 @@ interface Props {
 
 const { entry } = Astro.props;
 const { data } = entry;
-const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education';
+const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education' || entry.collection === 'journey';
 const hasMediaContent = data.media && data.media.length > 0;
 const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
 ---
@@ -78,6 +78,12 @@ const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
         ) : null}
       </div>
     </div>
+    
+    {data.videoEmbed && (
+      <div class="project-video-embed">
+        <div class="video-container" set:html={data.videoEmbed} />
+      </div>
+    )}
   </article>
 </Layout>
 
@@ -192,5 +198,24 @@ const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
     font-family: var(--f-mono);
     font-size: 0.875rem;
     margin-top: var(--s-4);
+  }
+
+  .project-video-embed {
+    margin-top: var(--s-16);
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .video-container {
+    width: 75%;
+    aspect-ratio: 16 / 9;
+  }
+
+  .video-container :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: 1px solid var(--c-border);
   }
 </style>

@@ -27,6 +27,7 @@ const commonSchema = z.object({
   summary: z.string().optional(),
   heroMedia: z.string().optional(),
   thumbnail: z.string().optional(),
+  videoEmbed: z.string().optional(),
   media: z.array(z.string()).default([]),
   tools: z.array(z.string()).default([]),
   methods: z.array(z.string()).default([]),
