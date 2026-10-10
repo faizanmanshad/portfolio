@@ -5,7 +5,7 @@ type: "Community Service"
 domains: ["Academics", "Community"]
 dateStart: "2023-01-01"
 dateDisplay: "2023"
-priority: 1
+priority: 10
 summary: "Created and maintained an open-source academic resource database for engineering students."
 links:
   - label: "View Database"

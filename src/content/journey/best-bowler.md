@@ -1,12 +1,12 @@
 ---
 title: "Best Bowler Award"
-shortTitle: "Best Bowler Award"
+shortTitle: "Best Bowler"
 type: "Extracurricular"
 domains: ["Extracurricular"]
-dateStart: "2023-01-01"
-dateDisplay: "2023"
-priority: 5
-summary: "Recognized as the Best Bowler."
+dateStart: "2015-02-11"
+dateDisplay: "2015"
+priority: 13
+summary: "Awarded Best Bowler in the Inter-House Cricket Championship 2013-14 at Bahria College Karsaz."
 media: ["/03 Documents for Scholarship/03-extracurricular-activities/display/best-bowler.webp"]
 ---
 

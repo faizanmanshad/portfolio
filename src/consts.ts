@@ -16,8 +16,8 @@ export const SITE_METADATA = {
 
   // Specific page metadata
   home: {
-    title: "Faizan Manshad | Civil Engineer & BIM Specialist",
-    description: "Explore Faizan Manshad's work across civil engineering, BIM, structural design, digital construction, and emerging construction technologies.",
+    title: "Faizan Manshad | Civil Engineering, BIM & Structural Design",
+    description: "Explore Faizan Manshad's work across civil engineering, structural design, BIM, digital construction, and emerging construction technologies.",
   },
 
   academic: {

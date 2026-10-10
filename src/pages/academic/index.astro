@@ -11,6 +11,9 @@ const recognition = sort(await getCollection("recognition"));
 const journey = sort(await getCollection("journey"));
 const research = sort(await getCollection("research"));
 const education = sort(await getCollection("education"));
+const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service");
+const volunteering = journey.filter((item: any) => item.data.type === "Community Service");
+
 const sections = [
   "Profile",
   "Education",
@@ -18,7 +21,8 @@ const sections = [
   "Practice",
   "Projects",
   "Recognition",
-  "Community",
+  "Extracurriculars",
+  "Volunteering",
 ];
 const groups = [
   {
@@ -46,12 +50,20 @@ const groups = [
     items: recognition,
   },
   {
-    id: "community",
+    id: "extracurriculars",
     number: "06",
     title: "Extracurriculars",
     link: "/about/",
     label: "More about me",
-    items: journey,
+    items: extracurriculars,
+  },
+  {
+    id: "volunteering",
+    number: "07",
+    title: "Volunteering & Community Services",
+    link: "/about/",
+    label: "More about me",
+    items: volunteering,
   },
 ];
 import { SITE_METADATA } from "../../consts";
@@ -195,8 +207,8 @@ import { SITE_METADATA } from "../../consts";
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
-          <div class="record-list">
-            {group.items.map((item) => (
+          <div class={`record-list ${['extracurriculars', 'volunteering'].includes(group.id) ? 'grid-list' : ''}`}>
+            {group.items.map((item: any) => (
               <a
                 class="dossier-record"
                 data-academic-reveal
@@ -776,6 +788,20 @@ import { SITE_METADATA } from "../../consts";
   .section-top > a { flex-shrink:0; color:var(--chapter-accent); line-height:1.6; }
   .research-feature { margin-top:24px; }
   .record-list .dossier-record:last-child { border-bottom:0; }
+  @media (min-width: 901px) {
+    .grid-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 50px;
+    }
+    .grid-list .dossier-record {
+      grid-template-columns: 45px 1fr 20px;
+      gap: 15px;
+    }
+    .grid-list .dossier-record:nth-child(odd):nth-last-child(2) {
+      border-bottom: 0;
+    }
+  }
   .dossier-record:hover { background:#ffffff03; }
   @media(max-width:700px) {
     .dossier { padding-left:5vw; padding-right:5vw; }
