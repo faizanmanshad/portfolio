@@ -61,7 +61,7 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   
   // Extracurricular / Journey (landscape by default)
   "03-extracurricular-activities/display/100m-relay-race.webp": { frameWidth: 420, frameHeight: 320 },
-  "03-extracurricular-activities/display/3rd-position-8th-class-certifcate.webp": { frameWidth: 420, frameHeight: 320 },
+  "01-honors-awards/display/3rd-position-8th-class-certifcate.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/aspire-certificate.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/best-bowler.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/cacio-conference.webp": { frameWidth: 420, frameHeight: 320 },

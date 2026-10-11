@@ -4,7 +4,7 @@ import { animateDoors, createDoors } from './pageDoors';
 const reduced = matchMedia('(prefers-reduced-motion: reduce)');
 
 // Keep scrolling native; replay reveals only when entering on a downward pass.
-const selector = '.practice-card, .principle-grid > div, .register-row, .research-copy, .section-heading, .studio-footer > div, .index-row, .index-title, .index-deck, .cv-index-list > li, .gsap-stagger-item, [data-academic-reveal]';
+const selector = '.practice-card, .principle-grid > div, .register-row, .directory-card, .about-feature-card, .cluster-header, .research-copy, .section-heading, .studio-footer > div, .index-row, .index-title, .index-deck, .cv-index-list > li, .gsap-stagger-item, [data-academic-reveal]';
 const activeReveals = new Map<Element, gsap.core.Tween>();
 const armed = new WeakSet<Element>();
 let previousY = window.scrollY;
