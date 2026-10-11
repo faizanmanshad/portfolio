@@ -10,15 +10,18 @@ interface Props {
 
 const { entry } = Astro.props;
 const { data } = entry;
-const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education' || entry.collection === 'journey' || entry.collection === 'projects';
+const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education' || entry.collection === 'journey' || entry.collection === 'projects' || entry.collection === 'experience';
 const hasMediaContent = data.media && data.media.length > 0;
 const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
+
+const backLinkHref = entry.collection === 'experience' ? '/academic/#practice' : '/academic/#projects';
+const backLinkLabel = entry.collection === 'experience' ? 'Professional Practice ↗' : 'Academic Projects ↗';
 ---
 
 <Layout title={`${data.title} | Faizan Manshad`} description={data.deck || data.summary}>
   <article class={`container project-article ${shouldShowSideBySide ? 'has-media' : ''}`}>
-    <a class="project-back-link" href="/academic/#projects">
-      Academic Projects ↗
+    <a class="project-back-link" href={backLinkHref}>
+      {backLinkLabel}
     </a>
     <div class="project-layout-grid">
       <div class="project-text-column">

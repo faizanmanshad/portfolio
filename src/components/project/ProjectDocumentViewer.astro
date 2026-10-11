@@ -13,6 +13,7 @@ const { media = [], title = "Project Document", labels = [] } = Astro.props;
 
 const isPdf = media.some(item => item.endsWith('.pdf'));
 const isExcel = media.some(item => item.endsWith('.xlsx'));
+const isVideo = media.some(item => /\.(mov|mp4|webm)$/i.test(item));
 const isImage = media.some(item => /\.(webp|jpg|jpeg|png)$/i.test(item));
 
 const getMediaUrl = (itemPath: string) => {
@@ -84,6 +85,35 @@ const initialDoc = documentsData[0] || null;
         title={initialDoc.label}
         loading="lazy"
       ></iframe>
+    </div>
+  </aside>
+) : isVideo ? (
+  <aside class="project-video-archive" aria-label="Workplace workflow video capture">
+    <div class="video-kicker-bar">
+      <div class="kicker-left">
+        <span class="video-live-dot" aria-hidden="true"></span>
+        <span class="video-kicker">WORKPLACE WORKFLOW CAPTURE</span>
+      </div>
+      <span class="video-spec-badge">Dual-Screen Workstation</span>
+    </div>
+
+    <div class="video-player-container">
+      <video
+        controls
+        playsinline
+        preload="metadata"
+        class="workflow-video-frame"
+      >
+        <source src={getMediaUrl(media[0])} type="video/quicktime" />
+        <source src={getMediaUrl(media[0])} type="video/mp4" />
+        Your browser does not support video playback.
+      </video>
+    </div>
+
+    <div class="video-caption-bar">
+      <p class="video-caption-text">
+        Production timelapse recording capturing real-time engineering workflows, model coordination, and operational tasks across dual-monitor workstation.
+      </p>
     </div>
   </aside>
 ) : isImage ? (
@@ -190,6 +220,90 @@ const initialDoc = documentsData[0] || null;
     border: none;
     background: #111512;
     display: block;
+  }
+
+  .project-video-archive {
+    background: #141a15;
+    border: 1px solid #ffffff1e;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .video-kicker-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: #18221a;
+    border-bottom: 1px solid #ffffff18;
+    gap: 12px;
+  }
+
+  .kicker-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .video-live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ed8851;
+    box-shadow: 0 0 8px rgba(237, 136, 81, 0.8);
+    animation: livePulse 2s infinite ease-in-out;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .video-kicker {
+    font: 11px/1.4 var(--font-mono);
+    color: #ed8851;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  .video-spec-badge {
+    font: 10px/1 var(--font-mono);
+    background: #ffffff14;
+    color: #ede8e1;
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid #ffffff16;
+  }
+
+  .video-player-container {
+    width: 100%;
+    background: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .workflow-video-frame {
+    width: 100%;
+    max-height: 580px;
+    display: block;
+    background: #000000;
+    outline: none;
+  }
+
+  .video-caption-bar {
+    padding: 12px 16px;
+    background: #141a15;
+    border-top: 1px solid #ffffff14;
+  }
+
+  .video-caption-text {
+    margin: 0;
+    font: 12px/1.5 var(--font-sans);
+    color: #a4aaa0;
   }
 
   @media (max-width: 640px) {
