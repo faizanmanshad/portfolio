@@ -9,9 +9,6 @@ export interface Props {
 const { media, title = "Retaining Wall Design Spreadsheets" } = Astro.props;
 
 const getMediaUrl = (path: string) => {
-  if (import.meta.env.DEV && path.startsWith('10-semester-projects')) {
-    return `/${path}`;
-  }
   return `${MEDIA_BASE_URL}/${path}`;
 };
 

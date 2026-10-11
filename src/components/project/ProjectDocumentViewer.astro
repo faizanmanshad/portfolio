@@ -1,6 +1,4 @@
 ---
-import fs from 'node:fs';
-import path from 'node:path';
 import { MEDIA_BASE_URL } from "../../consts";
 import ExcelViewer from "./ExcelViewer.astro";
 import MediaGallery from "./MediaGallery.astro";
@@ -18,9 +16,6 @@ const isExcel = media.some(item => item.endsWith('.xlsx'));
 const isImage = media.some(item => /\.(webp|jpg|jpeg|png)$/i.test(item));
 
 const getMediaUrl = (itemPath: string) => {
-  if (import.meta.env.DEV && itemPath.startsWith('10-semester-projects')) {
-    return `/${itemPath}`;
-  }
   return `${MEDIA_BASE_URL}/${itemPath}`;
 };
 
@@ -45,31 +40,17 @@ const getDocLabel = (itemPath: string, index: number) => {
   return `Document ${index + 1}`;
 };
 
-// Retrieve pre-rendered WebP pages for any PDF to prevent IDM intercepting iframes
-const getDocumentPages = (pdfItemPath: string) => {
-  const clean = pdfItemPath.replace(/^10-semester-projects\//, '').replace(/\.pdf$/, '');
-  const dir = path.resolve('./public/10-semester-projects/display', clean);
-  if (fs.existsSync(dir)) {
-    const files = fs.readdirSync(dir)
-      .filter(f => f.endsWith('.webp'))
-      .sort((a, b) => {
-        const numA = parseInt(a.replace(/\D/g, ''), 10) || 0;
-        const numB = parseInt(b.replace(/\D/g, ''), 10) || 0;
-        return numA - numB;
-      });
-    return files.map(f => `/10-semester-projects/display/${clean}/${f}`);
-  }
-  return [];
-};
-
-// Pre-calculate page collections for all pdfs in media
+// Documents data pointing directly to Cloudflare
 const documentsData = isPdf
-  ? media.map((docPath, idx) => ({
-      path: docPath,
-      url: getMediaUrl(docPath),
-      label: getDocLabel(docPath, idx),
-      pages: getDocumentPages(docPath),
-    }))
+  ? media.map((docPath, idx) => {
+      const url = getMediaUrl(docPath);
+      return {
+        path: docPath,
+        url,
+        viewerUrl: `https://docs.google.com/viewer?url=${encodeURIComponent(url)}&embedded=true`,
+        label: getDocLabel(docPath, idx),
+      };
+    })
   : [];
 
 const initialDoc = documentsData[0] || null;
@@ -82,16 +63,11 @@ const initialDoc = documentsData[0] || null;
     <div class="archive-header">
       <div class="header-left">
         <span class="archive-kicker">OFFICIAL DOCUMENT ARCHIVE</span>
-        <span class="file-count" id="active-page-counter">
-          Page 1 of {initialDoc.pages.length}
+        <span class="file-count" id="active-doc-badge">
+          {documentsData.length > 1 ? `1 of ${documentsData.length} Documents` : "PDF Document"}
         </span>
       </div>
       <div class="header-actions">
-        <div class="zoom-controls">
-          <button type="button" class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button>
-          <button type="button" class="zoom-btn" id="zoom-reset" aria-label="Reset zoom">100%</button>
-          <button type="button" class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
-        </div>
         <a
           id="pdf-download-btn"
           href={initialDoc.url}
@@ -99,7 +75,7 @@ const initialDoc = documentsData[0] || null;
           rel="noopener noreferrer"
           class="open-full-btn"
         >
-          Open PDF ↗
+          Open Original PDF ↗
         </a>
       </div>
     </div>
@@ -112,7 +88,7 @@ const initialDoc = documentsData[0] || null;
             class={`pdf-tab ${idx === 0 ? 'is-active' : ''}`}
             data-doc-idx={idx}
             data-doc-url={doc.url}
-            data-doc-pages={JSON.stringify(doc.pages)}
+            data-viewer-url={doc.viewerUrl}
           >
             <span class="tab-badge">{idx + 1}</span>
             <span class="tab-name">{doc.label}</span>
@@ -122,22 +98,20 @@ const initialDoc = documentsData[0] || null;
     )}
 
     <div class="doc-viewport" id="doc-viewport">
-      <div class="doc-pages-container" id="doc-pages-container">
-        {initialDoc.pages.map((pageSrc, pageIdx) => (
-          <div class="doc-page-frame" data-page-num={pageIdx + 1}>
-            <img
-              src={pageSrc}
-              alt={`${initialDoc.label} - Page ${pageIdx + 1}`}
-              loading={pageIdx === 0 ? "eager" : "lazy"}
-              decoding="async"
-              class="doc-page-img"
-            />
-            <div class="doc-page-footer">
-              <span>Page {pageIdx + 1} of {initialDoc.pages.length}</span>
-            </div>
-          </div>
-        ))}
-      </div>
+      <iframe
+        id="pdf-embed-frame"
+        src={initialDoc.viewerUrl}
+        class="pdf-frame"
+        title={initialDoc.label}
+        loading="lazy"
+      ></iframe>
+    </div>
+
+    <div class="doc-viewer-footer">
+      <span class="footer-note">Streamed directly from Cloudflare secure storage</span>
+      <a href={initialDoc.url} target="_blank" rel="noopener noreferrer" class="footer-direct-link" id="pdf-footer-link">
+        Direct Cloudflare Link ↗
+      </a>
     </div>
   </aside>
 ) : isImage ? (
@@ -149,106 +123,31 @@ const initialDoc = documentsData[0] || null;
     const wrapper = document.getElementById('doc-viewer-wrapper');
     if (!wrapper) return;
 
-    const viewport = wrapper.querySelector<HTMLElement>('#doc-viewport');
-    const container = wrapper.querySelector<HTMLElement>('#doc-pages-container');
-    const pageCounter = wrapper.querySelector<HTMLElement>('#active-page-counter');
+    const iframe = wrapper.querySelector<HTMLIFrameElement>('#pdf-embed-frame');
     const downloadBtn = wrapper.querySelector<HTMLAnchorElement>('#pdf-download-btn');
+    const footerLink = wrapper.querySelector<HTMLAnchorElement>('#pdf-footer-link');
+    const activeBadge = wrapper.querySelector<HTMLElement>('#active-doc-badge');
     const tabs = wrapper.querySelectorAll<HTMLButtonElement>('.pdf-tab');
 
-    let currentScale = 1.0;
-
-    // Zoom controls
-    const zoomInBtn = wrapper.querySelector<HTMLButtonElement>('#zoom-in');
-    const zoomOutBtn = wrapper.querySelector<HTMLButtonElement>('#zoom-out');
-    const zoomResetBtn = wrapper.querySelector<HTMLButtonElement>('#zoom-reset');
-
-    function applyZoom(scale: number) {
-      currentScale = Math.min(Math.max(scale, 0.7), 1.8);
-      if (container) {
-        container.style.transform = `scale(${currentScale})`;
-        container.style.transformOrigin = 'top center';
-      }
-      if (zoomResetBtn) {
-        zoomResetBtn.textContent = `${Math.round(currentScale * 100)}%`;
-      }
-    }
-
-    zoomInBtn?.addEventListener('click', () => applyZoom(currentScale + 0.15));
-    zoomOutBtn?.addEventListener('click', () => applyZoom(currentScale - 0.15));
-    zoomResetBtn?.addEventListener('click', () => applyZoom(1.0));
-
-    // Page intersection observer to update current page counter
-    let observer: IntersectionObserver | null = null;
-
-    function initPageObserver(totalPages: number) {
-      if (observer) observer.disconnect();
-      const pageFrames = wrapper?.querySelectorAll<HTMLElement>('.doc-page-frame');
-      if (!pageFrames || !pageFrames.length) return;
-
-      observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const pageNum = entry.target.getAttribute('data-page-num');
-            if (pageNum && pageCounter) {
-              pageCounter.textContent = `Page ${pageNum} of ${totalPages}`;
-            }
-          }
-        });
-      }, {
-        root: viewport,
-        threshold: 0.3
-      });
-
-      pageFrames.forEach(frame => observer?.observe(frame));
-    }
-
-    const initialFrames = wrapper.querySelectorAll<HTMLElement>('.doc-page-frame');
-    initPageObserver(initialFrames.length);
-
-    // Document switcher tabs
-    tabs.forEach(tab => {
+    tabs.forEach((tab, idx) => {
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.classList.remove('is-active'));
         tab.classList.add('is-active');
 
-        const pagesJson = tab.getAttribute('data-doc-pages');
+        const viewerUrl = tab.getAttribute('data-viewer-url');
         const docUrl = tab.getAttribute('data-doc-url');
-        if (docUrl && downloadBtn) {
+
+        if (iframe && viewerUrl) {
+          iframe.src = viewerUrl;
+        }
+        if (downloadBtn && docUrl) {
           downloadBtn.href = docUrl;
         }
-
-        if (pagesJson && container) {
-          try {
-            const pages: string[] = JSON.parse(pagesJson);
-            container.innerHTML = '';
-            pages.forEach((pageSrc, idx) => {
-              const frame = document.createElement('div');
-              frame.className = 'doc-page-frame';
-              frame.setAttribute('data-page-num', String(idx + 1));
-
-              const img = document.createElement('img');
-              img.src = pageSrc;
-              img.alt = `Page ${idx + 1}`;
-              img.className = 'doc-page-img';
-              img.loading = idx === 0 ? 'eager' : 'lazy';
-              img.decoding = 'async';
-
-              const footer = document.createElement('div');
-              footer.className = 'doc-page-footer';
-              footer.innerHTML = `<span>Page ${idx + 1} of ${pages.length}</span>`;
-
-              frame.appendChild(img);
-              frame.appendChild(footer);
-              container.appendChild(frame);
-            });
-
-            if (viewport) viewport.scrollTop = 0;
-            if (pageCounter) pageCounter.textContent = `Page 1 of ${pages.length}`;
-            applyZoom(1.0);
-            initPageObserver(pages.length);
-          } catch (e) {
-            console.error('Error switching document:', e);
-          }
+        if (footerLink && docUrl) {
+          footerLink.href = docUrl;
+        }
+        if (activeBadge) {
+          activeBadge.textContent = `${idx + 1} of ${tabs.length} Documents`;
         }
       });
     });
@@ -306,37 +205,6 @@ const initialDoc = documentsData[0] || null;
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-
-  .zoom-controls {
-    display: flex;
-    align-items: center;
-    background: #101511;
-    border: 1px solid #ffffff18;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .zoom-btn {
-    background: transparent;
-    border: none;
-    color: #c0c6bc;
-    font: 11px/1 var(--font-mono);
-    padding: 6px 9px;
-    cursor: pointer;
-    transition: background 0.15s ease, color 0.15s ease;
-  }
-
-  .zoom-btn:hover {
-    background: #ffffff14;
-    color: #ffffff;
-  }
-
-  #zoom-reset {
-    border-left: 1px solid #ffffff14;
-    border-right: 1px solid #ffffff14;
-    font-size: 10px;
-    min-width: 42px;
   }
 
   .open-full-btn {
@@ -406,47 +274,41 @@ const initialDoc = documentsData[0] || null;
   }
 
   .doc-viewport {
-    height: 680px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: #0d120e;
-    padding: 24px 20px;
-    scroll-behavior: smooth;
-  }
-
-  .doc-pages-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    transition: transform 0.15s ease-out;
-  }
-
-  .doc-page-frame {
     width: 100%;
-    max-width: 620px;
-    background: #ffffff;
-    border-radius: 4px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-    overflow: hidden;
+    height: 680px;
+    background: #0d120e;
     position: relative;
   }
 
-  .doc-page-img {
+  .pdf-frame {
     width: 100%;
-    height: auto;
-    display: block;
-    background: #ffffff;
+    height: 100%;
+    border: none;
+    background: #111512;
   }
 
-  .doc-page-footer {
+  .doc-viewer-footer {
     display: flex;
-    justify-content: flex-end;
-    padding: 6px 12px;
-    background: #f4f4f4;
-    border-top: 1px solid #e2e2e2;
-    font: 10px/1 var(--font-mono);
-    color: #666;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: #121813;
+    border-top: 1px solid #ffffff14;
+    font: 11px/1.4 var(--font-mono);
+    color: #7d847a;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-direct-link {
+    color: #ed8851;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-direct-link:hover {
+    color: #ff9e66;
+    text-decoration: underline;
   }
 
   @media (max-width: 640px) {
@@ -455,8 +317,7 @@ const initialDoc = documentsData[0] || null;
       align-items: flex-start;
     }
     .doc-viewport {
-      height: 500px;
-      padding: 12px 8px;
+      height: 480px;
     }
   }
 </style>
