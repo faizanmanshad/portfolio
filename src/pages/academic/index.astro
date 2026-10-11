@@ -1,5 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
+import AcademicShowMore from "../../components/AcademicShowMore.astro";
 import { Image } from 'astro:assets';
 import researchCover from '../../assets/research-cover.png';
 import { getCollection } from "astro:content";
@@ -135,7 +136,7 @@ import { SITE_METADATA } from "../../consts";
             <span>01 /</span> Education
           </h2>
         </div>
-        <div class="record-list">
+        <div class="record-list" id="education-records" data-academic-items>
           {education.map((item) => (
             <a
               class="dossier-record"
@@ -151,6 +152,7 @@ import { SITE_METADATA } from "../../consts";
             </a>
           ))}
         </div>
+        <AcademicShowMore listId="education-records" total={education.length} label="education entries" />
         <div class="interests" data-academic-reveal>
           <p class="eyebrow">AREAS OF INTEREST</p>
           <p>
@@ -166,6 +168,7 @@ import { SITE_METADATA } from "../../consts";
           </h2>
           <a href="/research/">Research archive ↗</a>
         </div>
+        <div id="research-records" data-academic-items>
         {research.map((item) => (
           <article class="research-feature" data-academic-reveal>
             <a
@@ -198,6 +201,8 @@ import { SITE_METADATA } from "../../consts";
             </div>
           </article>
         ))}
+        </div>
+        <AcademicShowMore listId="research-records" total={research.length} label="research entries" />
       </section>
       {groups.map((group) => (
         <section id={group.id} data-academic-section>
@@ -207,7 +212,7 @@ import { SITE_METADATA } from "../../consts";
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
-          <div class={`record-list ${group.id === 'extracurriculars' || group.id === 'projects' ? 'grid-list' : ''}`}>
+          <div id={`${group.id}-records`} data-academic-items class={`record-list ${group.id === 'extracurriculars' || group.id === 'projects' ? 'grid-list' : ''}`}>
             {group.items.map((item: any) => (
               <a
                 class="dossier-record"
@@ -235,6 +240,7 @@ import { SITE_METADATA } from "../../consts";
               </a>
             ))}
           </div>
+          <AcademicShowMore listId={`${group.id}-records`} total={group.items.length} label={group.title} />
         </section>
       ))}
       <footer class="academic-end" data-academic-reveal>
@@ -250,30 +256,7 @@ import { SITE_METADATA } from "../../consts";
   </main>
 </Layout>
 <script>
-  const reveals = document.querySelectorAll<HTMLElement>(
-    "[data-academic-reveal]",
-  );
   const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-  const revealObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) =>
-        entry.target.classList.toggle("is-visible", entry.isIntersecting),
-      );
-    },
-    { threshold: 0, rootMargin: "0px 0px -35px 0px" },
-  );
-  function configureMotion() {
-    reveals.forEach((el) => {
-      revealObserver.unobserve(el);
-      el.classList.remove("reveal-ready", "is-visible");
-      if (!reduced.matches) {
-        el.classList.add("reveal-ready");
-        revealObserver.observe(el);
-      }
-    });
-  }
-  configureMotion();
-  reduced.addEventListener("change", configureMotion);
   const sections = [
     ...document.querySelectorAll<HTMLElement>("[data-academic-section]"),
   ];
@@ -314,6 +297,7 @@ import { SITE_METADATA } from "../../consts";
   updateIndex();
 </script>
 <style>
+  [data-academic-items] > [hidden] { display: none !important; }
   .manuscript-preview { display:block; width:100%; height:100%; object-fit:contain; padding:12px 12px 35px; }
   .manuscript-caption { position:absolute; bottom:10px; left:12px; right:12px; text-align:center; font:8px var(--font-mono); color:#c2c8ba; }
   .mobile-section-picker { display: none; }
@@ -636,17 +620,7 @@ import { SITE_METADATA } from "../../consts";
     color: #f08450;
     font-size: 14px;
   }
-  .reveal-ready {
-    opacity: 0;
-    transform: translateY(22px);
-    transition:
-      opacity 0.65s ease,
-      transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .reveal-ready.is-visible {
-    opacity: 1;
-    transform: none;
-  }
+
   a:focus-visible {
     outline: 2px solid #e85c1a;
     outline-offset: 5px;
@@ -762,13 +736,7 @@ import { SITE_METADATA } from "../../consts";
       padding-bottom: 34px;
     }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-ready {
-      opacity: 1;
-      transform: none;
-      transition: none;
-    }
-  }
+
 
   /* Chapter hierarchy is local to the academic overview. */
   .dossier-content > section {

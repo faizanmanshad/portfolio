@@ -2,6 +2,7 @@ import {
   Component,
   Suspense,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   type ReactNode,
@@ -12,6 +13,7 @@ import {
   useFrame,
 } from "@react-three/fiber";
 import { gsap } from "gsap";
+import { animateDoors, createDoors } from "../../scripts/pageDoors";
 import {
   OrbitControls,
   Environment,
@@ -258,8 +260,13 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
   );
 
   const [introState, setIntroState] = useState<"loading" | "revealing" | "holding" | "docking" | "complete">(
-    () => shouldSkipIntro ? "complete" : "loading"
+    "loading"
   );
+  // Hydrate the same markup the server rendered, then apply browser preferences
+  // before paint. Reading sessionStorage in the initializer replaced the SSR tree.
+  useLayoutEffect(() => {
+    if (shouldSkipIntro) setIntroState("complete");
+  }, []);
   
   const containerRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -274,14 +281,11 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
   }, [touring]);
   const sceneRef = useRef<any>(null);
   const clipPlane = useRef(new THREE.Plane(new THREE.Vector3(0, -1, 0), 10.0)).current;
-  const [reduced, setReduced] = useState(
-    () =>
-      typeof window !== "undefined" &&
-      matchMedia("(prefers-reduced-motion: reduce)").matches,
-  );
+  const [reduced, setReduced] = useState(false);
   useEffect(() => {
     const query = matchMedia("(prefers-reduced-motion: reduce)");
     const update = () => setReduced(query.matches);
+    update();
     query.addEventListener("change", update);
     const explore = () => {
       setMode("assembled");
@@ -307,6 +311,11 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
 
   // Intro Sequence Orchestration
   useEffect(() => {
+    if (failed) {
+      document.getElementById("global-intro-loader")?.remove();
+      setIntroState("complete");
+      return;
+    }
     if (introState === "loading" && ready && !failed) {
       setIntroState("revealing");
       
@@ -337,20 +346,9 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
       tl.add(() => {
         setIntroState("docking");
         
-        const baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;';
-        const left = document.createElement('div');
-        left.style.cssText = baseStyle + 'left:0;width:0;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
-        const right = document.createElement('div');
-        right.style.cssText = baseStyle + 'right:0;width:0;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
-        document.body.appendChild(left);
-        document.body.appendChild(right);
-
-        // Doors close → snap layout → doors open
-        gsap.to([left, right], {
-          width: '50vw',
-          duration: 0.85,
-          ease: 'power4.inOut',
-          onComplete: () => {
+        const panels = createDoors();
+        gsap.set(panels, { xPercent: (index: number) => index === 0 ? -100 : 100 });
+        animateDoors(panels, false, () => {
             // Screen fully covered — snap the layout
             if (containerRef.current) containerRef.current.style.cssText = '';
             const canvas = containerRef.current?.querySelector('.studio-canvas') as HTMLElement;
@@ -359,14 +357,8 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
             sessionStorage.setItem('skipIntro', 'true');
 
             setTimeout(() => {
-              gsap.to([left, right], {
-                width: 0,
-                duration: 0.85,
-                ease: 'power4.inOut',
-                onComplete: () => { left.remove(); right.remove(); }
-              });
+              animateDoors(panels, true);
             }, 100);
-          }
         });
       });
     }

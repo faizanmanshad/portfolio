@@ -1,0 +1,62 @@
+---
+interface Props {
+  listId: string;
+  total: number;
+  label: string;
+}
+const { listId, total, label } = Astro.props;
+---
+
+{total > 6 && (
+  <div class="show-more-controls" data-academic-pagination hidden>
+    <button type="button" aria-controls={listId} aria-label={`Show more ${label}`}>
+      Show More <span aria-hidden="true">+</span>
+    </button>
+    <span class="show-more-count" role="status" aria-live="polite" aria-atomic="true"></span>
+  </div>
+)}
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-academic-pagination]').forEach(controls => {
+    const button = controls.querySelector('button');
+    const status = controls.querySelector('[role="status"]');
+    const list = document.getElementById(button?.getAttribute('aria-controls') || '');
+    if (!button || !status || !list) return;
+    const items = Array.from(list.children) as HTMLElement[];
+    let shown = Math.min(6, items.length);
+    items.forEach((item, index) => { item.hidden = index >= shown; });
+    const update = () => {
+      status.textContent = `Showing ${shown} of ${items.length}`;
+      button.hidden = shown >= items.length;
+    };
+    update();
+    controls.hidden = false;
+    button.addEventListener('click', () => {
+      const previous = shown;
+      shown = Math.min(shown + 6, items.length);
+      items.slice(previous, shown).forEach(item => { item.hidden = false; });
+      // Keep keyboard navigation at the start of the newly revealed batch.
+      if (document.activeElement === button) {
+        const first = items[previous];
+        const focusTarget = first.matches('a, button') ? first : first.querySelector<HTMLElement>('a, button');
+        focusTarget?.focus({ preventScroll: true });
+      }
+      update();
+    });
+  });
+</script>
+
+<style>
+  .show-more-controls { display: flex; align-items: center; gap: 18px; padding-top: 22px; }
+  .show-more-controls[hidden], button[hidden] { display: none; }
+  button {
+    display: inline-flex; align-items: center; gap: 24px;
+    padding: 12px 18px; border: 1px solid #ffffff26; border-radius: 2px;
+    background: #ffffff05; color: var(--c-text); font: inherit; font-size: 13px;
+    cursor: pointer; transition: border-color 0.2s, color 0.2s;
+  }
+  button:hover { color: #f08450; border-color: #f08450; }
+  button:focus-visible { outline: 2px solid #e85c1a; outline-offset: 4px; }
+  button span { color: #f08450; }
+  .show-more-count { font: 10px var(--font-mono); color: var(--c-muted); }
+</style>

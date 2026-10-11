@@ -124,7 +124,8 @@ const navLinks = [
   const nav = document.querySelector(".site-nav") as HTMLElement | null;
   if (nav) {
     const onScroll = () => {
-      nav.dataset.scrolled = window.scrollY > 20 ? "true" : "false";
+      const scrolled = window.scrollY > 20 ? "true" : "false";
+      if (nav.dataset.scrolled !== scrolled) nav.dataset.scrolled = scrolled;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();

@@ -99,22 +99,6 @@ const allItems = journey.sort((a, b) => {
   </main>
 </Layout>
 
-<script>
-  import { gsap } from "gsap";
-  gsap.fromTo(
-    ".gsap-stagger-item",
-    { opacity: 0, y: 20 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: "power2.out",
-      delay: 0.2,
-    },
-  );
-</script>
-
 <style>
   .about-page {
     padding-top: calc(var(--nav-h) + var(--s-16));
