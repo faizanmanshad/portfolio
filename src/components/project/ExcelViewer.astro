@@ -31,11 +31,6 @@ const gravityUrl = getMediaUrl(media.find(m => m.includes('gravity')) || media[1
       </div>
       <p class="excel-subtitle">Interactive Engineering Calculation Sheets</p>
     </div>
-    <div class="excel-download-group">
-      <a id="excel-download-active" href={cantileverUrl} download class="excel-download-btn">
-        Download .xlsx ↗
-      </a>
-    </div>
   </div>
 
   <!-- Workbook Selector Tabs -->
@@ -226,20 +221,12 @@ const gravityUrl = getMediaUrl(media.find(m => m.includes('gravity')) || media[1
     const wbTabs = viewer.querySelectorAll<HTMLButtonElement>('.wb-tab');
     const sheetTabs = viewer.querySelectorAll<HTMLButtonElement>('.sheet-tab');
     const panels = viewer.querySelectorAll<HTMLElement>('.sheet-panel');
-    const downloadBtn = viewer.querySelector<HTMLAnchorElement>('#excel-download-active');
     const formulaDisplay = viewer.querySelector<HTMLElement>('#formula-display');
 
     function updateView() {
       // update panels
       const targetId = `panel-${currentWb}-${currentSheet}`;
       panels.forEach(p => p.classList.toggle('is-active', p.id === targetId));
-
-      // update download link
-      const activeWbBtn = viewer?.querySelector<HTMLButtonElement>(`.wb-tab[data-wb="${currentWb}"]`);
-      if (downloadBtn && activeWbBtn) {
-        downloadBtn.href = activeWbBtn.getAttribute('data-url') || '';
-        downloadBtn.textContent = `Download ${currentWb === 'cantilever' ? 'Cantilever' : 'Gravity'} .xlsx ↗`;
-      }
 
       // update formula preview text
       if (formulaDisplay) {

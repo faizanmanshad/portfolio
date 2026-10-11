@@ -59,27 +59,7 @@ const initialDoc = documentsData[0] || null;
 {isExcel ? (
   <ExcelViewer media={media} title={title} />
 ) : isPdf && initialDoc ? (
-  <aside class="project-pdf-archive" id="doc-viewer-wrapper" aria-label="Official project documents">
-    <div class="archive-header">
-      <div class="header-left">
-        <span class="archive-kicker">OFFICIAL DOCUMENT ARCHIVE</span>
-        <span class="file-count" id="active-doc-badge">
-          {documentsData.length > 1 ? `1 of ${documentsData.length} Documents` : "PDF Document"}
-        </span>
-      </div>
-      <div class="header-actions">
-        <a
-          id="pdf-download-btn"
-          href={initialDoc.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="open-full-btn"
-        >
-          Open Original PDF ↗
-        </a>
-      </div>
-    </div>
-
+  <aside class="project-pdf-archive" id="doc-viewer-wrapper" aria-label="Project document preview">
     {documentsData.length > 1 && (
       <nav class="pdf-tabs" aria-label="Select document to preview">
         {documentsData.map((doc, idx) => (
@@ -87,7 +67,6 @@ const initialDoc = documentsData[0] || null;
             type="button"
             class={`pdf-tab ${idx === 0 ? 'is-active' : ''}`}
             data-doc-idx={idx}
-            data-doc-url={doc.url}
             data-viewer-url={doc.viewerUrl}
           >
             <span class="tab-badge">{idx + 1}</span>
@@ -106,13 +85,6 @@ const initialDoc = documentsData[0] || null;
         loading="lazy"
       ></iframe>
     </div>
-
-    <div class="doc-viewer-footer">
-      <span class="footer-note">Streamed directly from Cloudflare secure storage</span>
-      <a href={initialDoc.url} target="_blank" rel="noopener noreferrer" class="footer-direct-link" id="pdf-footer-link">
-        Direct Cloudflare Link ↗
-      </a>
-    </div>
   </aside>
 ) : isImage ? (
   <MediaGallery media={media} title={title} labels={labels} carousel />
@@ -124,30 +96,16 @@ const initialDoc = documentsData[0] || null;
     if (!wrapper) return;
 
     const iframe = wrapper.querySelector<HTMLIFrameElement>('#pdf-embed-frame');
-    const downloadBtn = wrapper.querySelector<HTMLAnchorElement>('#pdf-download-btn');
-    const footerLink = wrapper.querySelector<HTMLAnchorElement>('#pdf-footer-link');
-    const activeBadge = wrapper.querySelector<HTMLElement>('#active-doc-badge');
     const tabs = wrapper.querySelectorAll<HTMLButtonElement>('.pdf-tab');
 
-    tabs.forEach((tab, idx) => {
+    tabs.forEach((tab) => {
       tab.addEventListener('click', () => {
         tabs.forEach(t => t.classList.remove('is-active'));
         tab.classList.add('is-active');
 
         const viewerUrl = tab.getAttribute('data-viewer-url');
-        const docUrl = tab.getAttribute('data-doc-url');
-
         if (iframe && viewerUrl) {
           iframe.src = viewerUrl;
-        }
-        if (downloadBtn && docUrl) {
-          downloadBtn.href = docUrl;
-        }
-        if (footerLink && docUrl) {
-          footerLink.href = docUrl;
-        }
-        if (activeBadge) {
-          activeBadge.textContent = `${idx + 1} of ${tabs.length} Documents`;
         }
       });
     });
@@ -168,67 +126,13 @@ const initialDoc = documentsData[0] || null;
     flex-direction: column;
   }
 
-  .archive-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    padding: 14px 18px;
-    background: #18221a;
-    border-bottom: 1px solid #ffffff18;
-    flex-wrap: wrap;
-  }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .archive-kicker {
-    font: 11px/1.4 var(--font-mono);
-    color: #ed8851;
-    letter-spacing: 0.08em;
-    font-weight: 600;
-  }
-
-  .file-count {
-    font: 11px/1 var(--font-mono);
-    background: #ffffff14;
-    color: #ede8e1;
-    padding: 4px 10px;
-    border-radius: 3px;
-    border: 1px solid #ffffff16;
-  }
-
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .open-full-btn {
-    font: 11px/1 var(--font-mono);
-    color: #ffffff;
-    background: #b54a1a;
-    padding: 7px 13px;
-    border-radius: 4px;
-    text-decoration: none;
-    transition: background 0.2s ease;
-    white-space: nowrap;
-  }
-
-  .open-full-btn:hover {
-    background: #e85c1a;
-  }
-
   .pdf-tabs {
     display: flex;
     background: #101511;
     border-bottom: 1px solid #ffffff14;
     overflow-x: auto;
-    padding: 5px;
-    gap: 5px;
+    padding: 6px 8px;
+    gap: 6px;
   }
 
   .pdf-tab {
@@ -275,7 +179,7 @@ const initialDoc = documentsData[0] || null;
 
   .doc-viewport {
     width: 100%;
-    height: 680px;
+    height: 720px;
     background: #0d120e;
     position: relative;
   }
@@ -285,39 +189,12 @@ const initialDoc = documentsData[0] || null;
     height: 100%;
     border: none;
     background: #111512;
-  }
-
-  .doc-viewer-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    background: #121813;
-    border-top: 1px solid #ffffff14;
-    font: 11px/1.4 var(--font-mono);
-    color: #7d847a;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .footer-direct-link {
-    color: #ed8851;
-    text-decoration: none;
-    transition: color 0.15s ease;
-  }
-
-  .footer-direct-link:hover {
-    color: #ff9e66;
-    text-decoration: underline;
+    display: block;
   }
 
   @media (max-width: 640px) {
-    .archive-header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
     .doc-viewport {
-      height: 480px;
+      height: 500px;
     }
   }
 </style>
