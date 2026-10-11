@@ -7,7 +7,7 @@ dateStart: "2015-02-11"
 dateDisplay: "2015"
 priority: 13
 summary: "Awarded Best Bowler in the Inter-House Cricket Championship 2013-14 at Bahria College Karsaz."
-media: ["/03 Documents for Scholarship/03-extracurricular-activities/display/best-bowler.webp"]
+media: ["03-extracurricular-activities/display/best-bowler.webp"]
 ---
 
 Recognized as the Best Bowler.

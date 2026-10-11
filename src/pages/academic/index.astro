@@ -14,15 +14,15 @@ const education = sort(await getCollection("education"));
 const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service");
 const volunteering = journey.filter((item: any) => item.data.type === "Community Service");
 
-const sections = [
-  "Profile",
-  "Education",
-  "Research",
-  "Practice",
-  "Projects",
-  "Recognition",
-  "Extracurriculars",
-  "Volunteering",
+const sectionItems = [
+  { id: "profile", name: "Profile" },
+  { id: "education", name: "Education" },
+  { id: "research", name: "Research" },
+  { id: "practice", name: "Practice" },
+  { id: "projects", name: "Academic Projects" },
+  { id: "recognition", name: "Recognition" },
+  { id: "extracurriculars", name: "Extracurriculars" },
+  { id: "volunteering", name: "Volunteering" },
 ];
 const groups = [
   {
@@ -36,15 +36,15 @@ const groups = [
   {
     id: "projects",
     number: "04",
-    title: "Selected projects",
+    title: "Academic Projects",
     link: "/projects/",
-    label: "All projects",
+    label: "All academic projects",
     items: projects,
   },
   {
     id: "recognition",
     number: "05",
-    title: "Recognition & activities",
+    title: "Recognition",
     link: "/recognition/",
     label: "Full recognition record",
     items: recognition,
@@ -78,15 +78,15 @@ import { SITE_METADATA } from "../../consts";
       <div class="mobile-section-picker">
         <label for="academic-section">SECTIONS</label>
         <select id="academic-section">
-          {sections.map((name, i) => <option value={name.toLowerCase()}>{String(i).padStart(2, "0")} / {name}</option>)}
+          {sectionItems.map((sec, i) => <option value={sec.id}>{String(i).padStart(2, "0")} / {sec.name}</option>)}
         </select>
       </div>
       <p class="eyebrow">ON THIS PAGE</p>
       <nav>
-        {sections.map((name, i) => (
-          <a href={`#${name.toLowerCase()}`} data-section-link>
+        {sectionItems.map((sec, i) => (
+          <a href={`#${sec.id}`} data-section-link>
             <span>{String(i).padStart(2, "0")}</span>
-            {name}
+            {sec.name}
           </a>
         ))}
       </nav>
@@ -207,7 +207,7 @@ import { SITE_METADATA } from "../../consts";
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
-          <div class={`record-list ${['extracurriculars', 'volunteering'].includes(group.id) ? 'grid-list' : ''}`}>
+          <div class={`record-list ${group.id === 'extracurriculars' || group.id === 'projects' ? 'grid-list' : ''}`}>
             {group.items.map((item: any) => (
               <a
                 class="dossier-record"

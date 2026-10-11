@@ -1,0 +1,462 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { MEDIA_BASE_URL } from "../../consts";
+import ExcelViewer from "./ExcelViewer.astro";
+import MediaGallery from "./MediaGallery.astro";
+
+export interface Props {
+  media: string[];
+  title?: string;
+  labels?: string[];
+}
+
+const { media = [], title = "Project Document", labels = [] } = Astro.props;
+
+const isPdf = media.some(item => item.endsWith('.pdf'));
+const isExcel = media.some(item => item.endsWith('.xlsx'));
+const isImage = media.some(item => /\.(webp|jpg|jpeg|png)$/i.test(item));
+
+const getMediaUrl = (itemPath: string) => {
+  if (import.meta.env.DEV && itemPath.startsWith('10-semester-projects')) {
+    return `/${itemPath}`;
+  }
+  return `${MEDIA_BASE_URL}/${itemPath}`;
+};
+
+const getDocLabel = (itemPath: string, index: number) => {
+  if (labels[index]) return labels[index];
+  const filename = itemPath.split('/').pop() || '';
+  if (filename.includes('all-concrete')) return 'Concrete Members Takeoff';
+  if (filename.includes('total-reinforcement')) return 'Reinforcement Price Estimate';
+  if (filename.includes('report-waste-water')) return 'EPA SWMM Design Report';
+  if (filename.includes('report-2')) return 'Catchment Runoff Summary';
+  if (filename.includes('summary')) return 'Executive Summary';
+  if (filename.includes('cecg-oel')) return 'BIM & Architectural Report';
+  if (filename.includes('cep-water')) return 'Water Treatment Jar Test Report';
+  if (filename.includes('comparison-cep-isa')) return 'RISA-2D Analysis Report';
+  if (filename.includes('complete-report-rcd')) return 'RC School Structural Report';
+  if (filename.includes('dos-cep')) return 'NUST Faisal Masjid Report';
+  if (filename.includes('geometric')) return 'Highway Geometric Design Report';
+  if (filename.includes('hydology')) return 'Engineering Hydrology Report';
+  if (filename.includes('oel-geotech')) return 'Soil Bearing Capacity Report';
+  if (filename.includes('poc-cep')) return 'Recycled Aggregate Report';
+  if (filename.includes('ppm-report')) return 'Primavera P6 Scheduling Report';
+  return `Document ${index + 1}`;
+};
+
+// Retrieve pre-rendered WebP pages for any PDF to prevent IDM intercepting iframes
+const getDocumentPages = (pdfItemPath: string) => {
+  const clean = pdfItemPath.replace(/^10-semester-projects\//, '').replace(/\.pdf$/, '');
+  const dir = path.resolve('./public/10-semester-projects/display', clean);
+  if (fs.existsSync(dir)) {
+    const files = fs.readdirSync(dir)
+      .filter(f => f.endsWith('.webp'))
+      .sort((a, b) => {
+        const numA = parseInt(a.replace(/\D/g, ''), 10) || 0;
+        const numB = parseInt(b.replace(/\D/g, ''), 10) || 0;
+        return numA - numB;
+      });
+    return files.map(f => `/10-semester-projects/display/${clean}/${f}`);
+  }
+  return [];
+};
+
+// Pre-calculate page collections for all pdfs in media
+const documentsData = isPdf
+  ? media.map((docPath, idx) => ({
+      path: docPath,
+      url: getMediaUrl(docPath),
+      label: getDocLabel(docPath, idx),
+      pages: getDocumentPages(docPath),
+    }))
+  : [];
+
+const initialDoc = documentsData[0] || null;
+---
+
+{isExcel ? (
+  <ExcelViewer media={media} title={title} />
+) : isPdf && initialDoc ? (
+  <aside class="project-pdf-archive" id="doc-viewer-wrapper" aria-label="Official project documents">
+    <div class="archive-header">
+      <div class="header-left">
+        <span class="archive-kicker">OFFICIAL DOCUMENT ARCHIVE</span>
+        <span class="file-count" id="active-page-counter">
+          Page 1 of {initialDoc.pages.length}
+        </span>
+      </div>
+      <div class="header-actions">
+        <div class="zoom-controls">
+          <button type="button" class="zoom-btn" id="zoom-out" aria-label="Zoom out">−</button>
+          <button type="button" class="zoom-btn" id="zoom-reset" aria-label="Reset zoom">100%</button>
+          <button type="button" class="zoom-btn" id="zoom-in" aria-label="Zoom in">+</button>
+        </div>
+        <a
+          id="pdf-download-btn"
+          href={initialDoc.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="open-full-btn"
+        >
+          Open PDF ↗
+        </a>
+      </div>
+    </div>
+
+    {documentsData.length > 1 && (
+      <nav class="pdf-tabs" aria-label="Select document to preview">
+        {documentsData.map((doc, idx) => (
+          <button
+            type="button"
+            class={`pdf-tab ${idx === 0 ? 'is-active' : ''}`}
+            data-doc-idx={idx}
+            data-doc-url={doc.url}
+            data-doc-pages={JSON.stringify(doc.pages)}
+          >
+            <span class="tab-badge">{idx + 1}</span>
+            <span class="tab-name">{doc.label}</span>
+          </button>
+        ))}
+      </nav>
+    )}
+
+    <div class="doc-viewport" id="doc-viewport">
+      <div class="doc-pages-container" id="doc-pages-container">
+        {initialDoc.pages.map((pageSrc, pageIdx) => (
+          <div class="doc-page-frame" data-page-num={pageIdx + 1}>
+            <img
+              src={pageSrc}
+              alt={`${initialDoc.label} - Page ${pageIdx + 1}`}
+              loading={pageIdx === 0 ? "eager" : "lazy"}
+              decoding="async"
+              class="doc-page-img"
+            />
+            <div class="doc-page-footer">
+              <span>Page {pageIdx + 1} of {initialDoc.pages.length}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </aside>
+) : isImage ? (
+  <MediaGallery media={media} title={title} labels={labels} carousel />
+) : null}
+
+<script>
+  function setupDocumentViewer() {
+    const wrapper = document.getElementById('doc-viewer-wrapper');
+    if (!wrapper) return;
+
+    const viewport = wrapper.querySelector<HTMLElement>('#doc-viewport');
+    const container = wrapper.querySelector<HTMLElement>('#doc-pages-container');
+    const pageCounter = wrapper.querySelector<HTMLElement>('#active-page-counter');
+    const downloadBtn = wrapper.querySelector<HTMLAnchorElement>('#pdf-download-btn');
+    const tabs = wrapper.querySelectorAll<HTMLButtonElement>('.pdf-tab');
+
+    let currentScale = 1.0;
+
+    // Zoom controls
+    const zoomInBtn = wrapper.querySelector<HTMLButtonElement>('#zoom-in');
+    const zoomOutBtn = wrapper.querySelector<HTMLButtonElement>('#zoom-out');
+    const zoomResetBtn = wrapper.querySelector<HTMLButtonElement>('#zoom-reset');
+
+    function applyZoom(scale: number) {
+      currentScale = Math.min(Math.max(scale, 0.7), 1.8);
+      if (container) {
+        container.style.transform = `scale(${currentScale})`;
+        container.style.transformOrigin = 'top center';
+      }
+      if (zoomResetBtn) {
+        zoomResetBtn.textContent = `${Math.round(currentScale * 100)}%`;
+      }
+    }
+
+    zoomInBtn?.addEventListener('click', () => applyZoom(currentScale + 0.15));
+    zoomOutBtn?.addEventListener('click', () => applyZoom(currentScale - 0.15));
+    zoomResetBtn?.addEventListener('click', () => applyZoom(1.0));
+
+    // Page intersection observer to update current page counter
+    let observer: IntersectionObserver | null = null;
+
+    function initPageObserver(totalPages: number) {
+      if (observer) observer.disconnect();
+      const pageFrames = wrapper?.querySelectorAll<HTMLElement>('.doc-page-frame');
+      if (!pageFrames || !pageFrames.length) return;
+
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const pageNum = entry.target.getAttribute('data-page-num');
+            if (pageNum && pageCounter) {
+              pageCounter.textContent = `Page ${pageNum} of ${totalPages}`;
+            }
+          }
+        });
+      }, {
+        root: viewport,
+        threshold: 0.3
+      });
+
+      pageFrames.forEach(frame => observer?.observe(frame));
+    }
+
+    const initialFrames = wrapper.querySelectorAll<HTMLElement>('.doc-page-frame');
+    initPageObserver(initialFrames.length);
+
+    // Document switcher tabs
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+
+        const pagesJson = tab.getAttribute('data-doc-pages');
+        const docUrl = tab.getAttribute('data-doc-url');
+        if (docUrl && downloadBtn) {
+          downloadBtn.href = docUrl;
+        }
+
+        if (pagesJson && container) {
+          try {
+            const pages: string[] = JSON.parse(pagesJson);
+            container.innerHTML = '';
+            pages.forEach((pageSrc, idx) => {
+              const frame = document.createElement('div');
+              frame.className = 'doc-page-frame';
+              frame.setAttribute('data-page-num', String(idx + 1));
+
+              const img = document.createElement('img');
+              img.src = pageSrc;
+              img.alt = `Page ${idx + 1}`;
+              img.className = 'doc-page-img';
+              img.loading = idx === 0 ? 'eager' : 'lazy';
+              img.decoding = 'async';
+
+              const footer = document.createElement('div');
+              footer.className = 'doc-page-footer';
+              footer.innerHTML = `<span>Page ${idx + 1} of ${pages.length}</span>`;
+
+              frame.appendChild(img);
+              frame.appendChild(footer);
+              container.appendChild(frame);
+            });
+
+            if (viewport) viewport.scrollTop = 0;
+            if (pageCounter) pageCounter.textContent = `Page 1 of ${pages.length}`;
+            applyZoom(1.0);
+            initPageObserver(pages.length);
+          } catch (e) {
+            console.error('Error switching document:', e);
+          }
+        }
+      });
+    });
+  }
+
+  setupDocumentViewer();
+  document.addEventListener('astro:page-load', setupDocumentViewer);
+</script>
+
+<style>
+  .project-pdf-archive {
+    background: #141a15;
+    border: 1px solid #ffffff1e;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .archive-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: #18221a;
+    border-bottom: 1px solid #ffffff18;
+    flex-wrap: wrap;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .archive-kicker {
+    font: 11px/1.4 var(--font-mono);
+    color: #ed8851;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  .file-count {
+    font: 11px/1 var(--font-mono);
+    background: #ffffff14;
+    color: #ede8e1;
+    padding: 4px 10px;
+    border-radius: 3px;
+    border: 1px solid #ffffff16;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .zoom-controls {
+    display: flex;
+    align-items: center;
+    background: #101511;
+    border: 1px solid #ffffff18;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .zoom-btn {
+    background: transparent;
+    border: none;
+    color: #c0c6bc;
+    font: 11px/1 var(--font-mono);
+    padding: 6px 9px;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .zoom-btn:hover {
+    background: #ffffff14;
+    color: #ffffff;
+  }
+
+  #zoom-reset {
+    border-left: 1px solid #ffffff14;
+    border-right: 1px solid #ffffff14;
+    font-size: 10px;
+    min-width: 42px;
+  }
+
+  .open-full-btn {
+    font: 11px/1 var(--font-mono);
+    color: #ffffff;
+    background: #b54a1a;
+    padding: 7px 13px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .open-full-btn:hover {
+    background: #e85c1a;
+  }
+
+  .pdf-tabs {
+    display: flex;
+    background: #101511;
+    border-bottom: 1px solid #ffffff14;
+    overflow-x: auto;
+    padding: 5px;
+    gap: 5px;
+  }
+
+  .pdf-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: none;
+    color: #a4aaa0;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 8px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  .pdf-tab:hover {
+    color: #ede8e1;
+    background: #ffffff08;
+  }
+
+  .pdf-tab.is-active {
+    background: #202b21;
+    color: #ed8851;
+    font-weight: 600;
+  }
+
+  .tab-badge {
+    font: 10px var(--font-mono);
+    width: 18px;
+    height: 18px;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 50%;
+    background: #ffffff14;
+  }
+
+  .pdf-tab.is-active .tab-badge {
+    background: #ed8851;
+    color: #101412;
+  }
+
+  .doc-viewport {
+    height: 680px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #0d120e;
+    padding: 24px 20px;
+    scroll-behavior: smooth;
+  }
+
+  .doc-pages-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    transition: transform 0.15s ease-out;
+  }
+
+  .doc-page-frame {
+    width: 100%;
+    max-width: 620px;
+    background: #ffffff;
+    border-radius: 4px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .doc-page-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #ffffff;
+  }
+
+  .doc-page-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 6px 12px;
+    background: #f4f4f4;
+    border-top: 1px solid #e2e2e2;
+    font: 10px/1 var(--font-mono);
+    color: #666;
+  }
+
+  @media (max-width: 640px) {
+    .archive-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .doc-viewport {
+      height: 500px;
+      padding: 12px 8px;
+    }
+  }
+</style>

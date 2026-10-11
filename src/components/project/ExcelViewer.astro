@@ -1,0 +1,541 @@
+---
+import { MEDIA_BASE_URL } from "../../consts";
+
+export interface Props {
+  media: string[];
+  title?: string;
+}
+
+const { media, title = "Retaining Wall Design Spreadsheets" } = Astro.props;
+
+const getMediaUrl = (path: string) => {
+  if (import.meta.env.DEV && path.startsWith('10-semester-projects')) {
+    return `/${path}`;
+  }
+  return `${MEDIA_BASE_URL}/${path}`;
+};
+
+const cantileverUrl = getMediaUrl(media.find(m => m.includes('cantilever')) || media[0]);
+const gravityUrl = getMediaUrl(media.find(m => m.includes('gravity')) || media[1] || media[0]);
+---
+
+<div class="excel-viewer-container" id="excel-viewer">
+  <div class="excel-header">
+    <div class="excel-title-group">
+      <div class="excel-badge">
+        <svg class="excel-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="8" y1="13" x2="16" y2="13"></line>
+          <line x1="8" y1="17" x2="16" y2="17"></line>
+          <line x1="10" y1="9" x2="8" y2="9"></line>
+        </svg>
+        <span>EXCEL DESIGN SPREADSHEETS</span>
+      </div>
+      <p class="excel-subtitle">Interactive Engineering Calculation Sheets</p>
+    </div>
+    <div class="excel-download-group">
+      <a id="excel-download-active" href={cantileverUrl} download class="excel-download-btn">
+        Download .xlsx ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- Workbook Selector Tabs -->
+  <div class="workbook-tabs">
+    <button type="button" class="wb-tab is-active" data-wb="cantilever" data-url={cantileverUrl}>
+      Cantilever Retaining Wall
+    </button>
+    <button type="button" class="wb-tab" data-wb="gravity" data-url={gravityUrl}>
+      Gravity Retaining Wall
+    </button>
+  </div>
+
+  <!-- Sub-sheet Selector Tabs -->
+  <div class="sheet-tabs-bar">
+    <span class="sheet-label">CONFIGURATION:</span>
+    <button type="button" class="sheet-tab is-active" data-sheet="without-key">
+      Without Shear Key
+    </button>
+    <button type="button" class="sheet-tab" data-sheet="with-key">
+      With Shear Key
+    </button>
+  </div>
+
+  <!-- Formula Bar Preview -->
+  <div class="formula-bar">
+    <span class="formula-fx">fx</span>
+    <span class="formula-text" id="formula-display">
+      Stability Against Sliding = Fr / Fd = 1.504 ≥ 1.50 (SAFE / OK)
+    </span>
+  </div>
+
+  <!-- Spreadsheet Panels -->
+  <div class="sheet-panels">
+    <!-- PANEL 1: Cantilever - Without Shear Key -->
+    <div class="sheet-panel is-active" id="panel-cantilever-without-key">
+      <div class="table-scroll">
+        <table class="excel-table">
+          <thead>
+            <tr>
+              <th class="row-num">#</th>
+              <th>A (Parameter)</th>
+              <th>B (Value / Unit)</th>
+              <th>C (Design Check)</th>
+              <th>D (Status)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td class="row-num">1</td><td colspan="4">1. DESIGN PARAMETERS & GEOMETRY</td></tr>
+            <tr><td class="row-num">2</td><td>Total Retained Height (H)</td><td>16.0 ft</td><td>Stem: 14.5 ft | Base: 1.5 ft</td><td>Specified</td></tr>
+            <tr><td class="row-num">3</td><td>Stem Top Width</td><td>1.25 ft (15 in)</td><td>Stem Bottom Width = 1.25 ft</td><td>Adopted</td></tr>
+            <tr><td class="row-num">4</td><td>Base Slab Width (L)</td><td>10.25 ft</td><td>Toe: 3.40 ft | Heel: 5.60 ft</td><td>Proportioned</td></tr>
+            <tr><td class="row-num">5</td><td>Concrete Strength (fc')</td><td>3,000 psi</td><td>Steel Yield (fy) = 60,000 psi</td><td>Material</td></tr>
+            <tr><td class="row-num">6</td><td>Soil Unit Weight (γsoil)</td><td>130 pcf</td><td>Concrete Unit Weight = 145 pcf</td><td>Soil</td></tr>
+            <tr><td class="row-num">7</td><td>Internal Friction Angle (Φ)</td><td>32°</td><td>Ka = (1 - sinΦ)/(1 + sinΦ) = 0.307</td><td>Calculated</td></tr>
+            <tr><td class="row-num">8</td><td>Allowable Bearing Capacity (qa)</td><td>4,000 psf</td><td>Base Friction Coefficient (f) = 0.50</td><td>Geotech</td></tr>
+            
+            <tr class="section-row"><td class="row-num">9</td><td colspan="4">2. STABILITY & SAFETY FACTOR CHECKS</td></tr>
+            <tr class="check-row"><td class="row-num">10</td><td>Overturning Moment Check</td><td>FS = 2.68</td><td>Allowable FS ≥ 2.00</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">11</td><td>Sliding Resistance Check</td><td>FS = 1.504</td><td>Allowable FS ≥ 1.50</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">12</td><td>Eccentricity & Resultant Location</td><td>a = 4.76 ft &gt; L/3 (3.42 ft)</td><td>Resultant within middle third</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">13</td><td>Toe Soil Bearing Pressure (q1)</td><td>1,818 psf</td><td>qa = 4,000 psf (q1 &lt; qa)</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">14</td><td>Heel Soil Bearing Pressure (q2)</td><td>1,183 psf</td><td>q2 &gt; 0 (No tension uplift)</td><td><span class="status-ok">OK!</span></td></tr>
+
+            <tr class="section-row"><td class="row-num">15</td><td colspan="4">3. STRUCTURAL REINFORCEMENT DETAILS</td></tr>
+            <tr><td class="row-num">16</td><td>Stem Vertical Flexural Steel (Inside)</td><td>As = 0.61 in²/ft</td><td><strong>#7 @ 11" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">17</td><td>Stem Vertical Steel (Outside Face)</td><td>As = 0.23 in²/ft</td><td><strong>#6 @ 23" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">18</td><td>Stem Horizontal Steel (Outside 2/3)</td><td>As = 0.30 in²/ft</td><td><strong>#4 @ 7" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">19</td><td>Stem Horizontal Steel (Inside 1/3)</td><td>As = 0.15 in²/ft</td><td><strong>#4 @ 15" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">20</td><td>Stem Shear Capacity Check</td><td>Vu = 6,719 lb &lt; ΦVc (12,324 lb)</td><td>Shear reinforcement not required</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">21</td><td>Heel Slab Main Top Steel</td><td>As = 0.63 in²/ft</td><td><strong>#8 @ 14" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">22</td><td>Heel Slab Temp & Shrinkage Steel</td><td>As = 0.31 in²/ft</td><td><strong>#6 @ 16" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">23</td><td>Toe Slab Main Bottom Steel</td><td>As = 0.58 in²/ft</td><td><strong>#8 @ 16" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">24</td><td>Toe Slab Temp & Shrinkage Steel</td><td>As = 0.31 in²/ft</td><td><strong>#6 @ 16" c/c</strong></td><td><span class="status-ok">OK!</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PANEL 2: Cantilever - With Shear Key -->
+    <div class="sheet-panel" id="panel-cantilever-with-key">
+      <div class="table-scroll">
+        <table class="excel-table">
+          <thead>
+            <tr>
+              <th class="row-num">#</th>
+              <th>A (Parameter)</th>
+              <th>B (Value / Unit)</th>
+              <th>C (Design Check)</th>
+              <th>D (Status)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td class="row-num">1</td><td colspan="4">1. GEOMETRY WITH SHEAR KEY</td></tr>
+            <tr><td class="row-num">2</td><td>Total Retained Height (H)</td><td>16.0 ft</td><td>Stem: 13.5 ft | Base: 2.5 ft</td><td>Adopted</td></tr>
+            <tr><td class="row-num">3</td><td>Shear Key Depth & Width</td><td>1.5 ft depth x 2.0 ft width</td><td>Provides passive soil resistance</td><td>Enhanced</td></tr>
+            <tr><td class="row-num">4</td><td>Base Slab Width (L)</td><td>11.0 ft</td><td>Toe: 4.70 ft | Heel: 6.30 ft</td><td>Proportioned</td></tr>
+
+            <tr class="section-row"><td class="row-num">5</td><td colspan="4">2. STABILITY WITH PASSIVE RESISTANCE</td></tr>
+            <tr class="check-row"><td class="row-num">6</td><td>Overturning Moment Check</td><td>FS = 3.12</td><td>Allowable FS ≥ 2.00</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">7</td><td>Sliding Resistance with Key</td><td>FS = 1.95</td><td>Passive earth pressure engaged (FS ≥ 1.50)</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">8</td><td>Eccentricity & Bearing Check</td><td>qmax = 2,150 psf</td><td>qa = 4,000 psf (qmax &lt; qa)</td><td><span class="status-ok">OK!</span></td></tr>
+
+            <tr class="section-row"><td class="row-num">9</td><td colspan="4">3. REINFORCEMENT & STRUCTURAL INTEGRITY</td></tr>
+            <tr><td class="row-num">10</td><td>Stem Vertical Steel (Inside Face)</td><td>#8 @ 10" c/c</td><td>Flexural safety verified</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">11</td><td>Stem Shear Capacity Check</td><td>Vu &lt; ΦVc</td><td>Concrete shear capacity adequate</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">12</td><td>Shear Key Reinforcement</td><td>#6 @ 12" c/c ties</td><td>Dowel extension into base slab</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">13</td><td>Heel Slab Main Top Steel</td><td>#8 @ 12" c/c</td><td>Bending under soil mass</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr><td class="row-num">14</td><td>Toe Slab Main Bottom Steel</td><td>#8 @ 14" c/c</td><td>Bending under soil upward reaction</td><td><span class="status-ok">OK!</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PANEL 3: Gravity - Without Shear Key -->
+    <div class="sheet-panel" id="panel-gravity-without-key">
+      <div class="table-scroll">
+        <table class="excel-table">
+          <thead>
+            <tr>
+              <th class="row-num">#</th>
+              <th>A (Parameter)</th>
+              <th>B (Value / Unit)</th>
+              <th>C (Design Check)</th>
+              <th>D (Status)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td class="row-num">1</td><td colspan="4">1. GRAVITY WALL PROPORTIONS</td></tr>
+            <tr><td class="row-num">2</td><td>Total Wall Height (H)</td><td>16.0 ft</td><td>Height Retained: 13 ft | Undersoil: 3 ft</td><td>Specified</td></tr>
+            <tr><td class="row-num">3</td><td>Top Width</td><td>1.5 ft</td><td>Base Width = 8.0 ft</td><td>Trapezoidal</td></tr>
+            <tr><td class="row-num">4</td><td>Concrete Unit Weight</td><td>145 pcf</td><td>Plain / Mass Concrete Wall</td><td>Material</td></tr>
+            <tr><td class="row-num">5</td><td>Soil Unit Weight</td><td>130 pcf</td><td>Internal Friction Angle Φ = 32°</td><td>Soil</td></tr>
+            <tr><td class="row-num">6</td><td>Surcharge Load</td><td>400 lb/ft</td><td>Equivalent soil height evaluated</td><td>Traffic / Live</td></tr>
+
+            <tr class="section-row"><td class="row-num">7</td><td colspan="4">2. EQUILIBRIUM & STABILITY CHECKS</td></tr>
+            <tr class="check-row"><td class="row-num">8</td><td>Safety Factor Against Overturning</td><td>FS = 2.45</td><td>Mr / Mo ≥ 2.00</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">9</td><td>Safety Factor Against Sliding</td><td>FS = 1.62</td><td>μ ΣV / ΣH ≥ 1.50</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">10</td><td>Eccentricity Verification</td><td>e = 1.12 ft &lt; B/6 (1.33 ft)</td><td>Resultant within middle third (No tension)</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">11</td><td>Maximum Base Bearing Pressure</td><td>qmax = 3,420 psf</td><td>qa = 4,000 psf (qmax &lt; qa)</td><td><span class="status-ok">OK!</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PANEL 4: Gravity - With Shear Key -->
+    <div class="sheet-panel" id="panel-gravity-with-key">
+      <div class="table-scroll">
+        <table class="excel-table">
+          <thead>
+            <tr>
+              <th class="row-num">#</th>
+              <th>A (Parameter)</th>
+              <th>B (Value / Unit)</th>
+              <th>C (Design Check)</th>
+              <th>D (Status)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td class="row-num">1</td><td colspan="4">1. GRAVITY WALL WITH SHEAR KEY</td></tr>
+            <tr><td class="row-num">2</td><td>Total Wall Height (H)</td><td>16.0 ft</td><td>Top Width: 1.5 ft | Base Width: 7.0 ft</td><td>Optimized</td></tr>
+            <tr><td class="row-num">3</td><td>Shear Key Dimensions</td><td>1.5 ft depth x 2.0 ft width</td><td>Key below base level</td><td>Embedded</td></tr>
+            <tr><td class="row-num">4</td><td>Allowable Bearing Capacity</td><td>8,000 psf</td><td>Dense soil / gravel strata</td><td>Geotech</td></tr>
+
+            <tr class="section-row"><td class="row-num">5</td><td colspan="4">2. STABILITY CHECKS WITH PASSIVE FORCE</td></tr>
+            <tr class="check-row"><td class="row-num">6</td><td>Safety Factor Against Overturning</td><td>FS = 2.80</td><td>Overturning resistance verified</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">7</td><td>Safety Factor Against Sliding</td><td>FS = 2.10</td><td>Shear key passive resistance active</td><td><span class="status-ok">OK!</span></td></tr>
+            <tr class="check-row"><td class="row-num">8</td><td>Bearing Capacity Safety</td><td>qmax = 4,110 psf</td><td>qa = 8,000 psf (qmax &lt;&lt; qa)</td><td><span class="status-ok">OK!</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="excel-footer">
+    <span>Original Microsoft Excel (.xlsx) workbooks configured with dynamic calculation formulas.</span>
+    <span class="status-pill">ALL CHECKS SATISFIED</span>
+  </div>
+</div>
+
+<script>
+  function setupExcelViewer() {
+    const viewer = document.getElementById('excel-viewer');
+    if (!viewer) return;
+
+    let currentWb = 'cantilever';
+    let currentSheet = 'without-key';
+
+    const wbTabs = viewer.querySelectorAll<HTMLButtonElement>('.wb-tab');
+    const sheetTabs = viewer.querySelectorAll<HTMLButtonElement>('.sheet-tab');
+    const panels = viewer.querySelectorAll<HTMLElement>('.sheet-panel');
+    const downloadBtn = viewer.querySelector<HTMLAnchorElement>('#excel-download-active');
+    const formulaDisplay = viewer.querySelector<HTMLElement>('#formula-display');
+
+    function updateView() {
+      // update panels
+      const targetId = `panel-${currentWb}-${currentSheet}`;
+      panels.forEach(p => p.classList.toggle('is-active', p.id === targetId));
+
+      // update download link
+      const activeWbBtn = viewer?.querySelector<HTMLButtonElement>(`.wb-tab[data-wb="${currentWb}"]`);
+      if (downloadBtn && activeWbBtn) {
+        downloadBtn.href = activeWbBtn.getAttribute('data-url') || '';
+        downloadBtn.textContent = `Download ${currentWb === 'cantilever' ? 'Cantilever' : 'Gravity'} .xlsx ↗`;
+      }
+
+      // update formula preview text
+      if (formulaDisplay) {
+        if (currentWb === 'cantilever' && currentSheet === 'without-key') {
+          formulaDisplay.textContent = 'Stability Against Sliding = Fr / Fd = 1.504 ≥ 1.50 (SAFE / OK)';
+        } else if (currentWb === 'cantilever' && currentSheet === 'with-key') {
+          formulaDisplay.textContent = 'Passive Earth Pressure Engaged: FS Sliding = 1.95 ≥ 1.50 (SAFE / OK)';
+        } else if (currentWb === 'gravity' && currentSheet === 'without-key') {
+          formulaDisplay.textContent = 'FS Overturning = Mr / Mo = 2.45 ≥ 2.00 | FS Sliding = 1.62 ≥ 1.50 (OK)';
+        } else {
+          formulaDisplay.textContent = 'Shear Key Embedded: FS Sliding = 2.10 ≥ 1.50 | FS Overturning = 2.80 (OK)';
+        }
+      }
+    }
+
+    wbTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        wbTabs.forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+        currentWb = tab.getAttribute('data-wb') || 'cantilever';
+        updateView();
+      });
+    });
+
+    sheetTabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        sheetTabs.forEach(t => t.classList.remove('is-active'));
+        tab.classList.add('is-active');
+        currentSheet = tab.getAttribute('data-sheet') || 'without-key';
+        updateView();
+      });
+    });
+  }
+
+  setupExcelViewer();
+  document.addEventListener('astro:page-load', setupExcelViewer);
+</script>
+
+<style>
+  .excel-viewer-container {
+    background: #131814;
+    border: 1px solid #ffffff24;
+    border-radius: 6px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  .excel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: #182019;
+    border-bottom: 1px solid #ffffff1a;
+  }
+
+  .excel-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #107c41;
+    font: 11px/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  .excel-icon {
+    width: 16px;
+    height: 16px;
+    stroke: #107c41;
+  }
+
+  .excel-subtitle {
+    font-size: 13px;
+    color: #a8b0a5;
+    margin: 3px 0 0;
+  }
+
+  .excel-download-btn {
+    font: 11px/1 var(--font-mono);
+    background: #107c41;
+    color: #ffffff;
+    padding: 8px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    white-space: nowrap;
+  }
+
+  .excel-download-btn:hover {
+    background: #159b52;
+  }
+
+  .workbook-tabs {
+    display: flex;
+    background: #101411;
+    border-bottom: 1px solid #ffffff18;
+    overflow-x: auto;
+  }
+
+  .wb-tab {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #9ea49b;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 12px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  .wb-tab:hover {
+    color: #ede8e1;
+    background: #ffffff06;
+  }
+
+  .wb-tab.is-active {
+    color: #46c37b;
+    border-bottom-color: #107c41;
+    background: #162018;
+  }
+
+  .sheet-tabs-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: #141a15;
+    border-bottom: 1px solid #ffffff12;
+    overflow-x: auto;
+  }
+
+  .sheet-label {
+    font: 10px/1 var(--font-mono);
+    letter-spacing: 0.08em;
+    color: #7d847a;
+    margin-right: 4px;
+  }
+
+  .sheet-tab {
+    font: 11px/1.4 var(--font-mono);
+    background: #1d261e;
+    color: #b0b7ab;
+    border: 1px solid #ffffff18;
+    border-radius: 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .sheet-tab:hover {
+    color: #ede8e1;
+    border-color: #ffffff30;
+  }
+
+  .sheet-tab.is-active {
+    background: #107c41;
+    color: #ffffff;
+    border-color: #107c41;
+  }
+
+  .formula-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: #161c17;
+    border-bottom: 1px solid #ffffff14;
+    font: 11px var(--font-mono);
+  }
+
+  .formula-fx {
+    color: #107c41;
+    font-weight: 700;
+    font-style: italic;
+  }
+
+  .formula-text {
+    color: #c9d0c5;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sheet-panels {
+    max-height: 480px;
+    overflow-y: auto;
+    background: #111512;
+  }
+
+  .sheet-panel {
+    display: none;
+  }
+
+  .sheet-panel.is-active {
+    display: block;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  .excel-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    color: #d8ded4;
+  }
+
+  .excel-table th,
+  .excel-table td {
+    padding: 9px 12px;
+    border: 1px solid #ffffff10;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .excel-table th {
+    background: #19221a;
+    font: 10px/1 var(--font-mono);
+    letter-spacing: 0.05em;
+    color: #9ba197;
+  }
+
+  .excel-table th.row-num,
+  .excel-table td.row-num {
+    width: 38px;
+    text-align: center;
+    background: #151b16;
+    color: #6c7368;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    border-right: 1px solid #ffffff1c;
+  }
+
+  .section-row td {
+    background: #1a241b;
+    color: #e5976b;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 10px 12px;
+  }
+
+  .check-row {
+    background: #141b15;
+  }
+
+  .status-ok {
+    display: inline-block;
+    background: #0f4024;
+    color: #4ade80;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font: 10px/1.4 var(--font-mono);
+    font-weight: 600;
+  }
+
+  .excel-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px;
+    background: #161d17;
+    border-top: 1px solid #ffffff14;
+    font: 10px/1.4 var(--font-mono);
+    color: #8b9286;
+  }
+
+  .status-pill {
+    color: #4ade80;
+    border: 1px solid #4ade8040;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .excel-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .excel-footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

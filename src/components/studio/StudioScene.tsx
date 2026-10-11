@@ -60,7 +60,8 @@ function Scene({
   introState: string;
   sceneRef: React.MutableRefObject<any>;
 }) {
-  const { size, camera, invalidate, gl } = useThree();
+  const { size, camera, invalidate, gl, scene } = useThree();
+  const isMobile = size.width < 768 || (typeof window !== 'undefined' && window.innerWidth < 768);
   const controls = useRef<any>(null);
   const entryPose=useRef({position:[7.8,6,9.5] as Point,quaternion:new THREE.Quaternion(),target:new THREE.Vector3(0,1.9,0)});
   useFrame(()=>{
@@ -150,14 +151,32 @@ function Scene({
     return () => {window.removeEventListener("studio:rotate", turn);window.removeEventListener("studio:tilt", tilt);};
   }, [invalidate]);
   useEffect(() => {
-    ready();
+    // Pre-compile shaders to avoid initial jank
+    gl.compile(scene, camera);
+    
+    let frames = 0;
+    let req: number;
+    const prepare = () => {
+      if (frames >= 5) {
+        ready();
+      } else {
+        frames++;
+        invalidate(); // Force render to ensure environment map and shaders are processed
+        req = requestAnimationFrame(prepare);
+      }
+    };
+    req = requestAnimationFrame(prepare);
+
     const lost = (event: Event) => {
       event.preventDefault();
       fail();
     };
     gl.domElement.addEventListener("webglcontextlost", lost);
-    return () => gl.domElement.removeEventListener("webglcontextlost", lost);
-  }, [gl, ready, fail]);
+    return () => {
+      cancelAnimationFrame(req);
+      gl.domElement.removeEventListener("webglcontextlost", lost);
+    };
+  }, [gl, scene, camera, ready, fail, invalidate]);
   return (
     <>
       {step !== null && <PerspectiveCamera makeDefault position={entryPose.current.position} quaternion={entryPose.current.quaternion} fov={62} near={.035} far={80} />}
@@ -167,7 +186,7 @@ function Scene({
         intensity={2.5}
         color="#e5e3c9"
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[isMobile ? 512 : 1024, isMobile ? 512 : 1024]}
         shadow-camera-left={-7}
         shadow-camera-right={7}
         shadow-camera-top={7}
@@ -191,7 +210,7 @@ function Scene({
         blur={2.5}
         far={6}
         frames={1}
-        resolution={256}
+        resolution={isMobile ? 128 : 256}
         color="#000000"
       />
       <OrbitControls

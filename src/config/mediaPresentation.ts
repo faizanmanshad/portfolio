@@ -58,6 +58,26 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
     cropBottom: 0,
     cropLeft: 0,
   },
+  
+  // Extracurricular / Journey (landscape by default)
+  "03-extracurricular-activities/display/100m-relay-race.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/3rd-position-8th-class-certifcate.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/aspire-certificate.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/best-bowler.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/cacio-conference.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/cricket-participation.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/football-participation.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/giki-ice-certificate.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/lgs-panel-discussion.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/wed-2026.webp": { frameWidth: 420, frameHeight: 320 },
+  "02-community-service/display/community-service-certificate.webp": { frameWidth: 420, frameHeight: 320 },
+  "02-community-service/display/alkhidmat-professional-volunteer.webp": { frameWidth: 420, frameHeight: 320 },
+
+  // Extracurricular / Journey (stored portrait, needs rotation to become landscape)
+  "03-extracurricular-activities/display/civil-mania-uow.webp": { rotation: 90 },
+  "03-extracurricular-activities/display/civil-nexus-uow.webp": { rotation: 90 },
+  "03-extracurricular-activities/display/omlascertificate.webp": { rotation: 90 },
+  "03-extracurricular-activities/display/uw-pofs-joint-conference.webp": { rotation: 90 },
 };
 
 export function getMediaPresentation(path: string): MediaPresentation {

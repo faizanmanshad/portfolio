@@ -1,0 +1,24 @@
+SEMESTER PROJECT – QUANTITY SURVEYING AND COMPLETE BUILDING QUANTITY TAKEOFF
+
+As part of our Quantity Surveying semester project, we carried out a detailed quantity takeoff for an entire multi-storey building and organized the calculations in Microsoft Excel. The purpose of the project was to convert structural and architectural information into measurable construction quantities and then estimate material requirements and costs.
+
+The quantity takeoff covered the major building components and construction materials. Concrete quantities were calculated for footings, raft foundation, columns, beams, shear walls, retaining walls, slabs, staircases, and PCC. Separate calculations were also prepared for brick masonry, mortar, plaster, cement, sand, and aggregate. The sheets included wet and dry volume conversions, shrinkage factors, wastage allowances, concrete mix proportions, material conversions, and cost calculations.
+
+A separate reinforcement quantity takeoff was also prepared. Reinforcement was calculated for slabs, flat slabs, beams, and columns, including bottom and top reinforcement, negative reinforcement, longitudinal bars, shear reinforcement, stirrups, and ties. Different reinforcement bar sizes were considered, and the number of bars, bar lengths, total lengths, and steel weights were calculated and summarized. The final reinforcement summary converted the total steel quantity into kilograms and tons and included a corresponding price estimate.
+
+The project therefore involved:
+• Complete building quantity takeoff in Excel
+• Concrete quantity calculations for all major structural members
+• Reinforcement takeoff for slabs, beams, columns, and related structural elements
+• Brickwork, mortar, plaster, PCC, cement, sand, and aggregate calculations
+• Wastage, shrinkage, mix-ratio, and unit-conversion calculations
+• Material quantity summaries and cost estimation
+• Preparation of structured Excel sheets for quantity surveying documentation
+
+The final reinforcement summary in the project showed a total steel quantity of approximately 111,854 kg, or about 112 tons, while the concrete and material sheets included detailed member-wise quantities and cost calculations.
+
+Files represented by this note:
+• All Concrete Members Quantity
+• Total Reinforcement Price
+
+Note: The original semester project was prepared in Microsoft Excel and later exported to PDF for documentation. This TXT file is provided as a readable project description for RAG/notebook software that does not fully support the original Excel-based calculations.

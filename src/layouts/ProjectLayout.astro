@@ -2,7 +2,7 @@
 import Layout from './Layout.astro';
 import type { CollectionEntry } from 'astro:content';
 import DocumentLink from '../components/project/DocumentLink.astro';
-import MediaGallery from '../components/project/MediaGallery.astro';
+import ProjectDocumentViewer from '../components/project/ProjectDocumentViewer.astro';
 
 interface Props {
   entry: any; // We'll pass the whole entry
@@ -10,13 +10,16 @@ interface Props {
 
 const { entry } = Astro.props;
 const { data } = entry;
-const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education' || entry.collection === 'journey';
+const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education' || entry.collection === 'journey' || entry.collection === 'projects';
 const hasMediaContent = data.media && data.media.length > 0;
 const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
 ---
 
 <Layout title={`${data.title} | Faizan Manshad`} description={data.deck || data.summary}>
   <article class={`container project-article ${shouldShowSideBySide ? 'has-media' : ''}`}>
+    <a class="project-back-link" href="/academic/#projects">
+      Academic Projects ↗
+    </a>
     <div class="project-layout-grid">
       <div class="project-text-column">
         <header class="project-header">
@@ -28,18 +31,6 @@ const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
       {data.deck && <p class="project-deck">{data.deck}</p>}
       
       <div class="project-details">
-        {data.role && (
-          <div class="detail-group">
-            <span class="detail-label text-muted mono">ROLE</span>
-            <span class="detail-value">{data.role}</span>
-          </div>
-        )}
-        {data.organization && (
-          <div class="detail-group">
-            <span class="detail-label text-muted mono">CONTEXT</span>
-            <span class="detail-value">{data.organization}</span>
-          </div>
-        )}
         {data.domains && data.domains.length > 0 && (
           <div class="detail-group">
             <span class="detail-label text-muted mono">DOMAIN</span>
@@ -48,7 +39,7 @@ const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
         )}
         {data.tools && data.tools.length > 0 && (
           <div class="detail-group">
-            <span class="detail-label text-muted mono">TOOLS</span>
+            <span class="detail-label text-muted mono">TOOLS & TECHNIQUES</span>
             <span class="detail-value">{data.tools.join(', ')}</span>
           </div>
         )}
@@ -70,10 +61,10 @@ const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
 
       <div class="project-media-column">
         {hasMediaContent ? (
-          <MediaGallery media={data.media} title={data.title} />
+          <ProjectDocumentViewer media={data.media} title={data.title} />
         ) : isSideBySideEnabled ? (
           <div class="empty-media-placeholder">
-            <span>Image will be added soon</span>
+            <span>Documentation will be added soon</span>
           </div>
         ) : null}
       </div>
@@ -91,6 +82,20 @@ const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
   .project-article {
     padding-top: calc(var(--nav-h) + var(--s-6));
     padding-bottom: var(--s-16);
+  }
+
+  .project-back-link {
+    font: 11px/1.6 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: #a8ada5;
+    margin-bottom: 32px;
+    display: inline-block;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .project-back-link:hover {
+    color: #ed8851;
   }
 
   .project-header {
@@ -147,11 +152,69 @@ const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
 
   .project-content {
     max-width: var(--max-w-editorial);
-    font-size: 1.0625rem;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #ede8e1;
+    margin-top: var(--s-8);
   }
 
-  .project-content :global(h2) {
-    margin-top: var(--s-12);
+  .project-content :global(h2),
+  .project-content :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #f09057;
+    margin-top: 2.2rem;
+    margin-bottom: 1.1rem;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid #ffffff14;
+    padding-bottom: 8px;
+  }
+
+  .project-content :global(h3)::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background: #ed8851;
+    border-radius: 50%;
+  }
+
+  .project-content :global(p) {
+    margin-bottom: 1.4rem;
+    line-height: 1.8;
+    color: #c8cec9;
+  }
+
+  .project-content :global(ul) {
+    list-style: none;
+    padding: 0;
+    margin: 1.2rem 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .project-content :global(li) {
+    position: relative;
+    padding-left: 1.5rem;
+    line-height: 1.75;
+    color: #c8cec9;
+  }
+
+  .project-content :global(li)::before {
+    content: "–";
+    position: absolute;
+    left: 0;
+    color: #ed8851;
+    font-weight: 600;
+  }
+
+  .project-content :global(strong) {
+    color: #ede8e1;
+    font-weight: 600;
   }
 
   .project-footer {

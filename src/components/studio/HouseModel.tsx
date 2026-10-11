@@ -14,7 +14,10 @@ function Rod({a,b,r=.018,c=green}:{a:V;b:V;r?:number;c?:string}) {
 }
 function Cylinder({p,r,h,c}:{p:V;r:number;h:number;c:string}) {return <mesh position={p} castShadow><cylinderGeometry args={[r,r,h,24]}/><meshStandardMaterial color={c} roughness={.75}/></mesh>}
 // Deterministic procedural materials: no downloaded textures or external model dependencies.
+const textureCache: Record<string, T.Texture> = {};
+
 function texture(kind:'brick'|'plaster'|'paving') {
+ if (textureCache[kind]) return textureCache[kind];
  const canvas=document.createElement('canvas');canvas.width=canvas.height=512;
  const ctx=canvas.getContext('2d')!;let seed=37;
  const random=()=>{seed=(seed*16807)%2147483647;return seed/2147483647};
@@ -28,7 +31,9 @@ function texture(kind:'brick'|'plaster'|'paving') {
  } else {
  for(let i=0;i<2400;i++){ctx.fillStyle=`rgba(95,97,75,${random()*.11})`;ctx.fillRect(random()*512,random()*512,random()*18+1,random()*10+1)}
  }
- const result=new T.CanvasTexture(canvas);result.colorSpace=T.SRGBColorSpace;result.wrapS=result.wrapT=T.RepeatWrapping;result.anisotropy=4;return result;
+ const result=new T.CanvasTexture(canvas);result.colorSpace=T.SRGBColorSpace;result.wrapS=result.wrapT=T.RepeatWrapping;result.anisotropy=4;
+ textureCache[kind] = result;
+ return result;
 }
 function Window({p,width=.82,height=1.05}:{p:V;width?:number;height?:number}) {
  return <group position={p} name="window-and-security-grille">
@@ -89,7 +94,6 @@ function Desk(){return <group position={[.45,.1,-.35]} name="future-work-room-de
  </group>}
 export default function HouseModel({exploded,reduced,touring=false}:{exploded:boolean;reduced:boolean;touring?:boolean}) {
  const mats=useMemo(()=>({brick:texture('brick'),plaster:texture('plaster'),paving:texture('paving')}),[]);
- useEffect(()=>()=>Object.values(mats).forEach(t=>t.dispose()),[mats]);
  const first=useRef<T.Group>(null),roof=useRef<T.Group>(null);const {invalidate}=useThree();
  useEffect(()=>invalidate(),[exploded,invalidate]);
  useFrame((_,dt)=>{[first.current,roof.current].forEach((g,i)=>{if(!g)return;const target=exploded?(i+1)*1.05:0;g.position.y=reduced?target:T.MathUtils.damp(g.position.y,target,5,Math.min(dt,.05));if(Math.abs(target-g.position.y)>.001)invalidate()})});

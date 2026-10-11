@@ -54,6 +54,9 @@ const { media, title, labels = [], carousel = false } = Astro.props;
                   src={src}
                   alt={labels[index] || "Official Document"}
                   loading={carousel && index === 0 ? "eager" : "lazy"}
+                  decoding={carousel && index === 0 ? "sync" : "async"}
+                  fetchpriority={carousel && index === 0 ? "high" : "auto"}
+                  onload="this.classList.add('loaded')"
                 />
               </div>
               <span class="enlarge-mark" aria-hidden="true">
@@ -242,12 +245,29 @@ const { media, title, labels = [], carousel = false } = Astro.props;
   </script>
 
   <script>
+    document.querySelectorAll<HTMLElement>('.media-gallery').forEach(gallery => {
+      gallery.querySelectorAll<HTMLImageElement>('img').forEach(img => {
+        const fit = () => {
+          img.classList.add('loaded');
+          if (!img.naturalWidth) return;
+          const trigger = img.closest<HTMLElement>('.figure-trigger')!;
+          if (!trigger) return;
+          const rotated = Number(trigger.dataset.rotation) % 180 !== 0;
+          trigger.style.setProperty('--eff-w', `${rotated ? img.naturalHeight : img.naturalWidth}px`);
+          trigger.style.setProperty('--eff-h', `${rotated ? img.naturalWidth : img.naturalHeight}px`);
+        };
+        img.addEventListener('load', fit);
+        if (img.complete) fit();
+      });
+    });
+
     document.querySelectorAll<HTMLElement>('.document-carousel').forEach(gallery => {
       const slides = Array.from(gallery.querySelectorAll<HTMLElement>('figure'));
       let index = 0;
       let paused = matchMedia('(prefers-reduced-motion: reduce)').matches;
       let startX = 0;
       const pause = gallery.querySelector<HTMLButtonElement>('[data-pause]')!;
+      if (!pause) return;
       const updatePause = () => {
         pause.textContent = paused ? 'Play' : 'Pause';
         pause.setAttribute('aria-label', `${paused ? 'Start' : 'Pause'} automatic rotation`);
@@ -267,16 +287,7 @@ const { media, title, labels = [], carousel = false } = Astro.props;
         const delta = e.changedTouches[0].clientX - startX;
         if (Math.abs(delta) > 50) { paused = true; updatePause(); show(index + (delta < 0 ? 1 : -1)); }
       }, { passive: true });
-      gallery.querySelectorAll<HTMLImageElement>('img').forEach(img => {
-        const fit = () => {
-          if (!img.naturalWidth) return;
-          const trigger = img.closest<HTMLElement>('.figure-trigger')!;
-          const rotated = Number(trigger.dataset.rotation) % 180 !== 0;
-          trigger.style.setProperty('--eff-w', `${rotated ? img.naturalHeight : img.naturalWidth}px`);
-          trigger.style.setProperty('--eff-h', `${rotated ? img.naturalWidth : img.naturalHeight}px`);
-        };
-        img.addEventListener('load', fit); if (img.complete) fit();
-      });
+      
       const timer = window.setInterval(() => {
         if (!gallery.isConnected) { clearInterval(timer); return; }
         if (!paused && !document.hidden && !document.querySelector('dialog[open]') && !gallery.matches(':hover, :focus-within')) show(index + 1);
@@ -336,6 +347,11 @@ const { media, title, labels = [], carousel = false } = Astro.props;
       object-fit: var(--fit);
       object-position: var(--pos);
       clip-path: inset(var(--crop-t) var(--crop-r) var(--crop-b) var(--crop-l));
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+    .figure-frame img.loaded {
+      opacity: 1;
     }
     .enlarge-mark {
       position: absolute;

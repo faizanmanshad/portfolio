@@ -7,7 +7,7 @@ dateStart: "2024-12-18"
 dateDisplay: "2024"
 priority: 8
 summary: "Participated in the 4th UW-POFs Joint Conference on Academia’s Collaboration with Industrial Organizations."
-media: ["/03 Documents for Scholarship/03-extracurricular-activities/display/uw-pofs-joint-conference.webp"]
+media: ["03-extracurricular-activities/display/uw-pofs-joint-conference.webp", "03-extracurricular-activities/display/cacio-conference.webp"]
 ---
 
 Participation in the UW POFs Joint Conference.

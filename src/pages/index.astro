@@ -262,7 +262,7 @@ import { SITE_METADATA } from "../consts";
       </div>
       {projects.map((item, i) => (
         <a class="register-row" href={`/projects/${item.id}/`}>
-          <span class="register-number">0{i + 1}</span>
+          <span class="register-number">{String(i + 1).padStart(2, '0')}</span>
           <h3>{item.data.title}</h3>
           <span class="register-domain">{item.data.domains.join(" / ")}</span>
           <span>↗</span>
