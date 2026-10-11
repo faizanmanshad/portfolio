@@ -92,16 +92,19 @@ const initialDoc = documentsData[0] || null;
     <div class="video-kicker-bar">
       <div class="kicker-left">
         <span class="video-live-dot" aria-hidden="true"></span>
-        <span class="video-kicker">WORKPLACE WORKFLOW CAPTURE</span>
+        <span class="video-kicker">WORKFLOW TIMELAPSE</span>
       </div>
-      <span class="video-spec-badge">Dual-Screen Workstation</span>
+      <span class="video-spec-badge">Live Capture</span>
     </div>
 
     <div class="video-player-container">
       <video
+        autoplay
+        muted
+        loop
         controls
         playsinline
-        preload="metadata"
+        preload="auto"
         class="workflow-video-frame"
       >
         <source src={getMediaUrl(media[0])} type="video/quicktime" />
@@ -112,7 +115,7 @@ const initialDoc = documentsData[0] || null;
 
     <div class="video-caption-bar">
       <p class="video-caption-text">
-        Production timelapse recording capturing real-time engineering workflows, model coordination, and operational tasks across dual-monitor workstation.
+        Screen-capture timelapse showing production modeling and progress verification workflows.
       </p>
     </div>
   </aside>
@@ -122,6 +125,12 @@ const initialDoc = documentsData[0] || null;
 
 <script>
   function setupDocumentViewer() {
+    const video = document.querySelector<HTMLVideoElement>('.workflow-video-frame');
+    if (video) {
+      video.muted = true;
+      video.play().catch(() => {});
+    }
+
     const wrapper = document.getElementById('doc-viewer-wrapper');
     if (!wrapper) return;
 

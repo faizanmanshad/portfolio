@@ -15,7 +15,7 @@ const hasMediaContent = data.media && data.media.length > 0;
 const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
 
 const backLinkHref = entry.collection === 'experience' ? '/academic/#practice' : '/academic/#projects';
-const backLinkLabel = entry.collection === 'experience' ? 'Professional Practice ↗' : 'Academic Projects ↗';
+const backLinkLabel = entry.collection === 'experience' ? 'Professional Experience ↗' : 'Academic Projects ↗';
 ---
 
 <Layout title={`${data.title} | Faizan Manshad`} description={data.deck || data.summary}>

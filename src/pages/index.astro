@@ -17,7 +17,7 @@ const journeyCollections = await Promise.all([
   getCollection('education'), getCollection('recognition'), getCollection('journey'),
   getCollection('experience'), getCollection('projects'), getCollection('research'),
 ]);
-const categoryNames: Record<string,string> = {education:'Education',recognition:'Recognition',journey:'Community',experience:'Professional practice',projects:'Projects',research:'Research'};
+const categoryNames: Record<string,string> = {education:'Education',recognition:'Recognition',journey:'Community',experience:'Professional Experience',projects:'Projects',research:'Research'};
 const datedJourney = journeyCollections.flat().map(item => {
   const year = item.data.dateDisplay?.match(/(?:19|20)\d{2}/)?.[0];
   const order = item.data.dateStart?.getTime() ?? (year ? Date.UTC(Number(year),0,1) : Infinity);

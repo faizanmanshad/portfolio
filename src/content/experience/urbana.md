@@ -14,21 +14,20 @@ priority: 2
 verificationStatus: "official-document"
 media:
   - "05-present-jobs/display/urbana-video.mov"
-summary: "Developing and revising BIM models for modular public-infrastructure projects."
+links:
+  - label: "Team Profile"
+    url: "https://urbana.au/quick-links/team/#Faizan-Manshad"
+  - label: "Urbana Website"
+    url: "https://urbana.au/"
+summary: "Drafting parametric Revit BIM models and preparing coordinated General Arrangement, shop, and assembly drawing sets for modular pedestrian footbridges and civic infrastructure."
 ---
 
-Working as a remote Revit Drafter supporting modular public infrastructure developments across Australia, specializing in prefabricated pedestrian footbridges, elevated boardwalks, viewing platforms, and civic structures.
+Working as a remote Revit Drafter with [Urbana](https://urbana.au/) ([Team Profile](https://urbana.au/quick-links/team/#Faizan-Manshad)), supporting modular public infrastructure projects across Australia, including prefabricated pedestrian footbridges, access boardwalks, and park structures.
 
-### Key Engineering Responsibilities
+### Key Responsibilities & Drafting Scope
 
-- **Parametric 3D BIM Modeling:** Develop detailed Revit structural and architectural models (LOD 300–350), modeling structural steel truss assemblies, timber/composite decking systems, modular balustrades, and foundation interfaces.
-- **Comprehensive Drawing Production:** Prepare coordinated drawing sets including preliminary feasibility drawings, General Arrangement (GA) packages, foundation setting-out plans, and mill-ready shop/fabrication details.
-- **Design Comment Integration:** Systematically incorporate structural engineer markups, council development comments, and client revisions into updated drawing packages with strict version control.
-- **Dimensional Auditing & Tolerances:** Verify member sizing, bolt hole pitches, welding symbols, and modular connection tolerances to ensure trouble-free off-site prefabrication and rapid site assembly.
-- **Compliance with Australian Standards:** Coordinate drafting details to ensure compliance with Australian Standards (AS 5100 series for bridges, AS 4100 for steel structures, and AS 1428 for disability access).
-
-### Dual-Screen Engineering Workflow
-
-Drafting execution is maintained via an integrated dual-monitor setup:
-1. **Primary Display (BIM Authoring):** Live Autodesk Revit session for real-time 3D geometry manipulation, family parameter configuration, section generation, and sheet layout.
-2. **Secondary Display (Engineering Coordination):** Side-by-side reference of engineer redlines, structural calculation packages, PDF markup revisions, and architectural design briefs.
+- **Parametric 3D BIM Modeling:** Develop and update structural models in Autodesk Revit (LOD 300–350), detailing steel truss assemblies, timber/composite decking, balustrade systems, and foundation interfaces.
+- **Drawing Set Production:** Prepare coordinated drawing packages including preliminary layouts, General Arrangement (GA) drawings, foundation setting-out plans, and shop/fabrication details.
+- **Review Comment Integration:** Update drawing sheets in response to structural engineer reviews, architectural markups, and client requirements while maintaining clear drawing revisions.
+- **Dimensional Coordination:** Cross-check dimensions and joint details to facilitate clean off-site manufacturing and straightforward on-site assembly.
+- **Australian Standards Alignment:** Coordinate drafting details in accordance with relevant Australian Standards (such as AS 5100 bridge series, AS 4100 steel structures, and AS 1428 access provisions).
