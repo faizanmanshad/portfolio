@@ -4,7 +4,7 @@ import Layout from "./Layout.astro";
 import MediaGallery from "../components/project/MediaGallery.astro";
 
 interface Props {
-  entry: CollectionEntry<"journey">;
+  entry: CollectionEntry<"journey"> | CollectionEntry<"development">;
 }
 
 const { entry } = Astro.props;
@@ -17,8 +17,8 @@ const labels = (entry.data.media || []).map((path) => "Certificate / Document");
   description={entry.data.summary}
 >
   <main class="journey-page container">
-    <a class="archive" href="/academic/#journey">
-      Journey / Academic archive ↗
+    <a class="archive" href={entry.collection === "development" ? "/academic/#certifications" : "/academic/#journey"}>
+      {entry.collection === "development" ? "Certifications & Training" : "Journey"} / Academic archive ↗
     </a>
     <div class="journey-grid">
       <section>

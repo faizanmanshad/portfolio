@@ -12,7 +12,12 @@ const recognition = sort(await getCollection("recognition"));
 const journey = sort(await getCollection("journey"));
 const research = sort(await getCollection("research"));
 const education = sort(await getCollection("education"));
-const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service");
+const development = sort(await getCollection("development"));
+
+const certifications = development.filter((item: any) => item.data.type === "Certification");
+const professionalTraining = development.filter((item: any) => item.data.type === "Professional Training");
+const conferences = journey.filter((item: any) => item.data.type === "Conference" || item.id === "uw-pofs-joint-conference");
+const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service" && item.data.type !== "Conference" && item.id !== "uw-pofs-joint-conference");
 const volunteering = journey.filter((item: any) => item.data.type === "Community Service");
 
 const sectionItems = [
@@ -21,9 +26,13 @@ const sectionItems = [
   { id: "research", name: "Research" },
   { id: "practice", name: "Experience" },
   { id: "projects", name: "Academic Projects" },
-  { id: "recognition", name: "Recognition" },
+  { id: "certifications", name: "Certifications" },
+  { id: "training", name: "Professional Training" },
+  { id: "conferences", name: "Conferences" },
+  { id: "recognition", name: "Honors & Awards" },
   { id: "extracurriculars", name: "Extracurriculars" },
   { id: "volunteering", name: "Volunteering" },
+  { id: "languages", name: "Languages" },
 ];
 const groups = [
   {
@@ -43,24 +52,48 @@ const groups = [
     items: projects,
   },
   {
-    id: "recognition",
+    id: "certifications",
     number: "05",
-    title: "Recognition",
+    title: "Further Education & Certifications",
+    link: "/academic/#certifications",
+    label: "7 verified credentials",
+    items: certifications,
+  },
+  {
+    id: "training",
+    number: "06",
+    title: "Professional Training & CPD",
+    link: "/academic/#training",
+    label: "PEC CPD & technical workshops",
+    items: professionalTraining,
+  },
+  {
+    id: "conferences",
+    number: "07",
+    title: "Conferences & Symposia",
+    link: "/academic/#conferences",
+    label: "Academic & industry events",
+    items: conferences,
+  },
+  {
+    id: "recognition",
+    number: "08",
+    title: "Honors & Awards",
     link: "/recognition/",
     label: "Full recognition record",
     items: recognition,
   },
   {
     id: "extracurriculars",
-    number: "06",
-    title: "Extracurriculars",
+    number: "09",
+    title: "Extracurricular Activities",
     link: "/about/",
     label: "More about me",
     items: extracurriculars,
   },
   {
     id: "volunteering",
-    number: "07",
+    number: "10",
     title: "Volunteering & Community Services",
     link: "/about/",
     label: "More about me",
@@ -212,7 +245,7 @@ import { SITE_METADATA } from "../../consts";
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
-          <div id={`${group.id}-records`} data-academic-items class={`record-list ${group.id === 'extracurriculars' || group.id === 'projects' ? 'grid-list' : ''}`}>
+          <div id={`${group.id}-records`} data-academic-items class={`record-list ${group.id === 'extracurriculars' || group.id === 'projects' || group.id === 'certifications' || group.id === 'training' ? 'grid-list' : ''}`}>
             {group.items.map((item: any) => (
               <a
                 class="dossier-record"
@@ -229,6 +262,8 @@ import { SITE_METADATA } from "../../consts";
                   <p class="muted">
                     {group.id === "practice"
                       ? `${item.data.role}. ${item.data.summary || ""}`
+                      : (group.id === "certifications" || group.id === "training")
+                      ? `${item.data.organization ? item.data.organization + ' · ' : ''}${item.data.summary || ''}`
                       : item.data.summary ||
                         item.data.domains?.join(" / ") ||
                         item.data.type}
@@ -243,6 +278,44 @@ import { SITE_METADATA } from "../../consts";
           <AcademicShowMore listId={`${group.id}-records`} total={group.items.length} label={group.title} />
         </section>
       ))}
+      <section id="languages" data-academic-section>
+        <div class="section-top">
+          <h2>
+            <span>11 /</span> Languages
+          </h2>
+          <span class="section-badge">Bilingual Competence</span>
+        </div>
+        <div class="languages-grid" data-academic-reveal>
+          <div class="language-card">
+            <div class="lang-header">
+              <h3>Urdu</h3>
+              <span class="lang-level">Native / Mother Tongue</span>
+            </div>
+            <p class="muted">
+              Native proficiency in speaking, reading, and writing. Primary language for interpersonal communication, regional discourse, and community engagement.
+            </p>
+            <div class="lang-tags">
+              <span>Native Speaker</span>
+              <span>Fluent Oratory</span>
+              <span>Technical & Social Discourse</span>
+            </div>
+          </div>
+          <div class="language-card">
+            <div class="lang-header">
+              <h3>English</h3>
+              <span class="lang-level">Full Professional Proficiency (Fluent)</span>
+            </div>
+            <p class="muted">
+              Fluent command in technical research writing, structural engineering reporting, international BIM collaboration, and academic presentations.
+            </p>
+            <div class="lang-tags">
+              <span>Full Professional Working</span>
+              <span>Technical Report Writing</span>
+              <span>Academic Presentations</span>
+            </div>
+          </div>
+        </div>
+      </section>
       <footer class="academic-end" data-academic-reveal>
         <p class="eyebrow">CONTINUE THE CONVERSATION</p>
         <h2>
@@ -306,7 +379,7 @@ import { SITE_METADATA } from "../../consts";
     margin: auto;
     padding: 120px 5vw 60px;
     display: grid;
-    grid-template-columns: 170px minmax(0, 1fr);
+    grid-template-columns: 220px minmax(0, 1fr);
     gap: 55px;
     color: #ede8e1;
   }
@@ -335,6 +408,7 @@ import { SITE_METADATA } from "../../consts";
     border-left: 2px solid transparent;
     display: flex;
     gap: 14px;
+    white-space: nowrap;
   }
   .dossier-index a span {
     font: 11px var(--font-mono);
@@ -627,8 +701,8 @@ import { SITE_METADATA } from "../../consts";
   }
   @media (max-width: 1050px) {
     .dossier {
-      gap: 28px;
-      grid-template-columns: 135px 1fr;
+      gap: 32px;
+      grid-template-columns: 200px 1fr;
     }
     .profile {
       grid-template-columns: 1fr;
@@ -783,5 +857,65 @@ import { SITE_METADATA } from "../../consts";
     .mobile-section-picker { gap:0; padding:8px 0; border:0; grid-template-columns:76px minmax(0,1fr); }
     .mobile-section-picker label { font:11px var(--font-mono); letter-spacing:.04em; color:#ddd8cf; background:#263028; border:1px solid #ffffff30; border-right:0; border-radius:5px 0 0 5px; height:40px; display:grid; place-items:center; }
     .mobile-section-picker select { height:40px; min-height:40px; border-radius:0 5px 5px 0; padding:0 10px; font-size:14px; background:#1b241e; }
+    .languages-grid { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  .section-badge {
+    font: 11px var(--font-mono);
+    color: var(--chapter-accent);
+    letter-spacing: 0.05em;
+  }
+  .languages-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 16px;
+  }
+  .language-card {
+    background: #121813;
+    border: 1px solid #ffffff18;
+    border-radius: 4px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+  .language-card:hover {
+    border-color: #ffffff2e;
+    background: #141c15;
+  }
+  .lang-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .lang-header h3 {
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0;
+    color: #ede8e1;
+  }
+  .lang-level {
+    font: 11px var(--font-mono);
+    color: #ed8851;
+    letter-spacing: 0.04em;
+  }
+  .lang-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 10px;
+  }
+  .lang-tags span {
+    font: 10px var(--font-mono);
+    color: #a4aaa0;
+    background: #ffffff0a;
+    border: 1px solid #ffffff14;
+    padding: 4px 8px;
+    border-radius: 3px;
   }
 </style>

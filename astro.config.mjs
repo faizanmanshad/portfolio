@@ -10,6 +10,14 @@ export default defineConfig({
   site: 'https://faizanmanshad.com',
   integrations: [react(), sitemap()],
   vite: {
+    resolve: {
+      alias: [
+        {
+          find: '@react-three/fiber',
+          replacement: '@react-three/fiber/dist/react-three-fiber.esm.js',
+        },
+      ],
+    },
     optimizeDeps: {
       include: [
         'three/examples/jsm/loaders/FontLoader.js',

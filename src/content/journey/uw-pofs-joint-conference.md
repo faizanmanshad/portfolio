@@ -1,8 +1,8 @@
 ---
 title: "4th UW-POFs Joint Conference (CACIO-2024)"
 shortTitle: "UW-POFs Conference"
-type: "Extracurricular"
-domains: ["Extracurricular"]
+type: "Conference"
+domains: ["Conference", "Industry-Academia", "Civil Engineering"]
 dateStart: "2024-12-18"
 dateDisplay: "2024"
 priority: 8

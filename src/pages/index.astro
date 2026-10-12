@@ -104,7 +104,7 @@ import { SITE_METADATA } from "../consts";
         <span class="model-coordinate" aria-hidden="true">
           PERSPECTIVE / 01
         </span>
-        <StudioScene journey={journey} client:load>
+        <StudioScene journey={journey} client:only="react">
           <div slot="fallback" class="studio-static">
             <img
               src="/images/house-reference.png"

@@ -73,6 +73,17 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   "02-community-service/display/community-service-certificate.webp": { frameWidth: 420, frameHeight: 320 },
   "02-community-service/display/alkhidmat-professional-volunteer.webp": { frameWidth: 420, frameHeight: 320 },
 
+  // Certifications & Professional Training (landscape by default)
+  "04-certifications-professional-development/display/ai-fluency-framework-foundations.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/autocad-2023-masterclass.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/certificateofcompletion-learning-revit-2023.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/certificateofcompletion-excel-essential-training-microsoft-365.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/certificateofcompletion-understanding-augmented-and-virtual-reality-an-introduction.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/master-structural-design-of-buildings.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/revit-for-beginners-course-architecture-structure-mep.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/one-day-workshop-on-introduction-to-r.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/application-of-ai-ml-in-civil-engineering.webp": { frameWidth: 420, frameHeight: 320 },
+
   // Extracurricular / Journey (stored portrait, needs rotation to become landscape)
   "03-extracurricular-activities/display/civil-mania-uow.webp": { rotation: 90 },
   "03-extracurricular-activities/display/civil-nexus-uow.webp": { rotation: 90 },
