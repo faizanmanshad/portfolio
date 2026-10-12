@@ -14,7 +14,9 @@ const research = sort(await getCollection("research"));
 const education = sort(await getCollection("education"));
 const development = sort(await getCollection("development"));
 
-const certifications = development.filter((item: any) => item.data.type === "Certification");
+const certifications = development
+  .filter((item: any) => item.data.type === "Certification")
+  .sort((a: any, b: any) => new Date(b.data.dateStart).getTime() - new Date(a.data.dateStart).getTime());
 const professionalTraining = development.filter((item: any) => item.data.type === "Professional Training");
 const conferences = journey.filter((item: any) => item.data.type === "Conference" || item.id === "uw-pofs-joint-conference");
 const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service" && item.data.type !== "Conference" && item.id !== "uw-pofs-joint-conference");
@@ -70,7 +72,7 @@ const groups = [
   {
     id: "conferences",
     number: "07",
-    title: "Conferences & Symposia",
+    title: "Conferences",
     link: "/academic/#conferences",
     label: "Academic & industry events",
     items: conferences,
@@ -262,8 +264,10 @@ import { SITE_METADATA } from "../../consts";
                   <p class="muted">
                     {group.id === "practice"
                       ? `${item.data.role}. ${item.data.summary || ""}`
-                      : (group.id === "certifications" || group.id === "training")
+                      : group.id === "certifications"
                       ? `${item.data.organization ? item.data.organization + ' · ' : ''}${item.data.summary || ''}`
+                      : group.id === "training"
+                      ? item.data.summary || item.data.domains?.join(" / ") || ''
                       : item.data.summary ||
                         item.data.domains?.join(" / ") ||
                         item.data.type}
@@ -377,7 +381,7 @@ import { SITE_METADATA } from "../../consts";
   .dossier {
     max-width: 1440px;
     margin: auto;
-    padding: 120px 5vw 60px;
+    padding: calc(var(--nav-h) + 24px) 5vw 60px;
     display: grid;
     grid-template-columns: 220px minmax(0, 1fr);
     gap: 55px;
@@ -385,8 +389,8 @@ import { SITE_METADATA } from "../../consts";
   }
   .dossier-index {
     position: sticky;
-    top: 105px;
-    height: calc(100vh - 150px);
+    top: calc(var(--nav-h) + 24px);
+    height: calc(100vh - var(--nav-h) - 48px);
     border-right: 1px solid #ffffff1c;
     padding-right: 24px;
     display: flex;
@@ -727,7 +731,7 @@ import { SITE_METADATA } from "../../consts";
   @media (max-width: 700px) {
     .dossier {
       display: block;
-      padding: 100px 6vw 30px;
+      padding: calc(var(--nav-h) + 16px) 6vw 30px;
     }
     .dossier-index {
       position: sticky;

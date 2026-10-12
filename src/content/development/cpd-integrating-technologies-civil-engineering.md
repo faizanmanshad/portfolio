@@ -7,7 +7,7 @@ domains: ["Digital Construction", "Construction Tech", "Automation"]
 dateStart: "2023-09-27"
 dateDisplay: "2023"
 priority: 4
-summary: "PEC CPD seminar (0.5 Credit Point) delivered by Dr. Naveed Anwar on multidisciplinary digital tools, automation, and technological synthesis in modern infrastructure."
+summary: "Multidisciplinary digital tools, automation, and technological synthesis in modern civil infrastructure."
 media: ["04-certifications-professional-development/display/cpd-integrating-technologies-in-civil-engineering.webp"]
 verificationStatus: "official-document"
 ---

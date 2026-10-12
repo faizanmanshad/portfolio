@@ -1,6 +1,6 @@
 ---
-title: "Structural Analysis & Design of NUST Faisal Masjid"
-shortTitle: "Faisal Masjid Design"
+title: "Structural Analysis & Design of NUST Mosque"
+shortTitle: "NUST Mosque Design"
 type: "Course End Project (DOS)"
 domains: ["Structural Engineering", "Seismic Design", "BIM & Modeling"]
 dateStart: "2026-05-19"
@@ -11,10 +11,10 @@ tools: ["ETABS", "CSI SAFE", "AutoCAD", "Response Spectrum Analysis"]
 codesStandards: ["Building Code of Pakistan (BCP-2021)", "ACI 318-14", "ASCE 7-16 (Seismic Zone 2B)"]
 media:
   - "10-semester-projects/dos-cep-complete.pdf"
-summary: "Comprehensive 3D structural analysis and design of NUST Faisal Masjid using ETABS and SAFE under seismic Zone 2B and gravity load combinations."
+summary: "Comprehensive 3D structural analysis and design of NUST Mosque using ETABS and SAFE under seismic Zone 2B and gravity load combinations."
 ---
 
-Conducted for the Design of Structures course, this project delivered a complete 3D structural analysis and foundation design for the NUST Faisal Masjid reinforced concrete frame.
+Conducted for the Design of Structures course, this project delivered a complete 3D structural analysis and foundation design for the NUST Mosque reinforced concrete frame.
 
 ### Key Engineering Scope
 

@@ -4,8 +4,8 @@ shortTitle: "AI Fluency Certification"
 type: "Certification"
 organization: "Anthropic / UCC / HEA"
 domains: ["Artificial Intelligence", "Digital Practice"]
-dateStart: "2025-01-01"
-dateDisplay: "2025"
+dateStart: "2026-04-15"
+dateDisplay: "2026"
 priority: 1
 summary: "Foundational framework certification on generative and conversational AI, prompting architectures, and foundational AI principles."
 media: ["04-certifications-professional-development/display/ai-fluency-framework-foundations.webp"]

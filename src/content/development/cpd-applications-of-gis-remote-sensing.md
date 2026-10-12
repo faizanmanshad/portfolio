@@ -7,7 +7,7 @@ domains: ["GIS", "Remote Sensing", "Civil Engineering"]
 dateStart: "2026-02-12"
 dateDisplay: "2026"
 priority: 1
-summary: "PEC CPD seminar (1.0 Credit Point) delivered by Engr. Dr. M. Usman Arshid exploring geospatial analytics, satellite imagery, and GIS applications in infrastructure planning."
+summary: "Geospatial analytics, satellite imagery, and GIS applications in infrastructure planning."
 media: ["04-certifications-professional-development/display/cpd-applications-of-gis-remote-sensing-in-civil-engineering.webp"]
 verificationStatus: "official-document"
 ---

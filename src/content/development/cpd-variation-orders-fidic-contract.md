@@ -7,7 +7,7 @@ domains: ["Construction Contracts", "FIDIC", "Project Management"]
 dateStart: "2025-10-08"
 dateDisplay: "2025"
 priority: 9
-summary: "PEC CPD seminar (1.0 Credit Point) delivered by Engr. Sadaqat Hussain detailing contractual clauses, claims administration, and valuation of variations under FIDIC standards."
+summary: "Contractual clauses, claims administration, and valuation of variations under FIDIC contract conditions."
 media: ["04-certifications-professional-development/display/cpd-variation-orders-as-per-fidic-conditions-of-contract.webp"]
 verificationStatus: "official-document"
 ---

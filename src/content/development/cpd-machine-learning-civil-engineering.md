@@ -7,7 +7,7 @@ domains: ["Machine Learning", "Civil Engineering", "Predictive Modeling"]
 dateStart: "2022-10-13"
 dateDisplay: "2022"
 priority: 3
-summary: "PEC CPD seminar (0.5 Credit Point) delivered by Dr. Muhammad Faisal Javed covering predictive algorithms, material property estimation, and ML applications in civil systems."
+summary: "Predictive algorithms, material property estimation, and machine learning applications in civil engineering systems."
 media: ["04-certifications-professional-development/display/cpd-impact-of-machine-learning-in-the-field-of-civil-engineering.webp"]
 verificationStatus: "official-document"
 ---

@@ -70,6 +70,16 @@ import { SITE_METADATA } from "../../consts";
         maxlength="3000"
         placeholder="Tell me a little about what you have in mind…"
       ></textarea>
+      <div class="hp-check" aria-hidden="true" style="position: absolute; left: -9999px; opacity: 0; pointer-events: none; height: 0; overflow: hidden;">
+        <label for="contact-website-verification">Leave this field blank</label>
+        <input
+          id="contact-website-verification"
+          name="_website_verification"
+          type="text"
+          tabindex="-1"
+          autocomplete="off"
+        />
+      </div>
       <button type="submit" disabled>
         Send message <span aria-hidden="true">↗</span>
       </button>
@@ -85,6 +95,7 @@ import { SITE_METADATA } from "../../consts";
   </main>
 </Layout>
 <script>
+  const formLoadTime = Date.now();
   const form = document.querySelector<HTMLFormElement>("#contact-form");
   const submitButton = form?.querySelector<HTMLButtonElement>(
     'button[type="submit"]',
@@ -93,6 +104,35 @@ import { SITE_METADATA } from "../../consts";
   form?.addEventListener("submit", async (event) => {
     event.preventDefault();
     const values = new FormData(form);
+
+    // 1. Anti-spam Honeypot Check: If a bot populated this hidden field, fake success silently without hitting the API
+    const honeypot = String(values.get("_website_verification") || "").trim();
+    if (honeypot) {
+      const statusEl = document.querySelector("#contact-status") as HTMLElement;
+      statusEl.textContent = "Message sent successfully. I’ll get back to you soon.";
+      statusEl.style.color = "#9dc79d";
+      form.reset();
+      return;
+    }
+
+    // 2. Anti-spam Time-Gate: Prevent sub-second submissions (typical of automated scrapers)
+    const timeElapsed = Date.now() - formLoadTime;
+    if (timeElapsed < 2000) {
+      const statusEl = document.querySelector("#contact-status") as HTMLElement;
+      statusEl.textContent = "Please take a moment before submitting.";
+      statusEl.style.color = "#e87a5d";
+      return;
+    }
+
+    // 3. Client Cooldown Check: Prevent spamming multiple times within 45 seconds
+    const lastSent = sessionStorage.getItem("last_contact_submission");
+    if (lastSent && Date.now() - parseInt(lastSent, 10) < 45000) {
+      const statusEl = document.querySelector("#contact-status") as HTMLElement;
+      statusEl.textContent = "Please wait a moment before sending another message.";
+      statusEl.style.color = "#e87a5d";
+      return;
+    }
+
     const message = String(values.get("message") || "").trim();
     const field = form.querySelector<HTMLTextAreaElement>("textarea")!;
     field.setCustomValidity(message ? "" : "Please write a short message.");
@@ -122,6 +162,7 @@ import { SITE_METADATA } from "../../consts";
 
       if (!response.ok) throw new Error("API response error");
 
+      sessionStorage.setItem("last_contact_submission", Date.now().toString());
       statusEl.textContent = "Message sent successfully. I’ll get back to you soon.";
       statusEl.style.color = "#9dc79d";
       form.reset();
