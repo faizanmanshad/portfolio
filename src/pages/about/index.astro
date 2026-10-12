@@ -1,7 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import IndexList from "../../components/index/IndexList.astro";
 import { Image } from "astro:assets";
 import portrait from "../../assets/faizan.jpg";
 
@@ -76,28 +75,146 @@ const allItems = journey.sort((a, b) => {
       </div>
     </div>
 
-    <section class="journey-section">
-      <header class="index-header">
-        <h2 class="index-title gsap-stagger-item">Community & Journey</h2>
-        <p class="index-deck gsap-stagger-item">
-          Beyond technical execution, contributing back to the community and
-          environment.
+    <section class="journey-section gsap-stagger-parent" id="community-journey">
+      <header class="section-header">
+        <div class="section-eyebrow gsap-stagger-item">
+          <span class="blueprint-badge mono">BEYOND ENGINEERING // 09</span>
+          <span class="eyebrow-sep">/</span>
+          <span class="eyebrow-label mono">COMMUNITY & JOURNEY</span>
+        </div>
+        
+        <h2 class="section-title gsap-stagger-item">
+          Community, Leadership & <span class="accent-text">Journey</span>
+        </h2>
+        <p class="section-deck gsap-stagger-item">
+          Beyond technical execution and calculations: contributing to social welfare, participating in global leadership fellowships, organizing academic symposiums, and competing in athletics.
         </p>
+
+        <!-- Metrics Strip -->
+        <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Journey Metrics">
+          <div class="metric-item">
+            <span class="metric-num highlight">{allItems.length}</span>
+            <span class="metric-name mono">TOTAL INITIATIVES</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-num">04</span>
+            <span class="metric-name mono">LEADERSHIP FELLOWSHIPS</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-num">02</span>
+            <span class="metric-name mono">COMMUNITY OUTREACH</span>
+          </div>
+          <div class="metric-item">
+            <span class="metric-num">04</span>
+            <span class="metric-name mono">ATHLETIC AWARDS</span>
+          </div>
+        </div>
       </header>
 
-      <div class="index-columns gsap-stagger-item">
-        <span class="col-head col-head--year label">YEAR</span>
-        <span class="col-head col-head--title label">TITLE</span>
-        <span class="col-head col-head--domain label">DOMAIN</span>
-        <span class="col-head col-head--context label">CONTEXT</span>
+      <!-- Category Filter Tabs -->
+      <div class="journey-toolbar gsap-stagger-item">
+        <div class="filter-tabs" role="tablist" aria-label="Filter journey items">
+          <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+            All <span class="tab-count">({allItems.length})</span>
+          </button>
+          <button class="filter-tab" data-filter="leadership" role="tab" aria-selected="false">
+            Leadership & Fellowships
+          </button>
+          <button class="filter-tab" data-filter="community" role="tab" aria-selected="false">
+            Community Volunteering
+          </button>
+          <button class="filter-tab" data-filter="symposium" role="tab" aria-selected="false">
+            Symposiums & Campus
+          </button>
+          <button class="filter-tab" data-filter="athletics" role="tab" aria-selected="false">
+            Athletics & Sports
+          </button>
+        </div>
       </div>
 
-      <div class="gsap-stagger-item">
-        <IndexList items={allItems} />
+      <!-- Journey Cards Grid -->
+      <div class="journey-cards-grid gsap-stagger-item" id="journey-grid">
+        {allItems.map((item, idx) => {
+          const t = (item.data.type || '').toLowerCase();
+          const d = (item.data.domains || []).join(' ').toLowerCase();
+          const id = item.id.toLowerCase();
+
+          let category = 'symposium';
+          if (id.includes('aspire') || id.includes('omlas') || id.includes('lgs') || id.includes('wed-2026') || d.includes('leadership')) {
+            category = 'leadership';
+          } else if (t.includes('community') || id.includes('alkhidmat') || id.includes('sweet-home') || id.includes('database')) {
+            category = 'community';
+          } else if (id.includes('bowler') || id.includes('football') || id.includes('cricket') || id.includes('relay')) {
+            category = 'athletics';
+          }
+
+          return (
+            <article class="journey-card" data-category={category}>
+              <a href={`/journey/${item.id}/`} class="card-inner">
+                <div class="card-top">
+                  <div class="card-index-group">
+                    <span class="card-num mono">#{String(idx + 1).padStart(2, '0')}</span>
+                    <span class="card-tag mono">{item.data.type || 'Activity'}</span>
+                  </div>
+                  <span class="card-year mono">{item.data.dateDisplay || '2025'}</span>
+                </div>
+
+                <div class="card-body">
+                  <h3 class="card-title">
+                    {item.data.shortTitle || item.data.title}
+                  </h3>
+                  {item.data.organization && (
+                    <p class="card-org">{item.data.organization}</p>
+                  )}
+                  <p class="card-desc">
+                    {item.data.summary || 'Active participation and contribution representing university and community initiatives.'}
+                  </p>
+                </div>
+
+                <div class="card-footer">
+                  <div class="card-tags">
+                    {item.data.domains?.slice(0, 2).map((dom: string) => (
+                      <span class="domain-pill mono">{dom}</span>
+                    ))}
+                  </div>
+                  <span class="card-arrow" aria-hidden="true">↗</span>
+                </div>
+              </a>
+            </article>
+          );
+        })}
       </div>
     </section>
   </main>
 </Layout>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterTabs = document.querySelectorAll('#community-journey .filter-tab');
+    const cards = document.querySelectorAll('#community-journey .journey-card');
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-filter');
+        filterTabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        cards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+          if (filter === 'all' || category === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
 
 <style>
   .about-page {
@@ -124,12 +241,6 @@ const allItems = journey.sort((a, b) => {
     color: var(--c-text);
   }
 
-  .index-deck {
-    font-size: var(--text-md);
-    color: var(--c-muted);
-    line-height: var(--leading-relaxed);
-  }
-
   .about-content {
     display: grid;
     grid-template-columns: 1fr 2fr;
@@ -142,6 +253,7 @@ const allItems = journey.sort((a, b) => {
     aspect-ratio: 3/4;
     background-color: var(--c-surface);
     border: 1px solid var(--c-border);
+    border-radius: var(--r-sm);
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -158,11 +270,13 @@ const allItems = journey.sort((a, b) => {
     transform: scale(1.75);
     transform-origin: 50% 28%;
   }
+
   .about-text a {
     color: #ed925f;
     text-decoration: underline;
     text-underline-offset: 4px;
   }
+
   .about-image-wrapper {
     max-width: 420px;
   }
@@ -177,28 +291,289 @@ const allItems = journey.sort((a, b) => {
     margin-bottom: var(--s-6);
   }
 
+  /* Journey Section */
   .journey-section {
     padding-top: var(--s-16);
     border-top: 1px solid var(--c-border);
   }
 
-  .index-columns {
-    display: grid;
-    grid-template-columns: 80px 3fr 2fr 3fr;
-    gap: var(--s-4);
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--c-border);
-    color: var(--c-muted);
-    font-size: var(--text-xs);
+  .section-header {
+    margin-bottom: var(--s-10);
+  }
+
+  .section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-bottom: var(--s-4);
+  }
+
+  .blueprint-badge {
+    font-size: 11px;
+    color: var(--c-accent);
+    background: var(--c-accent-dim);
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
     letter-spacing: var(--tracking-label);
+  }
+
+  .eyebrow-sep {
+    color: var(--c-muted);
+    font-size: 11px;
+  }
+
+  .eyebrow-label {
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .section-title {
+    font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    margin-bottom: var(--s-3);
+    line-height: var(--leading-tight);
+  }
+
+  .accent-text {
+    color: var(--c-accent);
+  }
+
+  .section-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+    max-width: 68ch;
+    margin-bottom: var(--s-8);
+  }
+
+  /* Metrics Strip */
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: var(--s-4);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--s-5) var(--s-6);
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .metric-num {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--c-text);
+    line-height: 1;
+  }
+
+  .metric-num.highlight {
+    color: var(--c-accent);
+  }
+
+  .metric-name {
+    font-size: 10px;
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* Toolbar */
+  .journey-toolbar {
+    margin-bottom: var(--s-8);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .filter-tab {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-muted);
+    font: 11px/1.2 var(--font-mono);
+    padding: 7px 14px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: all var(--t-ui) var(--ease-out);
+  }
+
+  .filter-tab:hover {
+    color: var(--c-text);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .filter-tab.active {
+    background: rgba(232, 92, 26, 0.15);
+    border-color: var(--c-accent);
+    color: #ede8e1;
+  }
+
+  .tab-count {
+    opacity: 0.7;
+  }
+
+  /* Journey Cards Grid */
+  .journey-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--s-6);
+  }
+
+  .journey-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-inner {
+    background: #151a17;
+    border: 1px solid #bcc3a529;
+    border-radius: var(--r-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--t-ui), transform var(--t-ui), background var(--t-ui), box-shadow var(--t-ui);
+  }
+
+  .card-inner:hover {
+    border-color: rgba(232, 92, 26, 0.4);
+    background: #1b231f;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--s-4);
+  }
+
+  .card-index-group {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .card-num {
+    font-size: 11px;
+    color: var(--c-accent);
+  }
+
+  .card-tag {
+    font-size: 9px;
+    color: #8e9587;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .card-year {
+    font-size: 11px;
+    color: var(--c-muted);
+  }
+
+  .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--s-4);
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    color: var(--c-text);
+    margin-bottom: 6px;
+    transition: color var(--t-micro);
+  }
+
+  .card-inner:hover .card-title {
+    color: var(--c-accent);
+  }
+
+  .card-org {
+    font-size: 12px;
+    color: #8e9587;
+    margin-bottom: 10px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #9fa797;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: var(--s-3);
+    margin-top: auto;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .domain-pill {
+    font-size: 10px;
+    color: #8b9284;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  .card-arrow {
+    color: var(--c-accent);
+    font-size: 14px;
+    transition: transform var(--t-micro);
+  }
+
+  .card-inner:hover .card-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  @media (max-width: 900px) {
+    .metrics-bar {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6);
+    }
   }
 
   @media (max-width: 768px) {
     .about-content {
       grid-template-columns: 1fr;
     }
-    .index-columns {
-      display: none;
+    .metrics-bar {
+      grid-template-columns: 1fr;
+    }
+    .journey-cards-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

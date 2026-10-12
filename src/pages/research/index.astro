@@ -1,87 +1,965 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import IndexList from '../../components/index/IndexList.astro';
+import { Image } from 'astro:assets';
+import researchCover from '../../assets/research-cover.png';
 
 const research = await getCollection('research');
 const allItems = research.sort((a, b) => {
   return (a.data.priority || 99) - (b.data.priority || 99);
 });
+
+const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
 ---
 
 <Layout
   title="Research | Faizan Manshad"
-  description="Academic research and publications."
+  description="Academic research, preprints, and multimodal BIM-to-AR frameworks for civil construction."
 >
-  <main class="index-page container gsap-stagger-parent">
-    <header class="index-header">
-      <div class="index-header-meta">
-        <p class="label index-label gsap-stagger-item">RESEARCH — {allItems.length} ENTRIES</p>
+  <main class="research-page container gsap-stagger-parent">
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-eyebrow gsap-stagger-item">
+        <span class="blueprint-badge">ARCHIVE // 02</span>
+        <span class="eyebrow-sep">/</span>
+        <span class="eyebrow-label">APPLIED INQUIRY & EXPERIMENTATION</span>
       </div>
-      <h1 class="index-title gsap-stagger-item">Academic Research</h1>
-      <p class="index-deck gsap-stagger-item">
-        Explorations into emerging construction technology, Augmented Reality, and methodology.
-      </p>
+      
+      <div class="header-main gsap-stagger-item">
+        <h1 class="page-title">
+          Academic <span class="accent-text">Research</span>
+        </h1>
+        <p class="page-deck">
+          Scientific investigations into emerging construction technology, mixed reality spatial computing, and Building Information Modelling (BIM) deployment workflows.
+        </p>
+      </div>
+
+      <!-- Quick Publication Metrics -->
+      <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Research Metrics">
+        <div class="metric-item">
+          <span class="metric-num highlight">01</span>
+          <span class="metric-name">FORMAL MANUSCRIPT</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">SSRN</span>
+          <span class="metric-name">PREPRINT ARCHIVE</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">03</span>
+          <span class="metric-name">DEPLOYED AR MODES</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">CORR.</span>
+          <span class="metric-name">AUTHOR DESIGNATION</span>
+        </div>
+      </div>
     </header>
 
-    <div class="index-columns gsap-stagger-item">
-      <span class="col-head col-head--year label">YEAR</span>
-      <span class="col-head col-head--title label">TITLE</span>
-      <span class="col-head col-head--domain label">DOMAIN</span>
-      <span class="col-head col-head--context label">CONTEXT</span>
-    </div>
+    <!-- Premier Manuscript Showcase -->
+    {primaryStudy && (
+      <section class="manuscript-hero gsap-stagger-item" aria-label="Featured Research Manuscript">
+        <div class="manuscript-card">
+          <!-- Visual & Blueprint Column -->
+          <div class="manuscript-visual-wrap">
+            <a href={`/research/${primaryStudy.id}/`} class="manuscript-visual-link">
+              <div class="image-frame">
+                <Image
+                  src={researchCover}
+                  alt="Multimodal BIM to AR framework diagram and spatial tracking model"
+                  width={1000}
+                  format="webp"
+                  class="cover-image"
+                />
+                <div class="blueprint-scanline" aria-hidden="true"></div>
+                <div class="blueprint-crosshair top-left" aria-hidden="true"></div>
+                <div class="blueprint-crosshair bottom-right" aria-hidden="true"></div>
+              </div>
+              <div class="visual-caption">
+                <span class="caption-tag mono">FIG. 01 — MULTIMODAL AR FRAMEWORK ARCHITECTURE</span>
+                <span class="caption-action mono">CLICK TO EXPAND STUDY ↗</span>
+              </div>
+            </a>
 
-    <div class="gsap-stagger-item">
-      <IndexList items={allItems} />
+            <!-- Rapid Badges -->
+            <div class="doi-pill-box">
+              <div class="status-indicator">
+                <span class="pulse-dot"></span>
+                <span class="mono">SSRN DOI: 10.2139/ssrn.6884926</span>
+              </div>
+              <span class="access-pill mono">OPEN ACCESS PREPRINT</span>
+            </div>
+          </div>
+
+          <!-- Manuscript Information Column -->
+          <div class="manuscript-details">
+            <div class="manuscript-meta-tags">
+              <span class="category-badge mono">PREPRINT / RESEARCH MANUSCRIPT</span>
+              <span class="year-badge mono">{primaryStudy.data.dateDisplay || '2026'}</span>
+            </div>
+
+            <h2 class="manuscript-title">
+              <a href={`/research/${primaryStudy.id}/`}>
+                {primaryStudy.data.title}
+              </a>
+            </h2>
+
+            <!-- Author Byline -->
+            <div class="author-byline">
+              <span class="byline-label mono">AUTHORS:</span>
+              <p class="byline-names">
+                Hassan Ashraf, <strong>Faizan Manshad</strong> <span class="corr-badge">(Corresponding Author)</span>, Kashan Shafiq, and Faiz Fareed
+              </p>
+              <p class="byline-affil">COMSATS University Islamabad, Wah Campus · Final Year Project (FYP)</p>
+            </div>
+
+            <!-- Abstract Paragraph -->
+            <div class="abstract-box">
+              <span class="abstract-label mono">EXECUTIVE ABSTRACT</span>
+              <p class="abstract-text">
+                {primaryStudy.data.summary || 'A standardized multimodal BIM-to-AR deployment framework supporting marker-based, ground-plane, and location-based AR workflows for real-time construction layout verification and spatial visualization.'}
+              </p>
+              <p class="abstract-subtext">
+                Moving beyond desktop BIM interfaces, this investigation solves geometric fidelity loss and spatial calibration drift when projecting complex Autodesk Revit models onto real-world construction environments through mobile augmented reality.
+              </p>
+            </div>
+
+            <!-- Toolstack Matrix -->
+            <div class="tools-matrix">
+              <span class="matrix-label mono">TECHNOLOGY PIPELINE</span>
+              <div class="tools-chips">
+                <span class="tool-chip">Autodesk Revit</span>
+                <span class="tool-chip">Unity 3D</span>
+                <span class="tool-chip">Vuforia Engine</span>
+                <span class="tool-chip">Google ARCore</span>
+                <span class="tool-chip">Cesium for Unity</span>
+                <span class="tool-chip">FBX Geometry Optimization</span>
+                <span class="tool-chip">C# Scripting</span>
+              </div>
+            </div>
+
+            <!-- CTAs -->
+            <div class="manuscript-actions">
+              <a href={`/research/${primaryStudy.id}/`} class="btn-primary">
+                <span>Explore Research Case Study</span>
+                <span class="btn-arrow" aria-hidden="true">↗</span>
+              </a>
+              {primaryStudy.data.links?.map((link: { url: string; label: string }) => (
+                <a href={link.url} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+                  <span>{link.label}</span>
+                  <span class="btn-arrow" aria-hidden="true">↗</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Framework Architecture Pillars -->
+    <section class="framework-section gsap-stagger-item" aria-label="The 3 Multimodal Deployment Modes">
+      <div class="section-title-wrap">
+        <span class="section-kicker mono">02.1 / CORE CONTRIBUTION</span>
+        <h2 class="section-heading">Three-Tier Multimodal AR Deployment Framework</h2>
+        <p class="section-desc">
+          To overcome diverse site conditions and hardware constraints, the research implements three distinct tracking paradigms tailored for specific construction verification stages.
+        </p>
+      </div>
+
+      <div class="pillars-grid">
+        <!-- Pillar 01 -->
+        <article class="pillar-card">
+          <div class="pillar-header">
+            <span class="pillar-num mono">01</span>
+            <span class="pillar-tag mono">MILLIMETER PRECISION</span>
+          </div>
+          <div class="pillar-icon-box" aria-hidden="true">
+            <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 3v4M12 17v4M3 12h4M17 12h4"/>
+              <circle cx="12" cy="12" r="2" fill="currentColor"/>
+            </svg>
+          </div>
+          <h3 class="pillar-title">Marker-Based Target Tracking</h3>
+          <p class="pillar-tech mono">Vuforia Engine · 2D Plan Benchmarks</p>
+          <p class="pillar-desc">
+            Uses physical print targets, surveyor benchmark plates, or structural drawings to lock 3D BIM components with sub-centimeter alignment. Ideal for critical structural joint checks and rebar cage verification.
+          </p>
+          <ul class="pillar-features">
+            <li>Zero spatial drift over prolonged inspection</li>
+            <li>Direct reference to physical surveyor points</li>
+            <li>Instant model re-alignment upon camera re-entry</li>
+          </ul>
+        </article>
+
+        <!-- Pillar 02 -->
+        <article class="pillar-card pillar-card--featured">
+          <div class="pillar-header">
+            <span class="pillar-num mono">02</span>
+            <span class="pillar-tag mono">1:1 SITE OVERLAY</span>
+          </div>
+          <div class="pillar-icon-box" aria-hidden="true">
+            <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <rect x="3" y="14" width="18" height="7" rx="1"/>
+              <path d="M7 14V6l10 4v4"/>
+              <path d="M17 10L7 6"/>
+            </svg>
+          </div>
+          <h3 class="pillar-title">Ground-Plane Surface AR</h3>
+          <p class="pillar-tech mono">Google ARCore · Surface Raycasting</p>
+          <p class="pillar-desc">
+            Detects horizontal and vertical physical surfaces (concrete slabs, masonry walls, rough excavation planes) to project 1:1 scale architectural and structural elements without requiring physical markers.
+          </p>
+          <ul class="pillar-features">
+            <li>Rapid walk-through on bare slab environments</li>
+            <li>Interactive scale, rotation, and elevation slider</li>
+            <li>Immediate detection of MEP conduit clashes</li>
+          </ul>
+        </article>
+
+        <!-- Pillar 03 -->
+        <article class="pillar-card">
+          <div class="pillar-header">
+            <span class="pillar-num mono">03</span>
+            <span class="pillar-tag mono">MACRO GEODETIC</span>
+          </div>
+          <div class="pillar-icon-box" aria-hidden="true">
+            <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+              <circle cx="12" cy="12" r="9"/>
+              <ellipse cx="12" cy="12" rx="4" ry="9"/>
+              <path d="M3 12h18"/>
+            </svg>
+          </div>
+          <h3 class="pillar-title">Geospatial Location-Based AR</h3>
+          <p class="pillar-tech mono">Cesium for Unity · WGS84 Georeferencing</p>
+          <p class="pillar-desc">
+            Anchors civil infrastructure models to real-world latitude, longitude, and ellipsoidal height coordinates. Visualizes site earthworks, road alignments, and stormwater pipe networks over broad distances.
+          </p>
+          <ul class="pillar-features">
+            <li>True geospatial orientation via GNSS & compass</li>
+            <li>Civil layout inspection before breaking ground</li>
+            <li>Contextual elevation mapping against GIS terrain</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <!-- Technical Pipeline Workflow -->
+    <section class="pipeline-section gsap-stagger-item" aria-label="Research Methodology Pipeline">
+      <div class="section-title-wrap">
+        <span class="section-kicker mono">02.2 / METHODOLOGY</span>
+        <h2 class="section-heading">The Digital-to-Physical Translation Pipeline</h2>
+        <p class="section-desc">
+          How structural parameters are extracted from desktop BIM authoring tools and rendered seamlessly on spatial hardware.
+        </p>
+      </div>
+
+      <div class="pipeline-flow">
+        <div class="flow-step">
+          <div class="step-badge mono">STEP 01</div>
+          <h4 class="step-title">Parametric BIM Authoring</h4>
+          <p class="step-desc">
+            Models modeled in Autodesk Revit with LOD 300 accuracy, material definitions, and strict family categorization.
+          </p>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">→</div>
+
+        <div class="flow-step">
+          <div class="step-badge mono">STEP 02</div>
+          <h4 class="step-title">Geometry Decimation & FBX Transfer</h4>
+          <p class="step-desc">
+            Automated polygon reduction, axis conversion (Z-up to Y-up), and pivot normalization for mobile GPU performance.
+          </p>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">→</div>
+
+        <div class="flow-step">
+          <div class="step-badge mono">STEP 03</div>
+          <h4 class="step-title">Unity Engine AR Integration</h4>
+          <p class="step-desc">
+            Custom C# runtime shaders, occlusion culling, tracking state handlers, and spatial touch interaction controls.
+          </p>
+        </div>
+
+        <div class="flow-arrow" aria-hidden="true">→</div>
+
+        <div class="flow-step">
+          <div class="step-badge mono">STEP 04</div>
+          <h4 class="step-title">On-Site Experimental Testing</h4>
+          <p class="step-desc">
+            Field testing across sunlight variations, marker degradation thresholds, and comparative dimensional tolerance checks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page Footer Navigation -->
+    <div class="page-footer-nav gsap-stagger-item">
+      <a href="/academic/#research" class="back-link">
+        <span aria-hidden="true">←</span> Return to Academic Dossier
+      </a>
+      <a href="/projects/" class="next-link">
+        Explore Academic Projects ({15}) <span aria-hidden="true">→</span>
+      </a>
     </div>
   </main>
 </Layout>
 
 <style>
-  .index-page {
-    padding-top: calc(var(--nav-h) + var(--s-16));
+  .research-page {
+    padding-top: calc(var(--nav-h) + var(--s-12));
     padding-bottom: var(--s-24);
     color: var(--c-text);
   }
 
-  .index-header {
-    margin-bottom: var(--s-16);
-    max-width: 640px;
+  /* Header */
+  .page-header {
+    margin-bottom: var(--s-12);
   }
 
-  .index-label {
+  .header-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-bottom: var(--s-4);
+  }
+
+  .blueprint-badge {
+    font: 11px/1.2 var(--font-mono);
     color: var(--c-accent);
-    margin-bottom: var(--s-4);
-  }
-
-  .index-title {
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    font-weight: 500;
-    margin-bottom: var(--s-4);
-    color: var(--c-text);
-  }
-
-  .index-deck {
-    font-size: var(--text-md);
-    color: var(--c-muted);
-    line-height: var(--leading-relaxed);
-  }
-
-  .index-columns {
-    display: grid;
-    grid-template-columns: 80px 3fr 2fr 3fr;
-    gap: var(--s-4);
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--c-border);
-    color: var(--c-muted);
-    font-size: var(--text-xs);
+    background: var(--c-accent-dim);
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
     letter-spacing: var(--tracking-label);
   }
 
-  @media (max-width: 768px) {
-    .index-columns {
-      display: none;
+  .eyebrow-sep {
+    color: var(--c-muted);
+    font-size: 11px;
+  }
+
+  .eyebrow-label {
+    font: 11px/1.2 var(--font-mono);
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--s-3);
+  }
+
+  .accent-text {
+    color: var(--c-accent);
+  }
+
+  .page-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+    max-width: 68ch;
+    margin-bottom: var(--s-8);
+  }
+
+  /* Metrics Strip */
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: var(--s-4);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--s-5) var(--s-6);
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .metric-num {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--c-text);
+    line-height: 1;
+  }
+
+  .metric-num.highlight {
+    color: var(--c-accent);
+  }
+
+  .metric-name {
+    font: 10px/1.3 var(--font-mono);
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* Featured Manuscript Card */
+  .manuscript-hero {
+    margin-bottom: var(--s-20);
+  }
+
+  .manuscript-card {
+    background: radial-gradient(ellipse at top left, #1d2520 0%, #151a17 60%, #101412 100%);
+    border: 1px solid rgba(232, 92, 26, 0.35);
+    border-radius: var(--r-md);
+    padding: clamp(24px, 4vw, 44px);
+    display: grid;
+    grid-template-columns: 1.1fr 1.3fr;
+    gap: clamp(24px, 4vw, 48px);
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Left Visual */
+  .manuscript-visual-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-4);
+  }
+
+  .manuscript-visual-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    position: relative;
+  }
+
+  .image-frame {
+    position: relative;
+    background: #0d100e;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    aspect-ratio: 16/10;
+  }
+
+  .cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s var(--ease-out), filter 0.4s var(--ease-out);
+    filter: brightness(0.92) contrast(1.05);
+  }
+
+  .manuscript-visual-link:hover .cover-image {
+    transform: scale(1.03);
+    filter: brightness(1);
+  }
+
+  .blueprint-scanline {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(232, 92, 26, 0.04) 3px,
+      rgba(232, 92, 26, 0.04) 4px
+    );
+    pointer-events: none;
+  }
+
+  .blueprint-crosshair {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+  }
+
+  .blueprint-crosshair.top-left {
+    top: 8px;
+    left: 8px;
+    border-top: 2px solid var(--c-accent);
+    border-left: 2px solid var(--c-accent);
+  }
+
+  .blueprint-crosshair.bottom-right {
+    bottom: 8px;
+    right: 8px;
+    border-bottom: 2px solid var(--c-accent);
+    border-right: 2px solid var(--c-accent);
+  }
+
+  .visual-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--s-2);
+  }
+
+  .caption-tag {
+    font-size: 10px;
+    color: #8e9587;
+    letter-spacing: 0.04em;
+  }
+
+  .caption-action {
+    font-size: 10px;
+    color: var(--c-accent);
+    letter-spacing: 0.04em;
+  }
+
+  .doi-pill-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--r-sm);
+    padding: 8px 12px;
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    color: #ede8e1;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #62d26f;
+    box-shadow: 0 0 8px #62d26f;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .access-pill {
+    font-size: 10px;
+    color: #ffd166;
+    letter-spacing: 0.05em;
+  }
+
+  /* Right Details Column */
+  .manuscript-details {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .manuscript-meta-tags {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    margin-bottom: var(--s-3);
+  }
+
+  .category-badge {
+    font-size: 10px;
+    color: var(--c-accent);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .year-badge {
+    font-size: 10px;
+    color: var(--c-muted);
+  }
+
+  .manuscript-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+    font-weight: 500;
+    line-height: 1.25;
+    margin-bottom: var(--s-4);
+  }
+
+  .manuscript-title a {
+    color: var(--c-text);
+    text-decoration: none;
+    transition: color var(--t-micro);
+  }
+
+  .manuscript-title a:hover {
+    color: var(--c-accent);
+  }
+
+  .author-byline {
+    padding-bottom: var(--s-4);
+    margin-bottom: var(--s-4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .byline-label {
+    font-size: 9px;
+    color: var(--c-muted);
+    letter-spacing: 0.1em;
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .byline-names {
+    font-size: 13px;
+    color: #d8decf;
+    margin: 0 0 2px;
+  }
+
+  .corr-badge {
+    color: var(--c-accent);
+    font-weight: 500;
+  }
+
+  .byline-affil {
+    font-size: 11px;
+    color: #8e9587;
+    margin: 0;
+  }
+
+  .abstract-box {
+    margin-bottom: var(--s-5);
+  }
+
+  .abstract-label {
+    font-size: 10px;
+    color: var(--c-accent);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .abstract-text {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #c0c8b9;
+    margin-bottom: var(--s-2);
+  }
+
+  .abstract-subtext {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #8e9587;
+    margin: 0;
+  }
+
+  .tools-matrix {
+    margin-bottom: var(--s-6);
+  }
+
+  .matrix-label {
+    font-size: 10px;
+    color: var(--c-muted);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .tools-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tool-chip {
+    font: 11px/1.2 var(--font-mono);
+    color: #b5beb0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .manuscript-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: auto;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--c-accent);
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: var(--r-sm);
+    font: 12px/1.2 var(--font-mono);
+    letter-spacing: 0.02em;
+    font-weight: 500;
+    transition: background var(--t-ui), transform var(--t-ui);
+  }
+
+  .btn-primary:hover {
+    background: #f06e30;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ede8e1;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: var(--r-sm);
+    font: 12px/1.2 var(--font-mono);
+    transition: all var(--t-ui);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    transition: transform var(--t-micro);
+  }
+
+  .btn-primary:hover .btn-arrow,
+  .btn-secondary:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Section Headings */
+  .section-title-wrap {
+    margin-bottom: var(--s-8);
+  }
+
+  .section-kicker {
+    font-size: 11px;
+    color: var(--c-accent);
+    letter-spacing: var(--tracking-label);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .section-heading {
+    font-size: var(--text-xl);
+    font-weight: 500;
+    margin: 0 0 var(--s-2);
+  }
+
+  .section-desc {
+    font-size: var(--text-base);
+    color: var(--c-muted);
+    max-width: 65ch;
+    margin: 0;
+    line-height: var(--leading-relaxed);
+  }
+
+  /* Pillars Grid */
+  .framework-section {
+    margin-bottom: var(--s-20);
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--s-6);
+  }
+
+  .pillar-card {
+    background: #151a17;
+    border: 1px solid #bcc3a529;
+    border-radius: var(--r-md);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--t-ui), transform var(--t-ui);
+  }
+
+  .pillar-card:hover {
+    border-color: rgba(232, 92, 26, 0.4);
+    transform: translateY(-3px);
+  }
+
+  .pillar-card--featured {
+    border-color: rgba(232, 92, 26, 0.35);
+    background: radial-gradient(ellipse at top, #1e2621 0%, #151a17 80%);
+  }
+
+  .pillar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--s-4);
+  }
+
+  .pillar-num {
+    font-size: 14px;
+    color: var(--c-accent);
+    font-weight: 600;
+  }
+
+  .pillar-tag {
+    font-size: 9px;
+    color: #ffd166;
+    background: rgba(255, 209, 102, 0.1);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .pillar-icon-box {
+    margin-bottom: var(--s-4);
+    color: var(--c-accent);
+  }
+
+  .pillar-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .pillar-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: var(--c-text);
+  }
+
+  .pillar-tech {
+    font-size: 11px;
+    color: var(--c-accent);
+    margin: 0 0 var(--s-3);
+  }
+
+  .pillar-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #9fa797;
+    margin-bottom: var(--s-4);
+    flex-grow: 1;
+  }
+
+  .pillar-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: var(--s-3);
+  }
+
+  .pillar-features li {
+    font-size: 12px;
+    color: #8e9587;
+    position: relative;
+    padding-left: 14px;
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .pillar-features li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--c-accent);
+  }
+
+  /* Pipeline Workflow Flow */
+  .pipeline-section {
+    margin-bottom: var(--s-20);
+  }
+
+  .pipeline-flow {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: center;
+    gap: var(--s-3);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: 28px 24px;
+  }
+
+  .flow-step {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .step-badge {
+    font-size: 10px;
+    color: var(--c-accent);
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .step-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text);
+    margin: 0 0 6px;
+  }
+
+  .step-desc {
+    font-size: 12px;
+    color: var(--c-muted);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .flow-arrow {
+    color: var(--c-accent);
+    font-size: 18px;
+    opacity: 0.7;
+  }
+
+  /* Footer Navigation */
+  .page-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .back-link,
+  .next-link {
+    font: 12px/1.4 var(--font-mono);
+    color: var(--c-muted);
+    text-decoration: none;
+    transition: color var(--t-micro);
+  }
+
+  .back-link:hover,
+  .next-link:hover {
+    color: var(--c-accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 960px) {
+    .manuscript-card {
+      grid-template-columns: 1fr;
+    }
+    .pillars-grid {
+      grid-template-columns: 1fr;
+    }
+    .pipeline-flow {
+      grid-template-columns: 1fr;
+      gap: var(--s-4);
+    }
+    .flow-arrow {
+      transform: rotate(90deg);
+      text-align: center;
+    }
+    .metrics-bar {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .metrics-bar {
+      grid-template-columns: 1fr;
     }
   }
 </style>

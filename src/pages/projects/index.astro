@@ -1,87 +1,771 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import IndexList from '../../components/index/IndexList.astro';
 
 const projects = await getCollection('projects');
 const allItems = projects.sort((a, b) => {
   return (a.data.priority || 99) - (b.data.priority || 99);
 });
+
+// Map discipline categories for interactive filtering
+const getDiscipline = (item: any) => {
+  const d = (item.data.domains || []).join(' ').toLowerCase();
+  const t = (item.data.title || '').toLowerCase();
+  if (d.includes('bim') || d.includes('architectural') || t.includes('residency') || t.includes('residential house')) return 'bim';
+  if (d.includes('structural') || d.includes('seismic') || d.includes('rcd') || t.includes('mosque') || t.includes('school building') || t.includes('indeterminate') || t.includes('retaining wall')) return 'structural';
+  if (d.includes('water') || d.includes('environmental') || d.includes('hydrology') || d.includes('sewerage') || t.includes('treatment') || t.includes('swmm')) return 'environmental';
+  if (d.includes('geotechnical') || d.includes('soil') || d.includes('concrete') || d.includes('materials') || d.includes('aggregates')) return 'geotech';
+  return 'management'; // Highway, Primavera P6, Quantity Surveying
+};
+
+const disciplineCounts = {
+  all: allItems.length,
+  bim: allItems.filter(i => getDiscipline(i) === 'bim').length,
+  structural: allItems.filter(i => getDiscipline(i) === 'structural').length,
+  environmental: allItems.filter(i => getDiscipline(i) === 'environmental').length,
+  geotech: allItems.filter(i => getDiscipline(i) === 'geotech').length,
+  management: allItems.filter(i => getDiscipline(i) === 'management').length,
+};
 ---
 
 <Layout
   title="Academic Projects | Faizan Manshad"
-  description="Academic engineering projects, BIM modeling, and computational analyses."
+  description="Structural analysis, BIM modeling, computational simulations, and civil engineering systems."
 >
-  <main class="index-page container gsap-stagger-parent">
-    <header class="index-header">
-      <div class="index-header-meta">
-        <p class="label index-label gsap-stagger-item">ACADEMIC PROJECTS — {allItems.length} ENTRIES</p>
+  <main class="projects-page container gsap-stagger-parent">
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-eyebrow gsap-stagger-item">
+        <span class="blueprint-badge">ARCHIVE // 04</span>
+        <span class="eyebrow-sep">/</span>
+        <span class="eyebrow-label">ACADEMIC & TECHNICAL INVESTIGATIONS</span>
       </div>
-      <h1 class="index-title gsap-stagger-item">Academic & Engineering Projects</h1>
-      <p class="index-deck gsap-stagger-item">
-        Structural analysis, BIM modeling, environmental systems, and civil engineering design projects.
-      </p>
+      
+      <div class="header-main gsap-stagger-item">
+        <h1 class="page-title">
+          Academic & <span class="accent-text">Engineering Projects</span>
+        </h1>
+        <p class="page-deck">
+          Structural analysis, BIM parametric modeling, environmental hydraulics, and civil design investigations across 15 comprehensive technical project briefs.
+        </p>
+      </div>
+
+      <!-- Quick Metrics Strip -->
+      <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Projects Metrics">
+        <div class="metric-item">
+          <span class="metric-num highlight">{allItems.length}</span>
+          <span class="metric-name">COMPLETED PROJECTS</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">05</span>
+          <span class="metric-name">CORE DISCIPLINES</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">12+</span>
+          <span class="metric-name">ENGINEERING SUITES</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">100%</span>
+          <span class="metric-name">DOCUMENTS FILED</span>
+        </div>
+      </div>
     </header>
 
-    <div class="index-columns gsap-stagger-item">
-      <span class="col-head col-head--year label">YEAR</span>
-      <span class="col-head col-head--title label">TITLE</span>
-      <span class="col-head col-head--domain label">DOMAIN</span>
-      <span class="col-head col-head--context label">CONTEXT</span>
-    </div>
+    <!-- Toolbar: Filters & View Switch -->
+    <section class="projects-directory" aria-label="Projects Register">
+      <div class="directory-toolbar gsap-stagger-item">
+        <!-- Discipline Filter Tabs -->
+        <div class="filter-tabs" role="tablist" aria-label="Filter projects by discipline">
+          <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+            All <span class="tab-count">({disciplineCounts.all})</span>
+          </button>
+          <button class="filter-tab" data-filter="bim" role="tab" aria-selected="false">
+            BIM & Architecture <span class="tab-count">({disciplineCounts.bim})</span>
+          </button>
+          <button class="filter-tab" data-filter="structural" role="tab" aria-selected="false">
+            Structural Engineering <span class="tab-count">({disciplineCounts.structural})</span>
+          </button>
+          <button class="filter-tab" data-filter="environmental" role="tab" aria-selected="false">
+            Environmental & Water <span class="tab-count">({disciplineCounts.environmental})</span>
+          </button>
+          <button class="filter-tab" data-filter="geotech" role="tab" aria-selected="false">
+            Geotech & Materials <span class="tab-count">({disciplineCounts.geotech})</span>
+          </button>
+          <button class="filter-tab" data-filter="management" role="tab" aria-selected="false">
+            Infrastructure & PM <span class="tab-count">({disciplineCounts.management})</span>
+          </button>
+        </div>
 
-    <div class="gsap-stagger-item">
-      <IndexList items={allItems} />
+        <!-- View Switch (Grid vs Register) -->
+        <div class="view-switch" role="group" aria-label="Select layout view">
+          <button class="view-btn active" id="view-grid-btn" aria-label="Card Grid View">
+            <svg viewBox="0 0 16 16" fill="currentColor" class="view-icon" aria-hidden="true">
+              <path d="M1 2a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H2a1 1 0 01-1-1V2zm0 8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H2a1 1 0 01-1-1v-4zm8-8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1V2zm0 8a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"/>
+            </svg>
+            <span>Cards</span>
+          </button>
+          <button class="view-btn" id="view-table-btn" aria-label="Table Register View">
+            <svg viewBox="0 0 16 16" fill="currentColor" class="view-icon" aria-hidden="true">
+              <path d="M1 2.5A1.5 1.5 0 012.5 1h11A1.5 1.5 0 0115 2.5v11a1.5 1.5 0 01-1.5 1.5h-11A1.5 1.5 0 011 13.5v-11zm1.5-.5a.5.5 0 00-.5.5V5h12V3a.5.5 0 00-.5-.5h-11zM14 6H2v7.5a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V6z"/>
+            </svg>
+            <span>Register</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- VIEW 1: Cards Grid -->
+      <div class="projects-cards-grid gsap-stagger-item" id="projects-grid-view">
+        {allItems.map((item, idx) => {
+          const discipline = getDiscipline(item);
+          return (
+            <article class="project-card" data-discipline={discipline}>
+              <a href={`/projects/${item.id}/`} class="card-inner">
+                <div class="card-top">
+                  <div class="card-meta-left">
+                    <span class="card-index mono">#{String(idx + 1).padStart(2, '0')}</span>
+                    <span class="card-type-tag mono">{item.data.type || 'Engineering Project'}</span>
+                  </div>
+                  <span class="card-year mono">{item.data.dateDisplay || '2025'}</span>
+                </div>
+
+                <div class="card-body">
+                  <h3 class="card-title">
+                    {item.data.shortTitle || item.data.title}
+                  </h3>
+                  
+                  <p class="card-desc">
+                    {item.data.summary || item.data.deck || 'Comprehensive engineering modeling, technical report, and analytical investigation.'}
+                  </p>
+
+                  <!-- Tools chips -->
+                  {item.data.tools && item.data.tools.length > 0 && (
+                    <div class="card-tools">
+                      {item.data.tools.slice(0, 3).map((tool: string) => (
+                        <span class="tool-badge mono">{tool}</span>
+                      ))}
+                      {item.data.tools.length > 3 && (
+                        <span class="tool-more mono">+{item.data.tools.length - 3}</span>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                <div class="card-footer">
+                  <span class="card-domain mono">
+                    {item.data.domains?.slice(0, 2).join(' · ')}
+                  </span>
+                  <span class="card-arrow" aria-hidden="true">↗</span>
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+
+      <!-- VIEW 2: Compact Engineering Register Table -->
+      <div class="projects-table-view" id="projects-table-view" style="display: none;">
+        <div class="table-container">
+          <table class="engineering-register">
+            <thead>
+              <tr>
+                <th class="col-id mono">NO.</th>
+                <th class="col-year mono">YEAR</th>
+                <th class="col-title">PROJECT TITLE</th>
+                <th class="col-discipline mono">DISCIPLINE</th>
+                <th class="col-tools mono">SOFTWARE & TOOLS</th>
+                <th class="col-link mono">ACTION</th>
+              </tr>
+            </thead>
+            <tbody>
+              {allItems.map((item, idx) => {
+                const discipline = getDiscipline(item);
+                return (
+                  <tr class="register-row" data-discipline={discipline}>
+                    <td class="col-id mono">#{String(idx + 1).padStart(2, '0')}</td>
+                    <td class="col-year mono">{item.data.dateDisplay || '2025'}</td>
+                    <td class="col-title">
+                      <a href={`/projects/${item.id}/`} class="table-title-link">
+                        {item.data.shortTitle || item.data.title}
+                      </a>
+                      <span class="table-sub-desc">{item.data.summary}</span>
+                    </td>
+                    <td class="col-discipline mono">
+                      <span class="discipline-tag">{item.data.domains?.[0] || 'Civil'}</span>
+                    </td>
+                    <td class="col-tools mono">
+                      {item.data.tools?.slice(0, 2).join(', ') || '—'}
+                    </td>
+                    <td class="col-link">
+                      <a href={`/projects/${item.id}/`} class="table-arrow-link" aria-label={`View ${item.data.title}`}>
+                        <span>Open</span>
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Page Footer Navigation -->
+    <div class="page-footer-nav gsap-stagger-item">
+      <a href="/academic/#projects" class="back-link">
+        <span aria-hidden="true">←</span> Return to Academic Dossier
+      </a>
+      <a href="/recognition/" class="next-link">
+        Explore Honors & Awards <span aria-hidden="true">→</span>
+      </a>
     </div>
   </main>
 </Layout>
 
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Discipline Filter
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.project-card');
+    const tableRows = document.querySelectorAll('.register-row');
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const filter = tab.getAttribute('data-filter');
+        filterTabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        // Filter cards
+        cards.forEach((card) => {
+          const disc = card.getAttribute('data-discipline');
+          if (filter === 'all' || disc === filter) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        // Filter table rows
+        tableRows.forEach((row) => {
+          const disc = row.getAttribute('data-discipline');
+          if (filter === 'all' || disc === filter) {
+            row.style.display = 'table-row';
+          } else {
+            row.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // View switcher (Grid vs Register)
+    const gridBtn = document.getElementById('view-grid-btn');
+    const tableBtn = document.getElementById('view-table-btn');
+    const gridView = document.getElementById('projects-grid-view');
+    const tableView = document.getElementById('projects-table-view');
+
+    if (gridBtn && tableBtn && gridView && tableView) {
+      gridBtn.addEventListener('click', () => {
+        gridBtn.classList.add('active');
+        tableBtn.classList.remove('active');
+        gridView.style.display = 'grid';
+        tableView.style.display = 'none';
+      });
+
+      tableBtn.addEventListener('click', () => {
+        tableBtn.classList.add('active');
+        gridBtn.classList.remove('active');
+        gridView.style.display = 'none';
+        tableView.style.display = 'block';
+      });
+    }
+  });
+</script>
+
 <style>
-  .index-page {
-    padding-top: calc(var(--nav-h) + var(--s-16));
+  .projects-page {
+    padding-top: calc(var(--nav-h) + var(--s-12));
     padding-bottom: var(--s-24);
     color: var(--c-text);
   }
 
-  .index-header {
-    margin-bottom: var(--s-16);
-    max-width: 640px;
+  /* Header */
+  .page-header {
+    margin-bottom: var(--s-12);
   }
 
-  .index-label {
+  .header-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-bottom: var(--s-4);
+  }
+
+  .blueprint-badge {
+    font: 11px/1.2 var(--font-mono);
     color: var(--c-accent);
-    margin-bottom: var(--s-4);
-  }
-
-  .index-title {
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    font-weight: 500;
-    margin-bottom: var(--s-4);
-    color: var(--c-text);
-  }
-
-  .index-deck {
-    font-size: var(--text-md);
-    color: var(--c-muted);
-    line-height: var(--leading-relaxed);
-  }
-
-  .index-columns {
-    display: grid;
-    grid-template-columns: 80px 3fr 2fr 3fr;
-    gap: var(--s-4);
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--c-border);
-    color: var(--c-muted);
-    font-size: var(--text-xs);
+    background: var(--c-accent-dim);
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
     letter-spacing: var(--tracking-label);
   }
 
-  @media (max-width: 768px) {
-    .index-columns {
-      display: none;
+  .eyebrow-sep {
+    color: var(--c-muted);
+    font-size: 11px;
+  }
+
+  .eyebrow-label {
+    font: 11px/1.2 var(--font-mono);
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--s-3);
+  }
+
+  .accent-text {
+    color: var(--c-accent);
+  }
+
+  .page-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+    max-width: 68ch;
+    margin-bottom: var(--s-8);
+  }
+
+  /* Metrics Strip */
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: var(--s-4);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--s-5) var(--s-6);
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .metric-num {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--c-text);
+    line-height: 1;
+  }
+
+  .metric-num.highlight {
+    color: var(--c-accent);
+  }
+
+  .metric-name {
+    font: 10px/1.3 var(--font-mono);
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* Toolbar */
+  .directory-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    margin-bottom: var(--s-8);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .filter-tab {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-muted);
+    font: 11px/1.2 var(--font-mono);
+    padding: 7px 13px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: all var(--t-ui) var(--ease-out);
+  }
+
+  .filter-tab:hover {
+    color: var(--c-text);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .filter-tab.active {
+    background: rgba(232, 92, 26, 0.15);
+    border-color: var(--c-accent);
+    color: #ede8e1;
+  }
+
+  .tab-count {
+    opacity: 0.7;
+  }
+
+  /* View Switch */
+  .view-switch {
+    display: flex;
+    align-items: center;
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-sm);
+    padding: 3px;
+    gap: 2px;
+  }
+
+  .view-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: transparent;
+    border: none;
+    color: var(--c-muted);
+    font: 11px/1.2 var(--font-mono);
+    padding: 5px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: all var(--t-ui);
+  }
+
+  .view-btn:hover {
+    color: var(--c-text);
+  }
+
+  .view-btn.active {
+    background: #252e2a;
+    color: var(--c-accent);
+  }
+
+  .view-icon {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* Projects Cards Grid */
+  .projects-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--s-6);
+    margin-bottom: var(--s-16);
+  }
+
+  .project-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-inner {
+    background: #151a17;
+    border: 1px solid #bcc3a529;
+    border-radius: var(--r-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--t-ui), transform var(--t-ui), background var(--t-ui), box-shadow var(--t-ui);
+  }
+
+  .card-inner:hover {
+    border-color: rgba(232, 92, 26, 0.4);
+    background: #1b231f;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--s-4);
+  }
+
+  .card-meta-left {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .card-index {
+    font-size: 11px;
+    color: var(--c-accent);
+  }
+
+  .card-type-tag {
+    font-size: 9px;
+    color: #8e9587;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.04em;
+  }
+
+  .card-year {
+    font-size: 11px;
+    color: var(--c-muted);
+  }
+
+  .card-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--s-4);
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    color: var(--c-text);
+    margin-bottom: 8px;
+    transition: color var(--t-micro);
+  }
+
+  .card-inner:hover .card-title {
+    color: var(--c-accent);
+  }
+
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #9fa797;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0 0 14px;
+    flex-grow: 1;
+  }
+
+  .card-tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: auto;
+  }
+
+  .tool-badge {
+    font-size: 10px;
+    color: #a8b0a0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 2px 6px;
+    border-radius: 2px;
+  }
+
+  .tool-more {
+    font-size: 10px;
+    color: var(--c-accent);
+    padding: 2px 4px;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: var(--s-3);
+    margin-top: auto;
+  }
+
+  .card-domain {
+    font-size: 10px;
+    color: #8b9284;
+    letter-spacing: 0.03em;
+  }
+
+  .card-arrow {
+    color: var(--c-accent);
+    font-size: 14px;
+    transition: transform var(--t-micro);
+  }
+
+  .card-inner:hover .card-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Engineering Register Table View */
+  .projects-table-view {
+    margin-bottom: var(--s-16);
+  }
+
+  .table-container {
+    overflow-x: auto;
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    background: #141815;
+  }
+
+  .engineering-register {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13px;
+  }
+
+  .engineering-register th {
+    background: #19201c;
+    color: var(--c-muted);
+    font-size: 10px;
+    letter-spacing: var(--tracking-label);
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .engineering-register td {
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+  }
+
+  .register-row:hover td {
+    background: rgba(232, 92, 26, 0.04);
+  }
+
+  .register-row .col-id {
+    color: var(--c-accent);
+    font-size: 11px;
+    width: 50px;
+  }
+
+  .register-row .col-year {
+    color: var(--c-muted);
+    font-size: 11px;
+    width: 70px;
+  }
+
+  .register-row .col-title {
+    min-width: 280px;
+  }
+
+  .table-title-link {
+    font-weight: 500;
+    color: var(--c-text);
+    text-decoration: none;
+    display: block;
+    line-height: 1.4;
+    transition: color var(--t-micro);
+  }
+
+  .table-title-link:hover {
+    color: var(--c-accent);
+  }
+
+  .table-sub-desc {
+    display: block;
+    font-size: 11px;
+    color: #8e9587;
+    margin-top: 3px;
+    line-height: 1.4;
+    max-width: 450px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .register-row .col-discipline {
+    width: 180px;
+  }
+
+  .discipline-tag {
+    font-size: 11px;
+    color: #c5cdbf;
+  }
+
+  .register-row .col-tools {
+    color: #8b9284;
+    font-size: 11px;
+    width: 200px;
+  }
+
+  .register-row .col-link {
+    width: 90px;
+    text-align: right;
+  }
+
+  .table-arrow-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--c-accent);
+    text-decoration: none;
+    font: 11px/1 var(--font-mono);
+    padding: 4px 8px;
+    border-radius: var(--r-sm);
+    background: rgba(232, 92, 26, 0.1);
+    transition: all var(--t-micro);
+  }
+
+  .table-arrow-link:hover {
+    background: var(--c-accent);
+    color: #fff;
+  }
+
+  /* Page Footer Nav */
+  .page-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .back-link,
+  .next-link {
+    font: 12px/1.4 var(--font-mono);
+    color: var(--c-muted);
+    text-decoration: none;
+    transition: color var(--t-micro);
+  }
+
+  .back-link:hover,
+  .next-link:hover {
+    color: var(--c-accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .metrics-bar {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .metrics-bar {
+      grid-template-columns: 1fr;
+    }
+    .directory-toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .projects-cards-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>

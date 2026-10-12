@@ -1,87 +1,822 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import IndexList from '../../components/index/IndexList.astro';
 
 const recognition = await getCollection('recognition');
 const allItems = recognition.sort((a, b) => {
   return (a.data.priority || 99) - (b.data.priority || 99);
 });
+
+// Category classification for interactive filtering
+const getCategory = (item: any) => {
+  const t = (item.data.type || '').toLowerCase();
+  const d = (item.data.domains || []).join(' ').toLowerCase();
+  if (t.includes('academic award') || item.id === 'gold-medalist') return 'distinction';
+  if (t.includes('competition') || d.includes('competition') || d.includes('survey')) return 'competition';
+  if (t.includes('scholarship') || item.id === 'pm-laptop-scheme') return 'scholarship';
+  return 'academic';
+};
+
+const topHonor = allItems.find(i => i.id === 'gold-medalist') || allItems[0];
 ---
 
 <Layout
   title="Recognition | Faizan Manshad"
-  description="Honors, awards, and recognitions."
+  description="Department gold medal, national merit recognitions, and competitive engineering accolades."
 >
-  <main class="index-page container gsap-stagger-parent">
-    <header class="index-header">
-      <div class="index-header-meta">
-        <p class="label index-label gsap-stagger-item">RECOGNITION — {allItems.length} ENTRIES</p>
+  <main class="recognition-page container gsap-stagger-parent">
+    <!-- Breadcrumb / Header meta -->
+    <header class="page-header">
+      <div class="header-eyebrow gsap-stagger-item">
+        <span class="blueprint-badge">ARCHIVE // 08</span>
+        <span class="eyebrow-sep">/</span>
+        <span class="eyebrow-label">HONORS & DISTINCTIONS</span>
       </div>
-      <h1 class="index-title gsap-stagger-item">Honors & Awards</h1>
-      <p class="index-deck gsap-stagger-item">
-        Academic excellence, competitive achievements, and technical recognition.
-      </p>
+      
+      <div class="header-main gsap-stagger-item">
+        <h1 class="page-title">
+          Honors & <span class="accent-text">Awards</span>
+        </h1>
+        <p class="page-deck">
+          Academic excellence, national competitive achievements, and technical recognition spanning civil engineering studies and design competitions.
+        </p>
+      </div>
+
+      <!-- Quick Metrics Strip -->
+      <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Recognition Summary Metrics">
+        <div class="metric-item">
+          <span class="metric-num">06</span>
+          <span class="metric-name">RECORDED HONORS</span>
+        </div>
+        <div class="metric-divider" aria-hidden="true"></div>
+        <div class="metric-item">
+          <span class="metric-num highlight">01</span>
+          <span class="metric-name">DEPARTMENT GOLD MEDAL</span>
+        </div>
+        <div class="metric-divider" aria-hidden="true"></div>
+        <div class="metric-item">
+          <span class="metric-num">02</span>
+          <span class="metric-name">ENGINEERING PODIUMS</span>
+        </div>
+        <div class="metric-divider" aria-hidden="true"></div>
+        <div class="metric-item">
+          <span class="metric-num">100%</span>
+          <span class="metric-name">VERIFIED CREDENTIALS</span>
+        </div>
+      </div>
     </header>
 
-    <div class="index-columns gsap-stagger-item">
-      <span class="col-head col-head--year label">YEAR</span>
-      <span class="col-head col-head--title label">TITLE</span>
-      <span class="col-head col-head--domain label">DOMAIN</span>
-      <span class="col-head col-head--context label">CONTEXT</span>
-    </div>
+    <!-- Top Honor Hero Spotlight -->
+    {topHonor && (
+      <section class="spotlight-section gsap-stagger-item" aria-label="Premier Academic Distinction">
+        <div class="spotlight-card">
+          <div class="spotlight-glow" aria-hidden="true"></div>
+          
+          <div class="spotlight-content">
+            <div class="spotlight-top">
+              <span class="spotlight-pill">
+                <svg class="star-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                  <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                </svg>
+                PREMIER DISTINCTION · RANK 1
+              </span>
+              <span class="spotlight-year mono">{topHonor.data.dateDisplay || '2026'}</span>
+            </div>
 
-    <div class="gsap-stagger-item">
-      <IndexList items={allItems} />
+            <div class="spotlight-body">
+              <span class="spotlight-sub mono">BS CIVIL ENGINEERING · BATCH VALEDICTORIAN</span>
+              <h2 class="spotlight-title">
+                <a href={`/recognition/${topHonor.id}/`}>
+                  {topHonor.data.title}
+                </a>
+              </h2>
+              <p class="spotlight-desc">
+                {topHonor.data.summary || 'Awarded the Department Gold Medal for securing the highest academic standing across the entire BS Civil Engineering cohort.'}
+              </p>
+              
+              <div class="spotlight-meta">
+                <div class="meta-block">
+                  <span class="meta-label mono">INSTITUTION</span>
+                  <span class="meta-val">{topHonor.data.organization}</span>
+                </div>
+                <div class="meta-block">
+                  <span class="meta-label mono">LOCATION</span>
+                  <span class="meta-val">{topHonor.data.location || 'Wah Cantt, Pakistan'}</span>
+                </div>
+                <div class="meta-block">
+                  <span class="meta-label mono">VERIFICATION</span>
+                  <span class="meta-val status-verified">Official Department Record</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="spotlight-action">
+              <a href={`/recognition/${topHonor.id}/`} class="btn-spotlight">
+                <span>View Full Citation & Documentation</span>
+                <span class="btn-arrow" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="spotlight-graphic" aria-hidden="true">
+            <div class="medal-ring ring-outer"></div>
+            <div class="medal-ring ring-inner"></div>
+            <div class="medal-symbol">
+              <span>01</span>
+              <span class="medal-sub">GOLD</span>
+            </div>
+            <div class="schematic-crosshairs"></div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Filter Bar & Grid -->
+    <section class="honors-archive" aria-label="Complete Honors Archive">
+      <div class="archive-toolbar gsap-stagger-item">
+        <div class="toolbar-title">
+          <span class="toolbar-kicker mono">CURATED REGISTER</span>
+          <h2 class="toolbar-heading">All Recognitions ({allItems.length})</h2>
+        </div>
+
+        <!-- Filter tabs -->
+        <div class="filter-tabs" role="tablist" aria-label="Filter recognitions by category">
+          <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+            All <span class="tab-count">({allItems.length})</span>
+          </button>
+          <button class="filter-tab" data-filter="distinction" role="tab" aria-selected="false">
+            Academic Distinctions
+          </button>
+          <button class="filter-tab" data-filter="competition" role="tab" aria-selected="false">
+            Competitions & Fieldwork
+          </button>
+          <button class="filter-tab" data-filter="scholarship" role="tab" aria-selected="false">
+            Merit Grants
+          </button>
+        </div>
+      </div>
+
+      <!-- Honors Cards Grid -->
+      <div class="recognition-grid gsap-stagger-item" id="recognition-grid">
+        {allItems.map((item, idx) => {
+          const category = getCategory(item);
+          const isTop = item.id === topHonor?.id;
+          return (
+            <article 
+              class={`recognition-card ${isTop ? 'card--top' : ''}`}
+              data-category={category}
+            >
+              <a href={`/recognition/${item.id}/`} class="card-inner">
+                <div class="card-header">
+                  <div class="card-index-group">
+                    <span class="card-num mono">#{String(idx + 1).padStart(2, '0')}</span>
+                    {isTop && <span class="card-lead-badge">TOP HONOR</span>}
+                  </div>
+                  <span class="card-year mono">{item.data.dateDisplay}</span>
+                </div>
+
+                <div class="card-content">
+                  <span class="card-type mono">{item.data.type || 'Honor / Award'}</span>
+                  <h3 class="card-title">
+                    {item.data.shortTitle || item.data.title}
+                  </h3>
+                  <p class="card-org">{item.data.organization}</p>
+                  
+                  {item.data.summary && (
+                    <p class="card-desc">{item.data.summary}</p>
+                  )}
+                </div>
+
+                <div class="card-footer">
+                  <div class="card-tags">
+                    {item.data.domains?.slice(0, 2).map((dom: string) => (
+                      <span class="domain-tag mono">{dom}</span>
+                    ))}
+                  </div>
+                  <span class="card-link-icon" aria-hidden="true">↗</span>
+                </div>
+              </a>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Return Link -->
+    <div class="page-footer-nav gsap-stagger-item">
+      <a href="/academic/#recognition" class="back-link">
+        <span aria-hidden="true">←</span> Return to Academic Dossier
+      </a>
+      <a href="/research/" class="next-link">
+        Explore Academic Research <span aria-hidden="true">→</span>
+      </a>
     </div>
   </main>
 </Layout>
 
+<script is:inline>
+  // Interactive category filter tabs
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterTabs = document.querySelectorAll('.filter-tab');
+    const cards = document.querySelectorAll('.recognition-card');
+
+    filterTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const target = tab.getAttribute('data-filter');
+        filterTabs.forEach((t) => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+
+        cards.forEach((card) => {
+          const category = card.getAttribute('data-category');
+          if (target === 'all' || category === target) {
+            card.style.display = 'flex';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  });
+</script>
+
 <style>
-  .index-page {
-    padding-top: calc(var(--nav-h) + var(--s-16));
+  .recognition-page {
+    padding-top: calc(var(--nav-h) + var(--s-12));
     padding-bottom: var(--s-24);
     color: var(--c-text);
   }
 
-  .index-header {
-    margin-bottom: var(--s-16);
-    max-width: 640px;
+  /* Header */
+  .page-header {
+    margin-bottom: var(--s-12);
   }
 
-  .index-label {
+  .header-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-bottom: var(--s-4);
+  }
+
+  .blueprint-badge {
+    font: 11px/1.2 var(--font-mono);
     color: var(--c-accent);
-    margin-bottom: var(--s-4);
-  }
-
-  .index-title {
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    font-weight: 500;
-    margin-bottom: var(--s-4);
-    color: var(--c-text);
-  }
-
-  .index-deck {
-    font-size: var(--text-md);
-    color: var(--c-muted);
-    line-height: var(--leading-relaxed);
-  }
-
-  .index-columns {
-    display: grid;
-    grid-template-columns: 80px 3fr 2fr 3fr;
-    gap: var(--s-4);
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--c-border);
-    color: var(--c-muted);
-    font-size: var(--text-xs);
+    background: var(--c-accent-dim);
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
     letter-spacing: var(--tracking-label);
   }
 
-  @media (max-width: 768px) {
-    .index-columns {
+  .eyebrow-sep {
+    color: var(--c-muted);
+    font-size: 11px;
+  }
+
+  .eyebrow-label {
+    font: 11px/1.2 var(--font-mono);
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--s-3);
+  }
+
+  .accent-text {
+    color: var(--c-accent);
+  }
+
+  .page-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+    max-width: 68ch;
+    margin-bottom: var(--s-8);
+  }
+
+  /* Metrics Strip */
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: var(--s-4);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--s-5) var(--s-6);
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .metric-num {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--c-text);
+    line-height: 1;
+  }
+
+  .metric-num.highlight {
+    color: var(--c-accent);
+  }
+
+  .metric-name {
+    font: 10px/1.3 var(--font-mono);
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .metric-divider {
+    display: none;
+  }
+
+  /* Spotlight Section */
+  .spotlight-section {
+    margin-bottom: var(--s-16);
+  }
+
+  .spotlight-card {
+    position: relative;
+    background: radial-gradient(ellipse at top left, #232219 0%, #151a17 60%, #101412 100%);
+    border: 1px solid rgba(232, 92, 26, 0.35);
+    border-radius: var(--r-md);
+    padding: clamp(24px, 4vw, 44px);
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--s-8);
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .spotlight-glow {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(232, 92, 26, 0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .spotlight-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--s-4);
+  }
+
+  .spotlight-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font: 10px/1.2 var(--font-mono);
+    color: #ffd166;
+    background: rgba(255, 209, 102, 0.12);
+    border: 1px solid rgba(255, 209, 102, 0.3);
+    padding: 4px 10px;
+    border-radius: var(--r-pill);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .star-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .spotlight-year {
+    font-size: 12px;
+    color: var(--c-muted);
+  }
+
+  .spotlight-sub {
+    font-size: 11px;
+    letter-spacing: var(--tracking-wide);
+    color: var(--c-accent);
+    display: block;
+    margin-bottom: var(--s-2);
+  }
+
+  .spotlight-title {
+    font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--s-3);
+  }
+
+  .spotlight-title a {
+    color: var(--c-text);
+    text-decoration: none;
+    transition: color var(--t-micro) var(--ease-out);
+  }
+
+  .spotlight-title a:hover {
+    color: var(--c-accent);
+  }
+
+  .spotlight-desc {
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: #b8c0b0;
+    max-width: 65ch;
+    margin-bottom: var(--s-6);
+  }
+
+  .spotlight-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-6);
+    padding: var(--s-4) 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: var(--s-6);
+  }
+
+  .meta-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meta-label {
+    font-size: 10px;
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  .meta-val {
+    font-size: 13px;
+    color: var(--c-text);
+  }
+
+  .status-verified {
+    color: #8ed081;
+  }
+
+  .btn-spotlight {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    background: rgba(232, 92, 26, 0.15);
+    border: 1px solid rgba(232, 92, 26, 0.4);
+    color: #ede8e1;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: var(--r-sm);
+    font: 12px/1.2 var(--font-mono);
+    letter-spacing: 0.03em;
+    transition: background var(--t-ui), border-color var(--t-ui), transform var(--t-ui);
+  }
+
+  .btn-spotlight:hover {
+    background: var(--c-accent);
+    color: #fff;
+    border-color: var(--c-accent);
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    transition: transform var(--t-micro);
+  }
+
+  .btn-spotlight:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Spotlight Graphic / Blueprint Medallion */
+  .spotlight-graphic {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px dashed rgba(255, 255, 255, 0.12);
+    padding-left: var(--s-8);
+  }
+
+  .medal-ring {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .ring-outer {
+    width: 190px;
+    height: 190px;
+    border: 1px dashed rgba(232, 92, 26, 0.35);
+    animation: spin 30s linear infinite;
+  }
+
+  .ring-inner {
+    width: 150px;
+    height: 150px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .medal-symbol {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    background: #181d1a;
+    border: 2px solid rgba(232, 92, 26, 0.6);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 30px rgba(232, 92, 26, 0.2);
+    z-index: 2;
+  }
+
+  .medal-symbol span:first-child {
+    font-size: 2.25rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: #ffd166;
+    line-height: 1;
+  }
+
+  .medal-sub {
+    font: 9px/1 var(--font-mono);
+    color: var(--c-muted);
+    letter-spacing: 0.15em;
+    margin-top: 4px;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Archive Section */
+  .honors-archive {
+    margin-bottom: var(--s-20);
+  }
+
+  .archive-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    margin-bottom: var(--s-8);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .toolbar-kicker {
+    font-size: 11px;
+    color: var(--c-accent);
+    letter-spacing: var(--tracking-label);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .toolbar-heading {
+    font-size: var(--text-xl);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  /* Filter Tabs */
+  .filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+  }
+
+  .filter-tab {
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    color: var(--c-muted);
+    font: 11px/1.2 var(--font-mono);
+    padding: 7px 14px;
+    border-radius: var(--r-sm);
+    cursor: pointer;
+    transition: all var(--t-ui) var(--ease-out);
+  }
+
+  .filter-tab:hover {
+    color: var(--c-text);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .filter-tab.active {
+    background: rgba(232, 92, 26, 0.15);
+    border-color: var(--c-accent);
+    color: #ede8e1;
+  }
+
+  .tab-count {
+    opacity: 0.7;
+  }
+
+  /* Recognition Grid */
+  .recognition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--s-6);
+  }
+
+  .recognition-card {
+    display: flex;
+    flex-direction: column;
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  .card-inner {
+    background: #151a17;
+    border: 1px solid #bcc3a529;
+    border-radius: var(--r-md);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color var(--t-ui), transform var(--t-ui), background var(--t-ui), box-shadow var(--t-ui);
+  }
+
+  .card-inner:hover {
+    border-color: rgba(232, 92, 26, 0.4);
+    background: #1b231f;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.3);
+  }
+
+  .card--top .card-inner {
+    border-color: rgba(232, 92, 26, 0.3);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--s-4);
+  }
+
+  .card-index-group {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .card-num {
+    font-size: 11px;
+    color: var(--c-accent);
+  }
+
+  .card-lead-badge {
+    font: 9px/1.2 var(--font-mono);
+    background: rgba(255, 209, 102, 0.15);
+    color: #ffd166;
+    border: 1px solid rgba(255, 209, 102, 0.3);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .card-year {
+    font-size: 11px;
+    color: var(--c-muted);
+  }
+
+  .card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--s-4);
+  }
+
+  .card-type {
+    font-size: 10px;
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-wide);
+    margin-bottom: 6px;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    color: var(--c-text);
+    margin-bottom: 8px;
+    transition: color var(--t-micro);
+  }
+
+  .card-inner:hover .card-title {
+    color: var(--c-accent);
+  }
+
+  .card-org {
+    font-size: 12px;
+    color: #8e9587;
+    margin-bottom: 12px;
+  }
+
+  .card-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #9fa797;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: var(--s-3);
+    margin-top: auto;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .domain-tag {
+    font-size: 10px;
+    color: #8b9284;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.03em;
+  }
+
+  .card-link-icon {
+    color: var(--c-accent);
+    font-size: 14px;
+    transition: transform var(--t-micro);
+  }
+
+  .card-inner:hover .card-link-icon {
+    transform: translate(2px, -2px);
+  }
+
+  /* Navigation Footer */
+  .page-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .back-link,
+  .next-link {
+    font: 12px/1.4 var(--font-mono);
+    color: var(--c-muted);
+    text-decoration: none;
+    transition: color var(--t-micro);
+  }
+
+  .back-link:hover,
+  .next-link:hover {
+    color: var(--c-accent);
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .spotlight-card {
+      grid-template-columns: 1fr;
+    }
+    .spotlight-graphic {
       display: none;
+    }
+    .metrics-bar {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .metrics-bar {
+      grid-template-columns: 1fr;
+    }
+    .recognition-grid {
+      grid-template-columns: 1fr;
+    }
+    .archive-toolbar {
+      flex-direction: column;
+      align-items: flex-start;
     }
   }
 </style>

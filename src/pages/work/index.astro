@@ -1,7 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
-import IndexList from '../../components/index/IndexList.astro';
 
 const experience = await getCollection('experience');
 const allItems = experience.sort((a, b) => {
@@ -11,77 +10,578 @@ const allItems = experience.sort((a, b) => {
 
 <Layout
   title="Work | Faizan Manshad"
-  description="Professional experience and work history."
+  description="Professional engineering practice: Revit BIM drafting, modular infrastructure, and 360° reality capture verification."
 >
-  <main class="index-page container gsap-stagger-parent">
-    <header class="index-header">
-      <div class="index-header-meta">
-        <p class="label index-label gsap-stagger-item">WORK — {allItems.length} ENTRIES</p>
+  <main class="work-page container gsap-stagger-parent">
+    <!-- Header -->
+    <header class="page-header">
+      <div class="header-eyebrow gsap-stagger-item">
+        <span class="blueprint-badge mono">PRACTICE // 03</span>
+        <span class="eyebrow-sep">/</span>
+        <span class="eyebrow-label mono">PROFESSIONAL PRACTICE</span>
       </div>
-      <h1 class="index-title gsap-stagger-item">Professional Experience</h1>
-      <p class="index-deck gsap-stagger-item">
-        A detailed view of my roles and responsibilities in the industry.
-      </p>
+      
+      <div class="header-main gsap-stagger-item">
+        <h1 class="page-title">
+          Professional <span class="accent-text">Experience</span>
+        </h1>
+        <p class="page-deck">
+          Bridging physical construction and digital information models: drafting modular pedestrian bridges, validating on-site progress via 360° reality capture, and developing automation tools.
+        </p>
+      </div>
+
+      <!-- Quick Metrics Strip -->
+      <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Experience Metrics">
+        <div class="metric-item">
+          <span class="metric-num highlight">02</span>
+          <span class="metric-name mono">ACTIVE POSITIONS</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">AU / PK</span>
+          <span class="metric-name mono">GLOBAL REACH</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">LOD 350</span>
+          <span class="metric-name mono">BIM FABRICATION</span>
+        </div>
+        <div class="metric-item">
+          <span class="metric-num">360°</span>
+          <span class="metric-name mono">REALITY CAPTURE</span>
+        </div>
+      </div>
     </header>
 
-    <div class="index-columns gsap-stagger-item">
-      <span class="col-head col-head--year label">YEAR</span>
-      <span class="col-head col-head--title label">TITLE</span>
-      <span class="col-head col-head--domain label">DOMAIN</span>
-      <span class="col-head col-head--context label">CONTEXT</span>
-    </div>
+    <!-- Experience Showcase Cards -->
+    <section class="experience-showcase" aria-label="Professional Positions">
+      <div class="experience-grid">
+        {allItems.map((item, idx) => {
+          const isUrbana = item.id === 'urbana';
+          return (
+            <article class="experience-card gsap-stagger-item">
+              <!-- Visual Art Ribbon -->
+              <div class="card-visual" aria-hidden="true">
+                {isUrbana ? (
+                  <div class="practice-art bridge-art">
+                    <svg viewBox="0 0 600 240" fill="none">
+                      <path d="M70 190 210 100 530 140 390 220Z" fill="#1b231f" />
+                      <g stroke="#c6c1a7" stroke-width="2.5">
+                        <path d="M85 165 405 205 520 121 200 81Z M85 100 405 140 520 56 200 16Z M85 100V165 M405 140V205 M520 56V121 M200 16V81 M85 100 149 173 213 116 277 189 341 132 405 205 M200 16 264 89 328 32 392 105 456 48 520 121" />
+                      </g>
+                      <path d="m85 100 320 40" stroke="#e85c1a" stroke-width="4" />
+                      <circle cx="405" cy="140" r="6" fill="#e85c1a" />
+                    </svg>
+                    <span class="drawing-caption mono">MODULAR INFRASTRUCTURE / BRIDGE BIM</span>
+                  </div>
+                ) : (
+                  <div class="practice-art capture-art">
+                    <div class="capture-grid"></div>
+                    <div class="capture-ring ring-one"></div>
+                    <div class="capture-ring ring-two"></div>
+                    <div class="capture-target mono">
+                      360° <span>FIELD PROGRESS DATA</span>
+                    </div>
+                    <span class="drawing-caption mono">REALITY CAPTURE / DIGITAL TRACKING</span>
+                  </div>
+                )}
+              </div>
 
-    <div class="gsap-stagger-item">
-      <IndexList items={allItems} />
+              <!-- Card Content -->
+              <div class="card-content">
+                <div class="card-header">
+                  <div class="org-group">
+                    <span class="card-index mono">0{idx + 1} //</span>
+                    <h2 class="org-name">{item.data.organization}</h2>
+                    <span class="location-tag mono">{item.data.location}</span>
+                  </div>
+                  <span class="date-pill mono">{item.data.dateDisplay}</span>
+                </div>
+
+                <div class="role-bar">
+                  <span class="role-title">{item.data.role}</span>
+                  {item.data.ongoing && (
+                    <span class="status-live mono">
+                      <span class="live-dot"></span> CURRENT ROLE
+                    </span>
+                  )}
+                </div>
+
+                <p class="role-desc">{item.data.summary}</p>
+
+                <!-- Tools & Frameworks -->
+                {item.data.tools && item.data.tools.length > 0 && (
+                  <div class="tools-row">
+                    <span class="tools-label mono">PRACTICE STACK:</span>
+                    <div class="chips-wrap">
+                      {item.data.tools.map((tool: string) => (
+                        <span class="tool-chip mono">{tool}</span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                <!-- Action links -->
+                <div class="card-actions">
+                  <a href={`/experience/${item.id}/`} class="btn-primary">
+                    <span>Explore Role Details & Documentation</span>
+                    <span class="btn-arrow" aria-hidden="true">↗</span>
+                  </a>
+                  {item.data.links?.map((link: { url: string; label: string }) => (
+                    <a href={link.url} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+                      <span>{link.label}</span>
+                      <span class="btn-arrow" aria-hidden="true">↗</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+
+    <!-- Page Footer Navigation -->
+    <div class="page-footer-nav gsap-stagger-item">
+      <a href="/academic/#practice" class="back-link">
+        <span aria-hidden="true">←</span> Return to Academic Dossier
+      </a>
+      <a href="/projects/" class="next-link">
+        Explore Academic Projects (15) <span aria-hidden="true">→</span>
+      </a>
     </div>
   </main>
 </Layout>
 
 <style>
-  .index-page {
-    padding-top: calc(var(--nav-h) + var(--s-16));
+  .work-page {
+    padding-top: calc(var(--nav-h) + var(--s-12));
     padding-bottom: var(--s-24);
     color: var(--c-text);
   }
 
-  .index-header {
-    margin-bottom: var(--s-16);
-    max-width: 640px;
+  /* Header */
+  .page-header {
+    margin-bottom: var(--s-12);
   }
 
-  .index-label {
+  .header-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-bottom: var(--s-4);
+  }
+
+  .blueprint-badge {
+    font-size: 11px;
     color: var(--c-accent);
-    margin-bottom: var(--s-4);
-  }
-
-  .index-title {
-    font-size: var(--text-2xl);
-    letter-spacing: var(--tracking-tight);
-    font-weight: 500;
-    margin-bottom: var(--s-4);
-    color: var(--c-text);
-  }
-
-  .index-deck {
-    font-size: var(--text-md);
-    color: var(--c-muted);
-    line-height: var(--leading-relaxed);
-  }
-
-  .index-columns {
-    display: grid;
-    grid-template-columns: 80px 3fr 2fr 3fr;
-    gap: var(--s-4);
-    padding: var(--s-3) 0;
-    border-bottom: 1px solid var(--c-border);
-    color: var(--c-muted);
-    font-size: var(--text-xs);
+    background: var(--c-accent-dim);
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
     letter-spacing: var(--tracking-label);
   }
 
-  @media (max-width: 768px) {
-    .index-columns {
-      display: none;
+  .eyebrow-sep {
+    color: var(--c-muted);
+    font-size: 11px;
+  }
+
+  .eyebrow-label {
+    font-size: 11px;
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .page-title {
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    letter-spacing: var(--tracking-tight);
+    font-weight: 500;
+    line-height: var(--leading-tight);
+    margin-bottom: var(--s-3);
+  }
+
+  .accent-text {
+    color: var(--c-accent);
+  }
+
+  .page-deck {
+    font-size: var(--text-md);
+    color: var(--c-muted);
+    line-height: var(--leading-relaxed);
+    max-width: 68ch;
+    margin-bottom: var(--s-8);
+  }
+
+  /* Metrics Strip */
+  .metrics-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    align-items: center;
+    gap: var(--s-4);
+    background: var(--c-surface);
+    border: 1px solid var(--c-border);
+    border-radius: var(--r-md);
+    padding: var(--s-5) var(--s-6);
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-1);
+  }
+
+  .metric-num {
+    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-weight: 600;
+    font-family: var(--font-mono);
+    color: var(--c-text);
+    line-height: 1;
+  }
+
+  .metric-num.highlight {
+    color: var(--c-accent);
+  }
+
+  .metric-name {
+    font-size: 10px;
+    color: var(--c-muted);
+    letter-spacing: var(--tracking-wide);
+  }
+
+  /* Experience Grid */
+  .experience-showcase {
+    margin-bottom: var(--s-20);
+  }
+
+  .experience-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-10);
+  }
+
+  .experience-card {
+    background: radial-gradient(ellipse at top left, #1d2520 0%, #151a17 60%, #101412 100%);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    transition: border-color var(--t-ui), transform var(--t-ui);
+  }
+
+  .experience-card:hover {
+    border-color: rgba(232, 92, 26, 0.4);
+    transform: translateY(-2px);
+  }
+
+  /* Visual Art Ribbon */
+  .card-visual {
+    background: #0f1311;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 240px;
+    padding: 24px;
+    overflow: hidden;
+  }
+
+  .practice-art {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .bridge-art svg {
+    width: 100%;
+    max-height: 180px;
+  }
+
+  .drawing-caption {
+    position: absolute;
+    bottom: 8px;
+    left: 12px;
+    font-size: 9px;
+    color: #8b9284;
+    letter-spacing: 0.06em;
+  }
+
+  /* Capture art */
+  .capture-art {
+    position: relative;
+    min-height: 180px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .capture-grid {
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  .capture-ring {
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .ring-one {
+    width: 140px;
+    height: 140px;
+    border: 1px dashed rgba(232, 92, 26, 0.3);
+    animation: rotate 25s linear infinite;
+  }
+
+  .ring-two {
+    width: 90px;
+    height: 90px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .capture-target {
+    z-index: 2;
+    background: #181f1b;
+    border: 1px solid rgba(232, 92, 26, 0.5);
+    padding: 8px 14px;
+    border-radius: var(--r-sm);
+    font-size: 11px;
+    color: #ede8e1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .capture-target span {
+    font-size: 8px;
+    color: var(--c-accent);
+    letter-spacing: 0.1em;
+  }
+
+  @keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* Card Content */
+  .card-content {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: var(--s-3);
+  }
+
+  .org-group {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+  }
+
+  .card-index {
+    font-size: 11px;
+    color: var(--c-accent);
+  }
+
+  .org-name {
+    font-size: 1.6rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--c-text);
+  }
+
+  .location-tag {
+    font-size: 11px;
+    color: #8e9587;
+  }
+
+  .date-pill {
+    font-size: 11px;
+    color: #c0c8b9;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
+  }
+
+  .role-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin-bottom: var(--s-4);
+  }
+
+  .role-title {
+    font-size: 1.15rem;
+    color: var(--c-accent);
+    font-weight: 500;
+  }
+
+  .status-live {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 9px;
+    color: #62d26f;
+    background: rgba(98, 210, 111, 0.1);
+    border: 1px solid rgba(98, 210, 111, 0.25);
+    padding: 2px 7px;
+    border-radius: var(--r-pill);
+    letter-spacing: 0.05em;
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #62d26f;
+    box-shadow: 0 0 6px #62d26f;
+  }
+
+  .role-desc {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #a8b2a0;
+    margin-bottom: var(--s-5);
+  }
+
+  .tools-row {
+    margin-bottom: var(--s-6);
+  }
+
+  .tools-label {
+    font-size: 10px;
+    color: var(--c-muted);
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .tool-chip {
+    font-size: 11px;
+    color: #b5beb0;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    padding: 3px 8px;
+    border-radius: 2px;
+  }
+
+  .card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+    margin-top: auto;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--c-accent);
+    color: #fff;
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: var(--r-sm);
+    font: 12px/1.2 var(--font-mono);
+    font-weight: 500;
+    transition: background var(--t-ui), transform var(--t-ui);
+  }
+
+  .btn-primary:hover {
+    background: #f06e30;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #ede8e1;
+    text-decoration: none;
+    padding: 9px 16px;
+    border-radius: var(--r-sm);
+    font: 12px/1.2 var(--font-mono);
+    transition: all var(--t-ui);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    transition: transform var(--t-micro);
+  }
+
+  .btn-primary:hover .btn-arrow,
+  .btn-secondary:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Footer Nav */
+  .page-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    padding-top: var(--s-8);
+    border-top: 1px solid var(--c-border);
+  }
+
+  .back-link,
+  .next-link {
+    font: 12px/1.4 var(--font-mono);
+    color: var(--c-muted);
+    text-decoration: none;
+    transition: color var(--t-micro);
+  }
+
+  .back-link:hover,
+  .next-link:hover {
+    color: var(--c-accent);
+  }
+
+  @media (max-width: 960px) {
+    .experience-card {
+      grid-template-columns: 1fr;
+    }
+    .card-visual {
+      min-height: 180px;
+      border-right: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .metrics-bar {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-6);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .metrics-bar {
+      grid-template-columns: 1fr;
     }
   }
 </style>
