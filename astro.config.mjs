@@ -1,14 +1,32 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
-import react from '@astrojs/react';
+import { fileURLToPath } from 'node:url';
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
+import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
+
+/** @type {() => import('astro').AstroIntegration} */
+const sitemapMirror = () => ({
+  name: 'sitemap-mirror',
+  hooks: {
+    'astro:build:done': async ({ dir }) => {
+      const distDir = fileURLToPath(dir);
+      const sitemap0 = path.join(distDir, 'sitemap-0.xml');
+      const sitemapTarget = path.join(distDir, 'sitemap.xml');
+      try {
+        await fs.copyFile(sitemap0, sitemapTarget);
+      } catch {}
+    },
+  },
+});
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://faizanmanshad.com',
-  integrations: [react(), sitemap()],
+  integrations: [react(), sitemap(), sitemapMirror()],
   vite: {
     resolve: {
       alias: [
