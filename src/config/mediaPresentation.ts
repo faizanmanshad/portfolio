@@ -76,6 +76,7 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   // Certifications & Professional Training (landscape by default)
   "04-certifications-professional-development/display/ai-fluency-framework-foundations.webp": { frameWidth: 420, frameHeight: 320 },
   "04-certifications-professional-development/display/autocad-2023-masterclass.webp": { frameWidth: 420, frameHeight: 320 },
+  "04-certifications-professional-development/display/bim-graphic-presentation-design.webp": { frameWidth: 420, frameHeight: 320 },
   "04-certifications-professional-development/display/certificateofcompletion-learning-revit-2023.webp": { frameWidth: 420, frameHeight: 320 },
   "04-certifications-professional-development/display/certificateofcompletion-excel-essential-training-microsoft-365.webp": { frameWidth: 420, frameHeight: 320 },
   "04-certifications-professional-development/display/certificateofcompletion-understanding-augmented-and-virtual-reality-an-introduction.webp": { frameWidth: 420, frameHeight: 320 },
@@ -87,7 +88,7 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   // Extracurricular / Journey (stored portrait, needs rotation to become landscape)
   "03-extracurricular-activities/display/civil-mania-uow.webp": { rotation: 90 },
   "03-extracurricular-activities/display/civil-nexus-uow.webp": { rotation: 90 },
-  "03-extracurricular-activities/display/omlascertificate.webp": { rotation: 90 },
+  "03-extracurricular-activities/display/omlascertificate.webp": { frameWidth: 320, frameHeight: 420, rotation: 0 },
   "03-extracurricular-activities/display/uw-pofs-joint-conference.webp": { rotation: 90 },
 };
 

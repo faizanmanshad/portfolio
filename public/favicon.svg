@@ -1,31 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <!-- Outer black outline/border for high-contrast visibility on white and light tabs -->
-  <g fill="none" stroke="#000000" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Faizan Manshad Portfolio — Signature Structural Isometric Favicon -->
+  <g fill="none" stroke="#E85C1A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
     <path d="M50 12 L88 31 L88 69 L50 88 L12 69 L12 31 Z" />
     <path d="M12 31 L50 50 L88 31" />
     <path d="M50 50 L50 88" />
   </g>
-  <!-- Outer black node borders -->
-  <circle cx="50" cy="50" r="9" fill="#000000" />
-  <circle cx="50" cy="12" r="6.5" fill="#000000" />
-  <circle cx="88" cy="31" r="6.5" fill="#000000" />
-  <circle cx="88" cy="69" r="6.5" fill="#000000" />
-  <circle cx="50" cy="88" r="6.5" fill="#000000" />
-  <circle cx="12" cy="69" r="6.5" fill="#000000" />
-  <circle cx="12" cy="31" r="6.5" fill="#000000" />
-
-  <!-- Inner white core for high-contrast visibility on dark and black tabs -->
-  <g fill="none" stroke="#FFFFFF" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M50 12 L88 31 L88 69 L50 88 L12 69 L12 31 Z" />
-    <path d="M12 31 L50 50 L88 31" />
-    <path d="M50 50 L50 88" />
-  </g>
-  <!-- Inner white node centers -->
-  <circle cx="50" cy="50" r="5" fill="#FFFFFF" />
-  <circle cx="50" cy="12" r="3.5" fill="#FFFFFF" />
-  <circle cx="88" cy="31" r="3.5" fill="#FFFFFF" />
-  <circle cx="88" cy="69" r="3.5" fill="#FFFFFF" />
-  <circle cx="50" cy="88" r="3.5" fill="#FFFFFF" />
-  <circle cx="12" cy="69" r="3.5" fill="#FFFFFF" />
-  <circle cx="12" cy="31" r="3.5" fill="#FFFFFF" />
+  <!-- Structural node joints -->
+  <circle cx="50" cy="50" r="7.5" fill="#E85C1A" />
+  <circle cx="50" cy="12" r="6" fill="#E85C1A" />
+  <circle cx="88" cy="31" r="6" fill="#E85C1A" />
+  <circle cx="88" cy="69" r="6" fill="#E85C1A" />
+  <circle cx="50" cy="88" r="6" fill="#E85C1A" />
+  <circle cx="12" cy="69" r="6" fill="#E85C1A" />
+  <circle cx="12" cy="31" r="6" fill="#E85C1A" />
 </svg>

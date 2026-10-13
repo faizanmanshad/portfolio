@@ -165,6 +165,27 @@ import { SITE_METADATA } from "../consts";
         </a>
       </div>
       <div class="practice-grid">
+        <a class="practice-card" href={`/experience/${openspace.id}/`}>
+          <div class="practice-art capture-art" aria-hidden="true">
+            <div class="capture-grid"></div>
+            <div class="capture-ring ring-one"></div>
+            <div class="capture-ring ring-two"></div>
+            <div class="capture-cross"></div>
+            <div class="capture-target">
+              360°<span>SITE → INFORMATION</span>
+            </div>
+            <span class="drawing-caption">REALITY CAPTURE / PROGRESS</span>
+          </div>
+          <div class="practice-meta">
+            <span>01 / DIGITAL CONSTRUCTION</span>
+            <span>{openspace.data.dateDisplay}</span>
+          </div>
+          <h3>
+            {openspace.data.shortTitle} <span>↗</span>
+          </h3>
+          <p>{openspace.data.summary}</p>
+          <span class="practice-role">{openspace.data.role}</span>
+        </a>
         <a class="practice-card" href={`/experience/${urbana.id}/`}>
           <div class="practice-art bridge-art" aria-hidden="true">
             <svg viewBox="0 0 600 330" fill="none">
@@ -181,7 +202,7 @@ import { SITE_METADATA } from "../consts";
             <span class="drawing-caption">MODULAR INFRASTRUCTURE / STUDY</span>
           </div>
           <div class="practice-meta">
-            <span>01 / BIM & DETAILING</span>
+            <span>02 / BIM & DETAILING</span>
             <span>{urbana.data.dateDisplay}</span>
           </div>
           <h3>
@@ -189,27 +210,6 @@ import { SITE_METADATA } from "../consts";
           </h3>
           <p>{urbana.data.summary}</p>
           <span class="practice-role">{urbana.data.role}</span>
-        </a>
-        <a class="practice-card" href={`/experience/${openspace.id}/`}>
-          <div class="practice-art capture-art" aria-hidden="true">
-            <div class="capture-grid"></div>
-            <div class="capture-ring ring-one"></div>
-            <div class="capture-ring ring-two"></div>
-            <div class="capture-cross"></div>
-            <div class="capture-target">
-              360°<span>SITE → INFORMATION</span>
-            </div>
-            <span class="drawing-caption">REALITY CAPTURE / PROGRESS</span>
-          </div>
-          <div class="practice-meta">
-            <span>02 / DIGITAL CONSTRUCTION</span>
-            <span>{openspace.data.dateDisplay}</span>
-          </div>
-          <h3>
-            {openspace.data.shortTitle} <span>↗</span>
-          </h3>
-          <p>{openspace.data.summary}</p>
-          <span class="practice-role">{openspace.data.role}</span>
         </a>
       </div>
     </section>
@@ -849,6 +849,7 @@ import { SITE_METADATA } from "../consts";
     top: -115px;
     background: #b5c0a333;
   }
+
   .research-feature {
     margin: 90px 0;
     padding: 80px max(5%, calc((100vw - 1440px) / 2));
