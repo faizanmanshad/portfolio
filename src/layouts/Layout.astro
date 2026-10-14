@@ -76,20 +76,6 @@ const resolvedMode: "explore" | "index" =
         var mode = sessionStorage.getItem("portfolioMode") || "explore";
         document.documentElement.setAttribute("data-active-mode", mode);
         
-        // Check if this is an internal navigation or a reload
-        const navType = performance.getEntriesByType('navigation')[0]?.type;
-        const isReload = navType === 'reload';
-        const isInternal = document.referrer.startsWith(window.location.origin);
-        const isHomePage = path === '/' || path === '/index.html';
-        
-        // Always replay the 3D intro if user reloads or directly visits the home page
-        if (isHomePage && (isReload || !isInternal)) {
-          sessionStorage.removeItem('skipIntro');
-        }
-        // If they landed directly on a sub-page (not from our site), skip the intro for nav clarity
-        if (!isInternal && !isHomePage) {
-          sessionStorage.setItem('skipIntro', 'true');
-        }
       })();
     </script>
     <!-- Google tag (gtag.js) -->
@@ -104,12 +90,17 @@ const resolvedMode: "explore" | "index" =
   </head>
 
   <body data-mode={resolvedMode}>
+    {(currentPath === '/' || currentPath === '/index.html') && (
+      <div class="home-entry" aria-hidden="true">
+        <div class="home-entry-panel home-entry-left"></div>
+        <div class="home-entry-panel home-entry-right"></div>
+      </div>
+    )}
     <script is:inline>
       (function() {
         var path = window.location.pathname;
         var isHomePage = path === '/' || path === '/index.html';
-        var skipIntro = sessionStorage.getItem('skipIntro') === 'true';
-        if (!isHomePage || (isHomePage && skipIntro)) {
+        if (!isHomePage) {
           var baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;will-change:transform;';
           var left = document.createElement('div');
           left.id = 'pre-door-left';
@@ -146,3 +137,26 @@ const resolvedMode: "explore" | "index" =
     </script>
   </body>
 </html>
+
+<style>
+  /* CSS starts on every document load, independently of React, GSAP and the model. */
+  .home-entry-panel {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    z-index: 2147483647;
+    pointer-events: none;
+    background: #101412;
+    animation: home-entry-open 450ms cubic-bezier(.4, 0, .2, 1) both;
+  }
+  .home-entry-left { left: 0; transform-origin: left; }
+  .home-entry-right { right: 0; transform-origin: right; }
+  @keyframes home-entry-open {
+    from { transform: scaleX(1); }
+    to { transform: scaleX(0); visibility: hidden; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .home-entry { display: none; }
+  }
+</style>

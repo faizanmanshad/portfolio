@@ -21,7 +21,16 @@ const journeyCollections = await Promise.all([
   getCollection('experience'), getCollection('projects'), getCollection('research'),
 ]);
 const categoryNames: Record<string,string> = {education:'Education',recognition:'Recognition',journey:'Community',experience:'Professional Experience',projects:'Projects',research:'Research'};
-const datedJourney = journeyCollections.flat().map(item => {
+// Curated highlights only. Add an ID here when a new major milestone is ready.
+const majorMilestoneIds = new Set([
+  'education/bs-civil-engineering',
+  'projects/rcd-school-building-design',
+  'research/bim-to-ar',
+  'recognition/gold-medalist',
+  'experience/urbana',
+  'experience/openspace',
+]);
+const datedJourney = journeyCollections.flat().filter(item => majorMilestoneIds.has(`${item.collection}/${item.id}`)).map(item => {
   const year = item.data.dateDisplay?.match(/(?:19|20)\d{2}/)?.[0];
   const order = item.data.dateStart?.getTime() ?? (year ? Date.UTC(Number(year),0,1) : Infinity);
   return {order, id:`${item.collection}/${item.id}`, title:item.data.shortTitle || item.data.title,
@@ -38,14 +47,6 @@ import { SITE_METADATA } from "../consts";
   description={SITE_METADATA.home.description}
   mode="explore"
 >
-  <div id="global-intro-loader" style="position: fixed; inset: 0; z-index: 2147483647; background: #101412; display: flex; align-items: center; justify-content: center; transition: opacity 0.4s ease-in-out;">
-    <p style="color: #8b9586; font: 9px var(--font-mono); letter-spacing: 0.15em;">SETTING OUT THE STUDIO...</p>
-    <script is:inline>
-      if (sessionStorage.getItem('skipIntro') === 'true') {
-        document.getElementById('global-intro-loader').style.display = 'none';
-      }
-    </script>
-  </div>
   <main class="studio-page">
     <section
       class="studio-hero"
@@ -93,9 +94,9 @@ import { SITE_METADATA } from "../consts";
           I work where structures, information,
           <br class="desktop-break" /> and emerging technology meet.
         </p>
-        <button class="explore-model" id="explore-model">
+        <a class="explore-model" id="explore-model" href="/academic/">
           EXPLORE MY JOURNEY <span>↗</span>
-        </button>
+        </a>
         <a class="skip-model" href="#selected-work">
           Or, go straight to the work ↓
         </a>
@@ -104,11 +105,11 @@ import { SITE_METADATA } from "../consts";
         <span class="model-coordinate" aria-hidden="true">
           PERSPECTIVE / 01
         </span>
-        <StudioScene journey={journey} client:only="react">
+        <StudioScene journey={journey} client:visible>
           <div slot="fallback" class="studio-static">
             <img
-              src="/images/house-reference.png"
-              alt="Reference illustration of the Pakistani house"
+              src="/images/observatory.svg"
+              alt="Colorful observatory with a turquoise dome and canal"
             />
             <p class="label">STRUCTURES / CONSTRUCTION / RESEARCH</p>
           </div>
@@ -118,10 +119,10 @@ import { SITE_METADATA } from "../consts";
         <span>
           <i></i> THE STUDIO — ONE MODEL, MANY STORIES
         </span>
-        <span>DRAG TO ROTATE · START THE JOURNEY</span>
+        <span>DRAG TO ROTATE · LIFT THE DOME · SAIL THE CANAL</span>
       </div>
       <span class="studio-model-note">
-        An illustrative model. A window into my practice.
+        The Curiosity Observatory. A little place to look closer, discover and play.
       </span>
     </section>
 
@@ -131,20 +132,20 @@ import { SITE_METADATA } from "../consts";
         <div>
           <span class="principle-symbol">⌖</span>
           <h2>Look closer.</h2>
-          <p>Enter the house. Follow my education, projects and practice, one step at a time.</p>
+          <p>A little world of curiosity. Follow six defining moments in my education, projects and practice.</p>
         </div>
         <div>
           <span class="principle-symbol">↻</span>
           <h2>Change perspective.</h2>
           <p>
-            Turn the house. Explore its floors. See how the pieces relate.
+            Turn the observatory. Lift its dome. Send a little boat on its way.
           </p>
         </div>
         <div>
           <span class="principle-symbol">↥</span>
           <h2>Take it apart.</h2>
           <p>
-            Explore the layers, from the structural frame to the digital model.
+            A telescope for looking ahead. A bridge for connecting ideas. A journey still unfolding.
           </p>
         </div>
       </div>
@@ -433,7 +434,9 @@ import { SITE_METADATA } from "../consts";
     drawing.style.setProperty("--inspect-x", `${event.clientX - rect.left}px`);
     drawing.style.setProperty("--inspect-y", `${event.clientY - rect.top}px`);
   });
-  document.getElementById("explore-model")?.addEventListener("click", () => {
+  document.getElementById("explore-model")?.addEventListener("click", (event) => {
+    if (!document.querySelector('.studio-interactive[data-ready="true"]')) return;
+    event.preventDefault();
     window.dispatchEvent(new Event("studio:explore"));
   });
 </script>
@@ -486,7 +489,7 @@ import { SITE_METADATA } from "../consts";
     border-bottom: 1px solid #ffffff13;
   }
   .studio-intro {
-    animation: studio-enter 850ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    animation: studio-enter 300ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
     position: relative;
     align-self: center;
     z-index: 2;

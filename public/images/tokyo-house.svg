@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="620" viewBox="0 0 720 620" role="img" aria-label="Tokyo-inspired miniature house">
+<ellipse cx="360" cy="510" rx="230" ry="57" fill="#0b100d" opacity=".3"/>
+<path d="M100 413 343 304 619 439 377 557Z" fill="#999e83"/><path d="M100 413v23l277 144v-23Z" fill="#59634e"/><path d="m377 557 242-118v24L377 580Z" fill="#707d60"/>
+<path d="m180 389 160-77 172 84-160 81Z" fill="#c6bda4"/>
+<path d="M216 246 355 180 487 248v173l-139 68-132-70Z" fill="#d7cbb2"/><path d="m348 311 139-63v173l-139 68Z" fill="#b1ab94"/>
+<path d="M216 246 284 155 355 180 348 311Z" fill="#ede2c9"/>
+<path d="m199 249 82-109 156 76-77 110Z" fill="#35443e"/><path d="m281 140 139-66 97 175-80-33Z" fill="#4c5b51"/><path d="m420 74-139 66 156 76 80 33Z" fill="#43534b"/>
+<path d="m215 327 133 65 142-68v14l-142 69-133-66Z" fill="#966a49"/>
+<g fill="#eacb90" stroke="#78563e" stroke-width="7"><path d="m238 268 39 19v49l-39-19Z"/><path d="m296 296 31 15v49l-31-15Z"/><path d="m374 302 78-36v48l-78 38Z"/><path d="m286 388 41 21v47l-41-21Z"/></g>
+<path d="m234 354 38 19v73l-38-19Z" fill="#4a5546"/><path d="m246 362v67m14-60v68" stroke="#a77e55" stroke-width="4"/>
+<path d="m225 343 122 60 151-70v-27M347 403v-30m-120-30v-29m150 75v-30m35 14v-31m35 15v-31m35 14v-31" fill="none" stroke="#424f43" stroke-width="5"/>
+<path d="m229 436 48 24-22 10-47-23Z" fill="#ddd2b7"/>
+<path d="M155 410v-97" stroke="#8e6d4a" stroke-width="12"/><g fill="#7d9166"><path d="m110 330 9-54 54-20 38 37-18 56-51 5Z"/><path d="m143 274 1-41 40-13 26 38-23 36Z" fill="#a1ad7d"/></g>
+<path d="m510 434 24 12 18-10-3-23-35-9Z" fill="#a76b4d"/><path d="m509 411 7-30 24-4 20 23-18 25Z" fill="#879a66"/>
+<circle cx="225" cy="345" r="8" fill="#f6d398"/>
+</svg>
