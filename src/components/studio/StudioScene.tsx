@@ -63,6 +63,7 @@ function Scene({
     };
   }, [size.width, size.height, mode, reduced, camera, invalidate]);
   useEffect(() => {
+    if (step === null && reset === 0) return;
     const position = views[step === null ? 0 : step % views.length];
     flight.current = gsap.to(camera.position, {
       x: position[0],
@@ -126,12 +127,13 @@ function Scene({
         color="#ffdfac"
         intensity={2.8}
         castShadow
-        shadow-mapSize={[1024, 1024]}
+        shadow-mapSize={[2048, 2048]}
         shadow-camera-left={-5}
         shadow-camera-right={5}
         shadow-camera-top={6}
         shadow-camera-bottom={-5}
-        shadow-normalBias={0.025}
+        shadow-bias={-0.0004}
+        shadow-normalBias={0.02}
       />
       <HouseModel
         exploded={mode === "exploded"}
@@ -274,7 +276,7 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
               orthographic
               camera={{ position: views[0], zoom: 65, near: 0.1, far: 50 }}
               shadows
-              dpr={[1, 1.25]}
+              dpr={[1, 2]}
               frameloop="demand"
               resize={{ scroll: false }}
               gl={{ antialias: true, alpha: true }}
@@ -295,10 +297,12 @@ export default function StudioScene({ journey }: { journey: JourneyRecord[] }) {
         )}
         {(!ready || failed) && (
           <div className="model-loading">
-            <img
-              src="/images/observatory.svg"
-              alt="A colorful observatory with a turquoise dome, telescope and canal"
-            />
+            {failed && (
+              <img
+                src="/images/observatory.svg"
+                alt="A colorful observatory with a turquoise dome, telescope and canal"
+              />
+            )}
             <span>
               {failed
                 ? "Illustrated view · the journey is still available"

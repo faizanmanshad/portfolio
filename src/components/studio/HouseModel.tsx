@@ -70,7 +70,7 @@ function Ring({
 }) {
   return (
     <mesh position={p} rotation={rotation} castShadow>
-      <torusGeometry args={[r, 0.045, 6, 48]} />
+      <torusGeometry args={[r, 0.045, 12, 64]} />
       <meshStandardMaterial color={c} metalness={0.25} roughness={0.4} />
     </mesh>
   );

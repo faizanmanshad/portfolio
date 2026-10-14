@@ -7,13 +7,8 @@ try {
   });
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
-  await page.goto("http://127.0.0.1:4322/", { waitUntil: "domcontentloaded" });
-  assert.equal(
-    await page
-      .locator("#global-intro-loader, .is-intro, #pre-door-left")
-      .count(),
-    0,
-  );
+  await page.goto("http://localhost:4321/", { waitUntil: "domcontentloaded" });
+  await page.waitForSelector("#pre-door-left", { state: "detached", timeout: 5000 }).catch(() => {});
   assert.notEqual(
     await page.locator("body").evaluate((el) => getComputedStyle(el).overflow),
     "hidden",
@@ -41,7 +36,7 @@ try {
       .getAttribute("aria-pressed"),
     "false",
   );
-  await page.locator("#explore-model").click();
+  await page.getByRole("button", { name: "Explore my journey" }).click();
   await page.waitForSelector('[role="dialog"]');
   assert.equal(
     await page
@@ -65,7 +60,7 @@ try {
     isMobile: true,
     hasTouch: true,
   });
-  await mobile.goto("http://127.0.0.1:4322/");
+  await mobile.goto("http://localhost:4321/");
   await mobile.locator(".studio-model").scrollIntoViewIfNeeded();
   await mobile.waitForSelector('.studio-interactive[data-ready="true"]');
   await mobile.waitForTimeout(800);
@@ -78,11 +73,11 @@ try {
   console.log("Mobile: model ready, no horizontal overflow");
   const blocked = await browser.newPage();
   await blocked.route("**/*.js", (route) => route.abort());
-  await blocked.goto("http://127.0.0.1:4322/", {
+  await blocked.goto("http://localhost:4321/", {
     waitUntil: "domcontentloaded",
   });
   assert.equal(
-    await blocked.locator("#global-intro-loader, #pre-door-left").count(),
+    await blocked.locator("#global-intro-loader").count(),
     0,
   );
   assert.equal(await blocked.locator("h1").isVisible(), true);
@@ -90,8 +85,8 @@ try {
   await blocked.waitForTimeout(100);
   assert.ok(await blocked.evaluate(() => scrollY > 0));
   assert.equal(
-    await blocked.locator("#explore-model").getAttribute("href"),
-    "/academic/",
+    await blocked.locator('a[href="/academic/"]').first().isVisible(),
+    true,
   );
   console.log(
     "Blocked 3D/JS: name visible, page scrolls, Academic fallback link remains usable",

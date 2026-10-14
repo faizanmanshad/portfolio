@@ -94,12 +94,7 @@ import { SITE_METADATA } from "../consts";
           I work where structures, information,
           <br class="desktop-break" /> and emerging technology meet.
         </p>
-        <a class="explore-model" id="explore-model" href="/academic/">
-          EXPLORE MY JOURNEY <span>↗</span>
-        </a>
-        <a class="skip-model" href="#selected-work">
-          Or, go straight to the work ↓
-        </a>
+        <a class="skip-model" href="#selected-work">Go straight to the work ↓</a>
       </div>
       <div class="studio-model">
         <span class="model-coordinate" aria-hidden="true">
@@ -126,35 +121,12 @@ import { SITE_METADATA } from "../consts";
       </span>
     </section>
 
-    <section class="studio-principles" aria-label="Explore the studio">
-      <p class="section-kicker">01 / WAYS OF SEEING</p>
-      <div class="principle-grid">
-        <div>
-          <span class="principle-symbol">⌖</span>
-          <h2>Look closer.</h2>
-          <p>A little world of curiosity. Follow six defining moments in my education, projects and practice.</p>
-        </div>
-        <div>
-          <span class="principle-symbol">↻</span>
-          <h2>Change perspective.</h2>
-          <p>
-            Turn the observatory. Lift its dome. Send a little boat on its way.
-          </p>
-        </div>
-        <div>
-          <span class="principle-symbol">↥</span>
-          <h2>Take it apart.</h2>
-          <p>
-            A telescope for looking ahead. A bridge for connecting ideas. A journey still unfolding.
-          </p>
-        </div>
-      </div>
-    </section>
+    
 
     <section class="selected-work" id="selected-work">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">02 / SELECTED PRACTICE</p>
+          <p class="section-kicker">01 / SELECTED PRACTICE</p>
           <h2>
             From the model.
             <br />
@@ -217,7 +189,7 @@ import { SITE_METADATA } from "../consts";
 
     <section class="research-feature">
       <div class="research-copy">
-        <p class="section-kicker">03 / EXPERIMENTAL THINKING</p>
+        <p class="section-kicker">02 / EXPERIMENTAL THINKING</p>
         <h2>
           What if the model
           <br />
@@ -257,7 +229,7 @@ import { SITE_METADATA } from "../consts";
     <section class="project-register explorations-portal" id="further-explorations">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">04 / THE SYSTEM DIRECTORY</p>
+          <p class="section-kicker">03 / THE SYSTEM DIRECTORY</p>
           <h2>Further explorations.</h2>
           <p class="section-subtitle">
             Curated archives spanning academic projects, scholarly research, peer recognition, and personal perspective.
@@ -275,7 +247,7 @@ import { SITE_METADATA } from "../consts";
       <div class="directory-cluster">
         <div class="cluster-header">
           <div class="cluster-title-wrap">
-            <span class="cluster-num">04.1</span>
+            <span class="cluster-num">03.1</span>
             <div>
               <h3>Academic & Engineering Projects</h3>
               <p class="cluster-meta">Structural analysis, geotechnical modeling, hydraulics & BIM workflows</p>
@@ -305,7 +277,7 @@ import { SITE_METADATA } from "../consts";
       <div class="directory-cluster">
         <div class="cluster-header">
           <div class="cluster-title-wrap">
-            <span class="cluster-num">04.2</span>
+            <span class="cluster-num">03.2</span>
             <div>
               <h3>Scholarly Research</h3>
               <p class="cluster-meta">Applied inquiry into augmented reality, BIM workflows & sustainable materials</p>
@@ -335,7 +307,7 @@ import { SITE_METADATA } from "../consts";
       <div class="directory-cluster">
         <div class="cluster-header">
           <div class="cluster-title-wrap">
-            <span class="cluster-num">04.3</span>
+            <span class="cluster-num">03.3</span>
             <div>
               <h3>Honors & Distinctions</h3>
               <p class="cluster-meta">National competitions, department gold medal & academic accolades</p>
@@ -365,7 +337,7 @@ import { SITE_METADATA } from "../consts";
       <div class="directory-cluster directory-cluster--about">
         <div class="cluster-header">
           <div class="cluster-title-wrap">
-            <span class="cluster-num">04.4</span>
+            <span class="cluster-num">03.4</span>
             <div>
               <h3>About & Perspective</h3>
               <p class="cluster-meta">Civil engineering foundations, community service & digital exploration</p>
@@ -434,11 +406,7 @@ import { SITE_METADATA } from "../consts";
     drawing.style.setProperty("--inspect-x", `${event.clientX - rect.left}px`);
     drawing.style.setProperty("--inspect-y", `${event.clientY - rect.top}px`);
   });
-  document.getElementById("explore-model")?.addEventListener("click", (event) => {
-    if (!document.querySelector('.studio-interactive[data-ready="true"]')) return;
-    event.preventDefault();
-    window.dispatchEvent(new Event("studio:explore"));
-  });
+  
 </script>
 <style>
   :global(body:has(.studio-page) #custom-cursor) {
@@ -489,7 +457,7 @@ import { SITE_METADATA } from "../consts";
     border-bottom: 1px solid #ffffff13;
   }
   .studio-intro {
-    animation: studio-enter 300ms cubic-bezier(0.2, 0.7, 0.3, 1) both;
+    animation: studio-enter 400ms cubic-bezier(0.2, 0.7, 0.3, 1) 250ms both;
     position: relative;
     align-self: center;
     z-index: 2;
@@ -675,8 +643,7 @@ import { SITE_METADATA } from "../consts";
   .studio-static p {
     color: #aab29e;
   }
-  .studio-principles,
-  .selected-work,
+    .selected-work,
   .project-register,
   .explorations-portal,
   .studio-footer {
@@ -690,29 +657,7 @@ import { SITE_METADATA } from "../consts";
     letter-spacing: 0.12em;
     margin-bottom: 30px;
   }
-  .studio-principles {
-    border-top: 1px solid #ffffff12;
-    padding-top: 35px;
-    padding-bottom: 55px;
-  }
-  .principle-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 50px;
-  }
-  .principle-grid > div {
-    padding-left: 25px;
-    border-left: 1px solid #ffffff18;
-  }
-  .principle-symbol {
-    display: block;
-    color: #e48a51;
-    font-size: 30px;
-    margin-bottom: 20px;
-  }
-  .principle-grid h2 {
-    font-size: 22px;
-  }
+  
   .principle-grid p {
     max-width: 260px;
     font-size: 12px;

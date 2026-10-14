@@ -90,29 +90,19 @@ const resolvedMode: "explore" | "index" =
   </head>
 
   <body data-mode={resolvedMode}>
-    {(currentPath === '/' || currentPath === '/index.html') && (
-      <div class="home-entry" aria-hidden="true">
-        <div class="home-entry-panel home-entry-left"></div>
-        <div class="home-entry-panel home-entry-right"></div>
-      </div>
-    )}
     <script is:inline>
       (function() {
-        var path = window.location.pathname;
-        var isHomePage = path === '/' || path === '/index.html';
-        if (!isHomePage) {
-          var baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;will-change:transform;';
-          var left = document.createElement('div');
-          left.id = 'pre-door-left';
-          left.style.cssText = baseStyle + 'left:0;width:50vw;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
-          var right = document.createElement('div');
-          right.id = 'pre-door-right';
-          right.style.cssText = baseStyle + 'right:0;width:50vw;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
-          document.body.appendChild(left);
-          document.body.appendChild(right);
-          // Never leave content covered if the animation bundle fails to load.
-          setTimeout(function () { left.remove(); right.remove(); }, 3000);
-        }
+        var baseStyle = 'position:fixed;top:0;bottom:0;z-index:2147483647;pointer-events:none;will-change:transform;';
+        var left = document.createElement('div');
+        left.id = 'pre-door-left';
+        left.style.cssText = baseStyle + 'left:0;width:50vw;background:linear-gradient(to right, #101412 70%, #2a1008 100%);';
+        var right = document.createElement('div');
+        right.id = 'pre-door-right';
+        right.style.cssText = baseStyle + 'right:0;width:50vw;background:linear-gradient(to left, #101412 70%, #2a1008 100%);';
+        document.body.appendChild(left);
+        document.body.appendChild(right);
+        // Never leave content covered if the animation bundle fails to load.
+        setTimeout(function () { left.remove(); right.remove(); }, 3000);
       })();
     </script>
     <!-- Skip to main content (accessibility) -->
@@ -138,25 +128,4 @@ const resolvedMode: "explore" | "index" =
   </body>
 </html>
 
-<style>
-  /* CSS starts on every document load, independently of React, GSAP and the model. */
-  .home-entry-panel {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 50%;
-    z-index: 2147483647;
-    pointer-events: none;
-    background: #101412;
-    animation: home-entry-open 450ms cubic-bezier(.4, 0, .2, 1) both;
-  }
-  .home-entry-left { left: 0; transform-origin: left; }
-  .home-entry-right { right: 0; transform-origin: right; }
-  @keyframes home-entry-open {
-    from { transform: scaleX(1); }
-    to { transform: scaleX(0); visibility: hidden; }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .home-entry { display: none; }
-  }
-</style>
+

@@ -120,5 +120,6 @@ document.addEventListener('click', event => {
 const initialPanels = ['pre-door-left', 'pre-door-right'].map(id => document.getElementById(id));
 if (initialPanels.every((panel): panel is HTMLElement => panel !== null)) {
   // The page is already painted under the doors; no whole-page opacity fade.
-  requestAnimationFrame(() => animateDoors(initialPanels, true));
+  const isHome = location.pathname === '/' || location.pathname === '/index.html';
+  requestAnimationFrame(() => animateDoors(initialPanels, true, undefined, isHome ? 0.25 : 0));
 }

@@ -10,10 +10,11 @@ export function createDoors() {
   });
 }
 
-export function animateDoors(panels: HTMLElement[], open: boolean, complete?: () => void) {
+export function animateDoors(panels: HTMLElement[], open: boolean, complete?: () => void, delay: number = 0) {
   return gsap.to(panels, {
     xPercent: (index: number) => open ? (index === 0 ? -100 : 100) : 0,
     duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 0.5,
+    delay: delay,
     ease: 'power3.inOut',
     overwrite: true,
     onComplete: () => {
