@@ -1,0 +1,1253 @@
+---
+interface Props {
+  entry: any;
+  driveFolderId: string | null;
+  archiveHref: string;
+  archiveLabel: string;
+}
+
+const { entry, driveFolderId, archiveHref, archiveLabel } = Astro.props;
+
+const driveUrl = driveFolderId
+  ? `https://drive.google.com/drive/folders/${driveFolderId}?usp=sharing`
+  : "https://drive.google.com/drive/folders/1m2kdWPX0X7Dn5LIPxeV_mcUl_yowBMoo?usp=sharing";
+
+const playlists = [
+  {
+    title: "Reinforced Concrete Design 2 (RCD 2)",
+    tag: "CONCRETE DESIGN",
+    badge: "EXAM REVISION",
+    videos: "8 Videos",
+    views: "820+ Views",
+    videoId: "tWzw2M_DPZ8",
+    url: "https://www.youtube.com/watch?v=tWzw2M_DPZ8&list=PLFy-MkvFsEItBz9N8L6-QzfJmWBHurQBd",
+    desc: "In-depth problem-solving sessions covering beam, slab, and column design calculations to help classmates prepare for RCD 2 finals.",
+    collaborator: null,
+  },
+  {
+    title: "Quantity Estimation & Takeoff",
+    tag: "COST ESTIMATION",
+    badge: "PRACTICAL SESSIONS",
+    videos: "7 Videos",
+    views: "670+ Views",
+    videoId: "hCfw6UtGqOc",
+    url: "https://www.youtube.com/watch?v=hCfw6UtGqOc&list=PLFy-MkvFsEIsf_fcivfNuDisDsetegiix",
+    desc: "Step-by-step walkthroughs on quantity surveying, measurement takeoff methods, and rate analysis prepared for class fellows.",
+    collaborator: null,
+  },
+  {
+    title: "Matrix Structural Analysis",
+    tag: "STRUCTURAL MECHANICS",
+    badge: "EXAM PREP",
+    videos: "3 Videos",
+    views: "130 Views",
+    videoId: "KT8CGIqmeY8",
+    url: "https://www.youtube.com/watch?v=KT8CGIqmeY8&list=PLFy-MkvFsEIv8E2ZhdipJjtW8ZUyjEIqy",
+    desc: "Stiffness matrix method, element transformations, and numerical problem prep conducted with classmate Kashan Shafiq.",
+    collaborator: "With Kashan Shafiq",
+  },
+  {
+    title: "Project 01: Revit Residential House",
+    tag: "BIM TUTORIAL SERIES",
+    badge: "STUDY GROUP",
+    videos: "11 Videos",
+    views: "21 Views",
+    videoId: "ehAx-nbjtXc",
+    url: "https://www.youtube.com/watch?v=ehAx-nbjtXc&list=PLFy-MkvFsEItG6E5liovXDErSqHhJHLhA",
+    driveUrl: "https://drive.google.com/drive/folders/10HcE_eZt3l7K3y8E8Ufgm1mkVieLGU8D",
+    desc: "Hands-on tutorial series teaching a small study group of 4–5 classmates to model a residential house from scratch, with downloadable project files.",
+    collaborator: "Study Group Sessions",
+  },
+  {
+    title: "Collaborate Project (Royal Residency)",
+    tag: "BIM COLLABORATION",
+    badge: "TEAM WORKFLOW",
+    videos: "4 Videos",
+    views: "Project Sessions",
+    videoId: "NffrnDww070",
+    url: "https://www.youtube.com/watch?v=NffrnDww070&list=PLFy-MkvFsEIvD3cHxlZqomBkOevvyUQf2",
+    desc: "Recorded group collaboration sessions on a shared multi-story residential BIM project model created together with classmates.",
+    collaborator: "Team Collaboration",
+  },
+  {
+    title: "Primavera P6 Scheduling (CEP)",
+    tag: "PROJECT MANAGEMENT",
+    badge: "CEP PROBLEM",
+    videos: "3 Videos",
+    views: "13 Views",
+    videoId: "oVOgLVOJVPY",
+    url: "https://www.youtube.com/watch?v=oVOgLVOJVPY&list=PLFy-MkvFsEIsgt4gzAe6SXMfKspmv1Cs5",
+    desc: "Resolving common student bottlenecks and walking through the teacher-assigned Complex Engineering Problem (CEP) for scheduling.",
+    collaborator: null,
+  },
+  {
+    title: "Revit Structure & Rebar Detailing",
+    tag: "REBAR MODELING",
+    badge: "PEER TEACHING",
+    videos: "2 Videos",
+    views: "29 Views",
+    videoId: "WEvw74dbG6U",
+    url: "https://www.youtube.com/watch?v=WEvw74dbG6U&list=PLFy-MkvFsEIv9F_kLKvShNh2rEfSTDAbm",
+    desc: "Structural rebar modeling and detailing sessions in Revit, guided and taught by classmate Haider Ali.",
+    collaborator: "Taught by Haider Ali",
+  },
+  {
+    title: "Autodesk Revit Fundamentals",
+    tag: "BIM BASICS",
+    badge: "STARTER GUIDE",
+    videos: "2 Videos",
+    views: "Introductory",
+    videoId: "aEZk7KZjZVY",
+    url: "https://www.youtube.com/watch?v=aEZk7KZjZVY&list=PLFy-MkvFsEIscp5rcCZuXs6bEre6lgrmq",
+    desc: "Foundational walkthroughs covering essential Revit tools, levels, grids, and interface setup for peers getting started with BIM.",
+    collaborator: null,
+  },
+];
+
+const driveModules = [
+  {
+    num: "01",
+    tag: "SEMESTER ARCHIVE",
+    title: "1st to 8th Semester Coursework",
+    desc: "Lecture presentations, professor slides, lab manuals, assignments, and study material compiled semester-by-semester.",
+    items: ["Lecture Slides & Annotated Notes", "Laboratory Experiment Manuals", "Solved Assignments & Numerical Sheets"],
+  },
+  {
+    num: "02",
+    tag: "EXAM PREPARATION",
+    title: "Digitized Past Examinations",
+    desc: "Curated midterm and final examination papers gathered to help peers practice exam patterns and key question structures.",
+    items: ["Midterm Examination Papers", "Final Examination Repositories", "Subject-Wise Paper Categorization"],
+  },
+  {
+    num: "03",
+    tag: "STRUCTURAL CODES",
+    title: "Standard Design References",
+    desc: "Essential design codes and nomographs referenced across concrete, steel, and structural analysis coursework.",
+    items: ["ACI 318 Concrete Standard", "AISC 360 Steel Specification", "ASCE 7 & UBC-97 Load Standards"],
+  },
+  {
+    num: "04",
+    tag: "CAPSTONE REFERENCES",
+    title: "FYDP & Thesis Documentation",
+    desc: "Departmental formatting templates, proposal guidelines, and sample Final Year Design Project documentations.",
+    items: ["Thesis Word/LaTeX Templates", "Proposal Defense Guidelines", "Sample Project Documentation"],
+  },
+];
+
+const contributors = [
+  {
+    name: "Kashan Shafiq",
+    initials: "KS",
+    role: "Database Architecture & Core Notes",
+    desc: "Spearheaded the initiative: conceived the centralized archive idea, built the Google Drive folder architecture, and contributed the primary collection of lecture materials and semester files for the cohort.",
+  },
+  {
+    name: "Faizan Manshad",
+    initials: "FM",
+    role: "Past Exams & Peer Study Playlists",
+    desc: "Compiled and digitized past exam archives, curated structural references, and recorded unlisted study walkthroughs (RCD 2, Quantity, Revit, Primavera CEP) to help classmates prepare for exams and assignments.",
+  },
+  {
+    name: "Haider Ali",
+    initials: "HA",
+    role: "Rebar Modeling Sessions",
+    desc: "Contributed directly by leading and teaching structural reinforcement and rebar modeling sessions in Revit for the group.",
+  },
+];
+---
+
+<article class="academic-db-page">
+  <!-- Top Navigation Bar -->
+  <header class="db-nav-header">
+    <a class="db-back-link" href={archiveHref}>
+      <span class="back-arrow" aria-hidden="true">←</span>
+      <span>{archiveLabel} / Academic Archive</span>
+    </a>
+    <div class="db-status-pill">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span class="status-text">PEER ARCHIVE</span>
+      <span class="status-sep">·</span>
+      <span class="status-cohort">CIVIL ENGINEERING (FA22)</span>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="db-hero" aria-labelledby="db-main-title">
+    <div class="db-hero-meta">
+      <span class="eyebrow-chip">PEER-TO-PEER ACADEMIC INITIATIVE</span>
+      <span class="eyebrow-type">GOOGLE DRIVE + UNLISTED VIDEO PLAYLISTS</span>
+    </div>
+
+    <h1 id="db-main-title" class="db-hero-title">
+      Academic Resource Database & Study Archives<span class="hero-dot">.</span>
+    </h1>
+
+    <p class="db-hero-deck">
+      {entry.data.summary || `A student-led academic initiative for Civil Engineering undergraduates, initiated by Kashan Shafiq with co-contributions by Faizan Manshad, compiling 8 semesters of coursework, digitized past exams, and recorded peer study playlists so students can prepare without eleventh-hour scrambling.`}
+    </p>
+
+    <!-- Quick Actions -->
+    <div class="db-hero-actions">
+      <a
+        href={driveUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="db-btn db-btn-primary"
+      >
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Open Google Drive Archive</span>
+        <span class="btn-arrow" aria-hidden="true">↗</span>
+      </a>
+
+      <a href="#drive-modules" class="db-btn db-btn-secondary">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="7" height="7"></rect>
+          <rect x="14" y="3" width="7" height="7"></rect>
+          <rect x="14" y="14" width="7" height="7"></rect>
+          <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+        <span>Folder Structure</span>
+        <span class="btn-arrow" aria-hidden="true">↓</span>
+      </a>
+
+      <a href="#drive-workstation" class="db-btn db-btn-ghost">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+          <line x1="8" y1="21" x2="16" y2="21"></line>
+          <line x1="12" y1="17" x2="12" y2="21"></line>
+        </svg>
+        <span>Drive Preview</span>
+        <span class="btn-arrow" aria-hidden="true">↓</span>
+      </a>
+
+      <a href="#study-playlists" class="db-btn db-btn-ghost">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <span>8 Study Playlists</span>
+        <span class="btn-arrow" aria-hidden="true">↓</span>
+      </a>
+    </div>
+
+    <!-- Real Context / Why We Created It -->
+    <div class="origin-banner">
+      <div class="origin-badge mono">THE REAL PURPOSE</div>
+      <div class="origin-content">
+        <h3>Built to prevent the eleventh-hour exam panic.</h3>
+        <p>
+          In engineering, students often scramble for past papers, lecture slides, and numerical formulas the night before an exam. 
+          This initiative was built so that <strong>incoming juniors</strong> have a structured guide and notes ready before each semester starts, 
+          and <strong>class fellows</strong> could revisit difficult calculations and software steps through unlisted video recordings at their own pace.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Google Drive Modules Breakdown -->
+  <section id="drive-modules" class="db-section" aria-labelledby="drive-modules-heading">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-code mono">DRIVE ARCHIVE</span>
+        <h2 id="drive-modules-heading" class="section-title">Google Drive Folder Structure</h2>
+      </div>
+      <p class="section-lead">
+        Spanning all 8 semesters of the undergraduate degree, organized so juniors can find notes, past exams, and references without friction.
+      </p>
+    </div>
+
+    <div class="drive-modules-grid">
+      {driveModules.map((m) => (
+        <div class="drive-module-card">
+          <div class="module-num-bar">
+            <span class="module-num mono">{m.num}</span>
+            <span class="module-tag mono">{m.tag}</span>
+          </div>
+          <h3 class="module-title">{m.title}</h3>
+          <p class="module-desc">{m.desc}</p>
+          <ul class="module-items">
+            {m.items.map((item) => (
+              <li>
+                <span class="bullet-dot" aria-hidden="true">▪</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="drive-cta-bar">
+      <div>
+        <h4 class="drive-cta-title">Looking for semester files or past papers?</h4>
+        <p class="drive-cta-desc">Access the shared Google Drive folder containing the complete coursework and past exam repository.</p>
+      </div>
+      <a
+        href={driveUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="db-btn db-btn-primary"
+      >
+        <span>Open Full Drive Folder</span>
+        <span class="btn-arrow" aria-hidden="true">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- Interactive Google Drive Preview -->
+  <section id="drive-workstation" class="db-section" aria-labelledby="preview-heading">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-code mono">FOLDER PREVIEW</span>
+        <h2 id="preview-heading" class="section-title">Drive Directory View</h2>
+      </div>
+      <p class="section-lead">
+        Live preview of the shared Drive folder. (If browser cookies block the embed, use the direct button above to open in Google Drive).
+      </p>
+    </div>
+
+    <div class="drive-workstation-shell">
+      <div class="workstation-chrome">
+        <div class="chrome-controls" aria-hidden="true">
+          <span class="chrome-dot red"></span>
+          <span class="chrome-dot yellow"></span>
+          <span class="chrome-dot green"></span>
+        </div>
+        <div class="chrome-location mono">
+          <span class="loc-icon" aria-hidden="true">📁</span>
+          <span class="loc-text">Google Drive / Civil Engineering Database (FA22)</span>
+        </div>
+        <a
+          href={driveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="chrome-ext-btn mono"
+        >
+          <span>Open in New Tab</span>
+          <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="workstation-iframe-container">
+        {driveFolderId ? (
+          <iframe
+            src={`https://drive.google.com/embeddedfolderview?id=${driveFolderId}#list`}
+            class="drive-embed-frame"
+            title="Civil Engineering Academic Resource Database Google Drive Embed"
+            loading="lazy"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        ) : (
+          <div class="frame-placeholder">
+            <p>Direct Google Drive repository available at the button above.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- Recorded Study Playlists Section (THE REAL VALUE) -->
+  <section id="study-playlists" class="db-section" aria-labelledby="playlists-heading">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-code mono">VIDEO ARCHIVES</span>
+        <h2 id="playlists-heading" class="section-title">Recorded Peer-Learning Playlists</h2>
+      </div>
+      <p class="section-lead">
+        Study meetings, exam prep walkthroughs, and software problem-solving sessions recorded and shared with class fellows as unlisted YouTube playlists.
+      </p>
+    </div>
+
+    <div class="playlists-grid">
+      {playlists.map((pl) => (
+        <a
+          href={pl.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="playlist-card"
+          title={`Watch ${pl.title} playlist on YouTube`}
+        >
+          <div class="playlist-thumb-wrap">
+            <img
+              src={`https://img.youtube.com/vi/${pl.videoId}/mqdefault.jpg`}
+              alt={pl.title}
+              class="playlist-thumb"
+              loading="lazy"
+            />
+            <div class="thumb-overlay">
+              <span class="play-btn-circle" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="6 4 20 12 6 20 6 4"></polygon>
+                </svg>
+              </span>
+            </div>
+            <div class="thumb-meta-pills">
+              <span class="count-pill mono">{pl.videos}</span>
+              {pl.views && <span class="views-pill mono">{pl.views}</span>}
+            </div>
+          </div>
+
+          <div class="playlist-info">
+            <div class="card-tags">
+              <span class="card-tag mono">{pl.tag}</span>
+              {pl.collaborator && <span class="collab-tag mono">{pl.collaborator}</span>}
+            </div>
+
+            <h3 class="playlist-title">
+              <span>{pl.title}</span>
+              <span class="ext-arrow" aria-hidden="true">↗</span>
+            </h3>
+
+            <p class="playlist-desc">{pl.desc}</p>
+
+            <div class="playlist-card-footer">
+              <span class="watch-link mono">
+                <span>Open YouTube Playlist</span>
+                <span aria-hidden="true">↗</span>
+              </span>
+              {pl.driveUrl && (
+                <span class="drive-badge-link mono" title="Drive project files available">
+                  Drive Files Included
+                </span>
+              )}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Credits & Collaboration (Honest & Grounded) -->
+  <section class="db-section" aria-labelledby="credits-heading">
+    <div class="section-header">
+      <div class="section-title-wrap">
+        <span class="section-code mono">CONTRIBUTORS</span>
+        <h2 id="credits-heading" class="section-title">Collaboration & Credits</h2>
+      </div>
+      <p class="section-lead">
+        Class fellows who contributed time, materials, and sessions to make this resource useful for everyone.
+      </p>
+    </div>
+
+    <div class="contributors-grid">
+      {contributors.map((c) => (
+        <div class="contributor-card">
+          <div class="contributor-avatar">
+            <span>{c.initials}</span>
+          </div>
+          <div class="contributor-body">
+            <h3 class="contributor-name">{c.name}</h3>
+            <span class="contributor-role mono">{c.role}</span>
+            <p class="contributor-desc">{c.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Footer Navigation -->
+  <footer class="db-footer">
+    <div class="db-footer-nav">
+      <a href={archiveHref} class="footer-link mono">
+        <span>←</span> Return to {archiveLabel}
+      </a>
+      <a href="/academic/" class="footer-link mono">
+        Academic Portfolio <span>↗</span>
+      </a>
+      <a href="/projects/" class="footer-link mono">
+        Academic Projects <span>↗</span>
+      </a>
+    </div>
+  </footer>
+</article>
+
+<style>
+  .academic-db-page {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: calc(var(--nav-h) + 36px) 5vw 80px;
+    color: var(--c-text);
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+  }
+
+  /* ── Navigation & Status Bar ── */
+  .db-nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 28px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .db-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 12px/1.4 var(--font-mono);
+    letter-spacing: 0.05em;
+    color: #9ea59c;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+
+  .db-back-link:hover {
+    color: var(--c-accent);
+    transform: translateX(-2px);
+  }
+
+  .db-status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    background: rgba(22, 28, 24, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--r-pill);
+    font: 11px/1 var(--font-mono);
+    letter-spacing: 0.06em;
+    color: #c9d2c5;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.8);
+    animation: livePulse 2s infinite ease-in-out;
+  }
+
+  @keyframes livePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .status-sep {
+    color: rgba(255, 255, 255, 0.25);
+  }
+
+  .status-cohort {
+    color: #a0a69d;
+  }
+
+  /* ── Hero Section ── */
+  .db-hero {
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .db-hero-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .eyebrow-chip {
+    font: 11px/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    color: var(--c-accent);
+    background: rgba(232, 92, 26, 0.1);
+    border: 1px solid rgba(232, 92, 26, 0.25);
+    padding: 4px 10px;
+    border-radius: var(--r-sm);
+  }
+
+  .eyebrow-type {
+    font: 11px/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    color: #8c9389;
+  }
+
+  .db-hero-title {
+    font-size: clamp(32px, 4.2vw, 52px);
+    font-weight: 500;
+    line-height: 1.12;
+    letter-spacing: -0.04em;
+    color: #ede8e1;
+    margin: 0 0 18px;
+    max-width: 950px;
+  }
+
+  .hero-dot {
+    color: var(--c-accent);
+  }
+
+  .db-hero-deck {
+    font-size: clamp(15px, 1.3vw, 18px);
+    line-height: 1.65;
+    color: #b5bbb1;
+    max-width: 820px;
+    margin: 0 0 30px;
+  }
+
+  /* ── Action Buttons ── */
+  .db-hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+
+  .db-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    font: 12px/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: var(--r-md);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-icon {
+    width: 15px;
+    height: 15px;
+  }
+
+  .db-btn-primary {
+    background: #e85c1a;
+    color: #fff;
+    border: 1px solid #ff7233;
+    box-shadow: 0 4px 18px rgba(232, 92, 26, 0.3);
+    font-weight: 500;
+  }
+
+  .db-btn-primary:hover {
+    background: #ff6f2e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(232, 92, 26, 0.45);
+  }
+
+  .db-btn-secondary {
+    background: #171f19;
+    color: #ede8e1;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .db-btn-secondary:hover {
+    background: #202b22;
+    border-color: rgba(255, 255, 255, 0.28);
+    transform: translateY(-2px);
+  }
+
+  .db-btn-ghost {
+    background: transparent;
+    color: #a2a89f;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .db-btn-ghost:hover {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .btn-arrow {
+    transition: transform 0.2s ease;
+  }
+
+  .db-btn:hover .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* ── Origin Banner ── */
+  .origin-banner {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    padding: 22px 26px;
+    background: #141a16;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-left: 3px solid var(--c-accent);
+    border-radius: var(--r-md);
+  }
+
+  .origin-badge {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--c-accent);
+    background: rgba(232, 92, 26, 0.12);
+    border: 1px solid rgba(232, 92, 26, 0.25);
+    padding: 4px 8px;
+    border-radius: var(--r-sm);
+    white-space: nowrap;
+    margin-top: 3px;
+  }
+
+  .origin-content h3 {
+    font-size: 17px;
+    font-weight: 500;
+    color: #ede8e1;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .origin-content p {
+    font-size: 14px;
+    line-height: 1.65;
+    color: #a2a99e;
+    margin: 0;
+  }
+
+  .origin-content strong {
+    color: #ede8e1;
+  }
+
+  /* ── Section Structure ── */
+  .db-section {
+    padding: 56px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 8px;
+  }
+
+  .section-code {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--c-accent);
+    background: rgba(232, 92, 26, 0.1);
+    border: 1px solid rgba(232, 92, 26, 0.25);
+    padding: 3px 8px;
+    border-radius: var(--r-sm);
+  }
+
+  .section-title {
+    font-size: clamp(22px, 2.3vw, 28px);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: #ede8e1;
+    margin: 0;
+  }
+
+  .section-lead {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #9ea59a;
+    max-width: 720px;
+    margin: 0;
+  }
+
+  /* ── Recorded Playlists Grid ── */
+  .playlists-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .playlist-card {
+    background: #141a16;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.22s ease;
+  }
+
+  .playlist-card:hover {
+    border-color: rgba(232, 92, 26, 0.45);
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+  }
+
+  .playlist-thumb-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: #0d120f;
+  }
+
+  .playlist-thumb {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .playlist-card:hover .playlist-thumb {
+    transform: scale(1.03);
+  }
+
+  .thumb-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.65) 100%);
+    display: grid;
+    place-items: center;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+  }
+
+  .playlist-card:hover .thumb-overlay {
+    opacity: 1;
+  }
+
+  .play-btn-circle {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(232, 92, 26, 0.9);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+
+  .play-btn-circle svg {
+    width: 18px;
+    height: 18px;
+    margin-left: 2px;
+  }
+
+  .playlist-card:hover .play-btn-circle {
+    transform: scale(1.12);
+    background: #ff6f2e;
+  }
+
+  .thumb-meta-pills {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    display: flex;
+    gap: 6px;
+  }
+
+  .count-pill {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    border-radius: var(--r-sm);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .views-pill {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    padding: 3px 8px;
+    background: rgba(232, 92, 26, 0.85);
+    color: #fff;
+    border-radius: var(--r-sm);
+    font-weight: 500;
+  }
+
+  .playlist-info {
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .card-tag {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--c-accent);
+  }
+
+  .collab-tag {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: #92998e;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 7px;
+    border-radius: var(--r-sm);
+  }
+
+  .playlist-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ede8e1;
+    letter-spacing: -0.02em;
+    margin: 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .ext-arrow {
+    color: var(--c-accent);
+    font-size: 14px;
+    transition: transform 0.2s ease;
+  }
+
+  .playlist-card:hover .ext-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .playlist-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #9ca398;
+    margin: 0 0 18px;
+  }
+
+  .playlist-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .watch-link {
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    color: var(--c-accent);
+    text-transform: uppercase;
+  }
+
+  .drive-badge-link {
+    font-size: 10px;
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+    padding: 2px 6px;
+    border-radius: var(--r-sm);
+  }
+
+  /* ── Drive Modules Grid ── */
+  .drive-modules-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+  }
+
+  .drive-module-card {
+    padding: 22px;
+    background: #141a16;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--r-md);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .module-num-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .module-num {
+    font-size: 14px;
+    color: var(--c-accent);
+    font-weight: 600;
+  }
+
+  .module-tag {
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: #7b8277;
+  }
+
+  .module-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ede8e1;
+    margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .module-desc {
+    font-size: 12px;
+    line-height: 1.55;
+    color: #92998e;
+    margin: 0 0 16px;
+  }
+
+  .module-items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .module-items li {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    font-size: 11px;
+    line-height: 1.5;
+    color: #b0b7ab;
+  }
+
+  .bullet-dot {
+    color: var(--c-accent);
+    font-size: 9px;
+    margin-top: 2px;
+  }
+
+  .drive-cta-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 22px 28px;
+    background: #171f19;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--r-md);
+  }
+
+  .drive-cta-title {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ede8e1;
+    margin: 0 0 4px;
+  }
+
+  .drive-cta-desc {
+    font-size: 13px;
+    color: #92998e;
+    margin: 0;
+  }
+
+  /* ── Interactive Drive Preview ── */
+  .drive-workstation-shell {
+    background: #111613;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .workstation-chrome {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 18px;
+    background: #161e18;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .chrome-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chrome-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+
+  .chrome-dot.red { background: #ff5f56; }
+  .chrome-dot.yellow { background: #ffbd2e; }
+  .chrome-dot.green { background: #27c93f; }
+
+  .chrome-location {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #c9d2c5;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 4px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .loc-icon {
+    font-size: 13px;
+  }
+
+  .chrome-ext-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--c-accent);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .chrome-ext-btn:hover {
+    color: #ff7638;
+  }
+
+  .workstation-iframe-container {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    background: #ffffff;
+  }
+
+  .drive-embed-frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #ffffff;
+  }
+
+  .frame-placeholder {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    color: #222;
+  }
+
+  /* ── Contributors Section ── */
+  .contributors-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .contributor-card {
+    padding: 24px;
+    background: #141a16;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--r-md);
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .contributor-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #243026, #141c16);
+    border: 1px solid rgba(232, 92, 26, 0.4);
+    display: grid;
+    place-items: center;
+    font: 14px/1 var(--font-mono);
+    font-weight: 600;
+    color: var(--c-accent);
+    flex-shrink: 0;
+  }
+
+  .contributor-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .contributor-name {
+    font-size: 17px;
+    font-weight: 500;
+    color: #ede8e1;
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  .contributor-role {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--c-accent);
+  }
+
+  .contributor-desc {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #9ea49a;
+    margin: 6px 0 0;
+  }
+
+  /* ── Footer ── */
+  .db-footer {
+    padding-top: 36px;
+  }
+
+  .db-footer-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .footer-link {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #8c9388;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  .footer-link:hover {
+    color: var(--c-accent);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 1024px) {
+    .drive-modules-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .contributors-grid {
+      grid-template-columns: 1fr;
+    }
+    .drive-cta-bar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .academic-db-page {
+      padding: calc(var(--nav-h) + 20px) 5vw 50px;
+    }
+    .playlists-grid,
+    .drive-modules-grid {
+      grid-template-columns: 1fr;
+    }
+    .chrome-location {
+      display: none;
+    }
+    .workstation-iframe-container {
+      height: 420px;
+    }
+    .origin-banner {
+      flex-direction: column;
+      padding: 18px;
+    }
+  }
+</style>

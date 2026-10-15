@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import Layout from "./Layout.astro";
 import MediaGallery from "../components/project/MediaGallery.astro";
+import AcademicDatabaseView from "../components/academic/AcademicDatabaseView.astro";
 
 interface Props {
   entry: CollectionEntry<"journey"> | CollectionEntry<"development">;
@@ -10,43 +11,98 @@ interface Props {
 const { entry } = Astro.props;
 
 const labels = (entry.data.media || []).map((path) => "Certificate / Document");
+
+const archiveHref =
+  entry.collection === "development"
+    ? "/academic/#certifications"
+    : entry.data.type === "Community Service"
+    ? "/academic/#volunteering"
+    : entry.data.type === "Conference"
+    ? "/academic/#conferences"
+    : "/academic/#extracurriculars";
+
+const archiveLabel =
+  entry.collection === "development"
+    ? "Certifications & Training"
+    : entry.data.type === "Community Service"
+    ? "Volunteering & Community Services"
+    : entry.data.type === "Conference"
+    ? "Conferences"
+    : "Extracurriculars";
+
+const driveFolderId = (() => {
+  if (entry.data.driveEmbed) {
+    const match = entry.data.driveEmbed.match(/folders\/([a-zA-Z0-9_-]+)/) || entry.data.driveEmbed.match(/id=([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : entry.data.driveEmbed;
+  }
+  const driveLink = entry.data.links?.find((l) => l.url?.includes("drive.google.com/drive/folders/") || l.url?.includes("drive.google.com/embeddedfolderview"));
+  if (driveLink) {
+    const match = driveLink.url.match(/folders\/([a-zA-Z0-9_-]+)/) || driveLink.url.match(/id=([a-zA-Z0-9_-]+)/);
+    return match ? match[1] : null;
+  }
+  return null;
+})();
+
+const isAcademicDatabase = entry.id === "academic-resource-database" || !!entry.data.driveEmbed;
 ---
 
 <Layout
   title={`${entry.data.title} | Faizan Manshad`}
   description={entry.data.summary}
 >
-  <main class="journey-page container">
-    <a class="archive" href={entry.collection === "development" ? "/academic/#certifications" : "/academic/#journey"}>
-      {entry.collection === "development" ? "Certifications & Training" : "Journey"} / Academic archive ↗
-    </a>
-    <div class="journey-grid">
-      <section>
-        <p class="eyebrow">
-          DOMAIN <span> / {entry.data.dateDisplay}</span>
-        </p>
-        <h1>{entry.data.title}</h1>
-        {entry.data.type && <p class="institution">{entry.data.type}</p>}
-        {entry.data.domains && entry.data.domains.length > 0 && entry.data.domains.join(", ") !== entry.data.type && (
-          <p class="location">{entry.data.domains.join(", ")}</p>
-        )}
-        <p class="intro">{entry.data.summary}</p>
-        <div class="journey-details">
-          <slot />
-        </div>
-      </section>
-      
-      {entry.data.media && entry.data.media.length > 0 && (
-        <aside class="documents" aria-label="Journey documents">
-          <div class="document-heading">
-            <span>DOCUMENT ARCHIVE</span>
-            <span>Click to enlarge ↗</span>
+  {isAcademicDatabase ? (
+    <AcademicDatabaseView
+      entry={entry}
+      driveFolderId={driveFolderId}
+      archiveHref={archiveHref}
+      archiveLabel={archiveLabel}
+    />
+  ) : (
+    <main class="journey-page container">
+      <a class="archive" href={archiveHref}>
+        {archiveLabel} / Academic archive ↗
+      </a>
+      <div class="journey-grid">
+        <section>
+          <p class="eyebrow">
+            {entry.data.domains && entry.data.domains.length > 0
+              ? entry.data.domains.join(" · ")
+              : (entry.data.type || "ACTIVITY")}
+            <span> / {entry.data.dateDisplay}</span>
+          </p>
+          <h1>{entry.data.title}</h1>
+          {entry.data.type && <p class="institution">{entry.data.type}</p>}
+          {entry.data.domains && entry.data.domains.length > 0 && entry.data.domains.join(", ") !== entry.data.type && (
+            <p class="location">{entry.data.domains.join(", ")}</p>
+          )}
+          <p class="intro">{entry.data.summary}</p>
+          <div class="journey-details">
+            <slot />
           </div>
-          <MediaGallery media={entry.data.media} labels={labels} carousel />
-        </aside>
-      )}
-    </div>
-  </main>
+          {entry.data.links && entry.data.links.length > 0 && (
+            <div class="journey-links">
+              {entry.data.links.map((link) => (
+                <a href={link.url} target="_blank" rel="noopener noreferrer" class="journey-link-btn">
+                  <span>{link.label}</span>
+                  <span class="btn-arrow" aria-hidden="true">↗</span>
+                </a>
+              ))}
+            </div>
+          )}
+        </section>
+        
+        {entry.data.media && entry.data.media.length > 0 ? (
+          <aside class="documents" aria-label="Journey documents">
+            <div class="document-heading">
+              <span>DOCUMENT ARCHIVE</span>
+              <span>Click to enlarge ↗</span>
+            </div>
+            <MediaGallery media={entry.data.media} labels={labels} carousel />
+          </aside>
+        ) : null}
+      </div>
+    </main>
+  )}
 </Layout>
 
 <style>
@@ -146,9 +202,149 @@ const labels = (entry.data.media || []).map((path) => "Certificate / Document");
   .document-heading {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 12px;
     color: #aeb5aa;
     font-size: 10px;
+  }
+  .drive-viewer-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: #141a15;
+    border: 1px solid #ffffff26;
+    border-radius: 8px;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45);
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+  }
+  .drive-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: 11px/1.4 var(--font-mono);
+    letter-spacing: 0.08em;
+    color: #c9d1c5;
+    font-weight: 500;
+  }
+  .drive-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.7);
+    animation: drivePulse 2s infinite ease-in-out;
+  }
+  @keyframes drivePulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+  .drive-header-link {
+    font: 11px/1.4 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: #ed8851;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .drive-header-link:hover {
+    color: #fff;
+  }
+  .drive-frame-shell {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    background: #ffffff;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #ffffff30;
+  }
+  .drive-iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #ffffff;
+  }
+  .drive-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    padding-top: 10px;
+    border-top: 1px solid #ffffff15;
+  }
+  .drive-status-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .folder-name {
+    font: 12px/1.4 var(--font-mono);
+    color: #ede8e1;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .folder-meta {
+    font: 10px/1.4 var(--font-mono);
+    color: #8f958b;
+  }
+  .drive-primary-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #e85c1a;
+    color: #fff;
+    font: 11px/1.4 var(--font-mono);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: background 0.15s ease, transform 0.15s ease;
+  }
+  .drive-primary-btn:hover {
+    background: #ff6f2e;
+    transform: translateY(-1px);
+  }
+  .journey-links {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .journey-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    background: #1b231c;
+    border: 1px solid #ffffff26;
+    color: #ede8e1;
+    text-decoration: none;
+    font: 12px/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+  .journey-link-btn:hover {
+    background: #e85c1a;
+    border-color: #e85c1a;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+  .journey-link-btn .btn-arrow {
+    color: #ed8851;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  .journey-link-btn:hover .btn-arrow {
+    color: #fff;
+    transform: translate(2px, -2px);
   }
   @media (max-width: 760px) {
     .journey-grid {
@@ -162,6 +358,18 @@ const labels = (entry.data.media || []).map((path) => "Certificate / Document");
     }
     .documents {
       padding: 16px;
+    }
+    .drive-frame-shell {
+      height: 400px;
+    }
+    .drive-card-footer {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .drive-primary-btn {
+      width: 100%;
+      justify-content: center;
     }
     h1 {
       font-size: 40px;
