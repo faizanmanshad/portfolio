@@ -395,23 +395,36 @@ import { SITE_METADATA } from "../../consts";
     padding-right: 24px;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .dossier-index::-webkit-scrollbar {
+    display: none;
   }
   .eyebrow {
     font: 10px/1.7 var(--font-mono);
     letter-spacing: 0.1em;
     color: #a1a79e;
+    flex-shrink: 0;
   }
   .dossier-index nav {
-    display: grid;
-    gap: 5px;
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 auto;
+    min-height: min-content;
+    max-height: clamp(415px, 63vh, 675px);
+    margin-top: clamp(9.5px, 1.4vh, 16px);
+    margin-bottom: clamp(11.5px, 1.6vh, 21px);
+    gap: 4px;
   }
   .dossier-index a {
     font-size: 13px;
-    padding: 7px 0 7px 10px;
+    padding: clamp(3.2px, 0.4vh, 5.2px) 0 clamp(3.2px, 0.4vh, 5.2px) 10px;
     border-left: 2px solid transparent;
     display: flex;
     gap: 14px;
+    align-items: baseline;
     white-space: nowrap;
     transition: color 0.15s ease, border-color 0.15s ease;
   }
@@ -431,6 +444,24 @@ import { SITE_METADATA } from "../../consts";
     font: 10px/1.8 var(--font-mono);
     color: #a1a79e;
     letter-spacing: 0.1em;
+    flex-shrink: 0;
+  }
+  @media (max-height: 640px) and (min-width: 701px) {
+    .dossier-index nav {
+      gap: 2px;
+      margin-top: 8px;
+      margin-bottom: 10px;
+      max-height: clamp(368px, 67vh, 483px);
+    }
+    .dossier-index a {
+      font-size: 12px;
+      padding: 2px 0 2px 8px;
+      gap: 10px;
+    }
+    .index-note {
+      font-size: 9px;
+      line-height: 1.6;
+    }
   }
   .profile {
     scroll-margin-top: 110px;
