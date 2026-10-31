@@ -10,7 +10,16 @@ interface Props {
 
 const { entry } = Astro.props;
 
-const labels = (entry.data.media || []).map((path) => "Certificate / Document");
+const labels = (entry.data.media || []).map((path) => {
+  const filename = path.split("/").pop() || "";
+  if (filename === "cacio-conference.webp") return "CACIO-2024 Conference Certificate";
+  if (filename === "cacia-recieving-certificate.webp") return "Receiving the CACIO-2024 Certificate";
+  if (filename === "giki-ice-certificate.webp") return "CONSTRUCTX-3.0 Participation Certificate";
+  if (filename === "giki-ice-bridge-module-1.webp") return "Truss Bridge Module — Structural Model";
+  if (filename === "giki-ice-bridge-module-2.webp") return "Truss Bridge Module — Span & Deck View";
+  if (filename === "giki-ice-group.webp") return "Competition Delegation at GIKI";
+  return "Certificate / Document";
+});
 
 const archiveHref =
   entry.collection === "development"

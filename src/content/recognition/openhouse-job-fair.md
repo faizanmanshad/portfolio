@@ -8,6 +8,9 @@ dateDisplay: "2024"
 organization: "COMSATS University"
 priority: 4
 verificationStatus: "official-document"
+media:
+  - "01-honors-awards/display/3rd-position-openhouse-job-fair.webp"
+  - "01-honors-awards/display/3rd-position-open-house-certificate-recieving.webp"
 summary: "Secured 3rd position for final year project exhibition at the OpenHouse Job Fair."
 ---
 

@@ -33,8 +33,8 @@ const allItems = experience.sort((a, b) => {
       <!-- Quick Metrics Strip -->
       <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Experience Metrics">
         <div class="metric-item">
-          <span class="metric-num highlight">02</span>
-          <span class="metric-name mono">ACTIVE POSITIONS</span>
+          <span class="metric-num highlight">{String(allItems.length).padStart(2, '0')}</span>
+          <span class="metric-name mono">PRACTICE & INTERNSHIPS</span>
         </div>
         <div class="metric-item">
           <span class="metric-num">AU / PK</span>
@@ -56,6 +56,8 @@ const allItems = experience.sort((a, b) => {
       <div class="experience-grid">
         {allItems.map((item, idx) => {
           const isUrbana = item.id === 'urbana';
+          const isSimco = item.id === 'simco';
+          const isMountKhalid = item.id === 'mount-khalid';
           return (
             <article class="experience-card gsap-stagger-item">
               <!-- Visual Art Ribbon -->
@@ -71,6 +73,24 @@ const allItems = experience.sort((a, b) => {
                       <circle cx="405" cy="140" r="6" fill="#e85c1a" />
                     </svg>
                     <span class="drawing-caption mono">MODULAR INFRASTRUCTURE / BRIDGE BIM</span>
+                  </div>
+                ) : isSimco ? (
+                  <div class="practice-art capture-art">
+                    <div class="capture-grid"></div>
+                    <div class="capture-ring ring-two"></div>
+                    <div class="capture-target mono">
+                      SITE <span>FIELD ENGINEERING & QC</span>
+                    </div>
+                    <span class="drawing-caption mono">SITE LAYOUT / QUANTITY ESTIMATION</span>
+                  </div>
+                ) : isMountKhalid ? (
+                  <div class="practice-art capture-art">
+                    <div class="capture-grid"></div>
+                    <div class="capture-ring ring-one"></div>
+                    <div class="capture-target mono">
+                      45F <span>HIGH-RISE TOWER BIM</span>
+                    </div>
+                    <span class="drawing-caption mono">STRUCTURAL BIM / SITE SUPERVISION</span>
                   </div>
                 ) : (
                   <div class="practice-art capture-art">

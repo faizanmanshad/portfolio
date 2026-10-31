@@ -41,6 +41,24 @@ const getDocLabel = (itemPath: string, index: number) => {
   return `Document ${index + 1}`;
 };
 
+const getImageLabel = (itemPath: string, index: number) => {
+  if (labels[index]) return labels[index];
+  const filename = itemPath.split('/').pop() || '';
+  if (filename === '3rd-position-openhouse-job-fair.webp') return 'Open House & Job Fair — 3rd Position Certificate';
+  if (filename === '3rd-position-open-house-certificate-recieving.webp') return 'Receiving the Award with University Leadership & HODs';
+  if (filename === 'internship-cert-simco.webp') return 'SIMCO Internship Certificate';
+  if (filename === 'simco-site-image-1.webp') return 'On-Site Inspection & Drawing Review';
+  if (filename === 'simco-site-image-2.webp') return 'Site Engineering Team at SIMCO Project';
+  if (filename === 'internship-cert-mount-khalid.webp') return 'Mount Khalid Internship Certificate';
+  if (filename === 'mk-group-photo-1.webp') return 'Mount Khalid Engineering & Internship Cohort';
+  if (filename === 'mk-group-photo-2.webp') return 'With Project Management & Supervision Team';
+  if (filename === 'mk-group-photo-3.webp') return 'On-Site Reinforcement Inspection — 45-Story Tower';
+  if (filename === '3rd-position-8th-class-certifcate.webp') return '3rd Position Certificate — Annual Examination';
+  return title || `Document ${index + 1}`;
+};
+
+const imageLabels = isImage ? media.map((m, idx) => getImageLabel(m, idx)) : labels;
+
 // Documents data pointing directly to Cloudflare
 const documentsData = isPdf
   ? media.map((docPath, idx) => {
@@ -120,7 +138,7 @@ const initialDoc = documentsData[0] || null;
     </div>
   </aside>
 ) : isImage ? (
-  <MediaGallery media={media} title={title} labels={labels} carousel />
+  <MediaGallery media={media} title={title} labels={imageLabels} carousel />
 ) : null}
 
 <script>
