@@ -62,6 +62,10 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   "01-honors-awards/display/2nd-truss-bridge-competition-certificate-recieving.webp": { frameWidth: 420, frameHeight: 320 },
   "01-honors-awards/display/3rd-position-openhouse-job-fair.webp": { frameWidth: 420, frameHeight: 320 },
   "01-honors-awards/display/3rd-position-open-house-certificate-recieving.webp": { frameWidth: 420, frameHeight: 320 },
+  "01-honors-awards/display/primeminister-laptop-scheme.webp": { frameWidth: 420, frameHeight: 320 },
+  "01-honors-awards/display/survey-best-group-certificate.webp": { frameWidth: 420, frameHeight: 320 },
+  "01-honors-awards/display/survey-camp-certificate-recieving.webp": { frameWidth: 420, frameHeight: 320 },
+  "01-honors-awards/display/survey-camp-whole-batch.webp": { frameWidth: 420, frameHeight: 320 },
 
   // Internships
   "06-internship-certificate/display/internship-cert-simco.webp": { frameWidth: 320, frameHeight: 420 },
@@ -71,6 +75,10 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   "06-internship-certificate/display/mk-group-photo-1.webp": { frameWidth: 420, frameHeight: 320 },
   "06-internship-certificate/display/mk-group-photo-2.webp": { frameWidth: 420, frameHeight: 320 },
   "06-internship-certificate/display/mk-group-photo-3.webp": { frameWidth: 420, frameHeight: 320 },
+  "06-internship-certificate/display/primeminister-laptop-scheme.webp": { frameWidth: 420, frameHeight: 320 },
+  "06-internship-certificate/display/survey-best-group-certificate.webp": { frameWidth: 420, frameHeight: 320 },
+  "06-internship-certificate/display/survey-camp-certificate-recieving.webp": { frameWidth: 420, frameHeight: 320 },
+  "06-internship-certificate/display/survey-camp-whole-batch.webp": { frameWidth: 420, frameHeight: 320 },
 
   // Extracurricular / Journey (landscape by default)
   "03-extracurricular-activities/display/100m-relay-race.webp": { frameWidth: 420, frameHeight: 320 },
@@ -80,7 +88,10 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   "03-extracurricular-activities/display/cacio-conference.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/cacia-recieving-certificate.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/cricket-participation.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/cricket-championship-team.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/football-participation.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/football-competition-team.webp": { frameWidth: 420, frameHeight: 320 },
+  "03-extracurricular-activities/display/relay-race-team.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/giki-ice-certificate.webp": { frameWidth: 420, frameHeight: 320 },
   "03-extracurricular-activities/display/giki-ice-bridge-module-1.webp": { frameWidth: 320, frameHeight: 420 },
   "03-extracurricular-activities/display/giki-ice-bridge-module-2.webp": { frameWidth: 320, frameHeight: 420 },

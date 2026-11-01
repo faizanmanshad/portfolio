@@ -7,7 +7,9 @@ dateStart: "2015-02-11"
 dateDisplay: "2015"
 priority: 14
 summary: "Secured Winner Position in the Inter-House Football Championship 2014 at Bahria College Karsaz."
-media: ["03-extracurricular-activities/display/football-participation.webp"]
+media:
+  - "03-extracurricular-activities/display/football-participation.webp"
+  - "03-extracurricular-activities/display/football-competition-team.webp"
 ---
 
 Participated in Football competitions.

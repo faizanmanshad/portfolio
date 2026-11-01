@@ -8,6 +8,10 @@ dateDisplay: "2022"
 organization: "COMSATS University"
 priority: 5
 verificationStatus: "official-document"
+media:
+  - "06-internship-certificate/display/survey-best-group-certificate.webp"
+  - "06-internship-certificate/display/survey-camp-certificate-recieving.webp"
+  - "06-internship-certificate/display/survey-camp-whole-batch.webp"
 summary: "Awarded Best Survey Group during the civil engineering surveying camp."
 ---
 

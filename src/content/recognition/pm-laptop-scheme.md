@@ -8,6 +8,8 @@ dateDisplay: "2023"
 organization: "Government of Pakistan"
 priority: 2
 verificationStatus: "official-document"
+media:
+  - "06-internship-certificate/display/primeminister-laptop-scheme.webp"
 summary: "Awarded a laptop under the Prime Minister's Youth Laptop Scheme for outstanding academic performance."
 ---
 

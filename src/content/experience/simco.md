@@ -11,7 +11,7 @@ ongoing: false
 organization: "Shoukat Iqbal Mir & Co. (SIMCO)"
 location: "Faisal Hills, Taxila, Pakistan"
 role: "Management Trainee Engineer"
-priority: 3
+priority: 4
 verificationStatus: "official-document"
 media:
   - "06-internship-certificate/display/internship-cert-simco.webp"
