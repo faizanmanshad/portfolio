@@ -11,7 +11,7 @@ const details = {
     title: "BS Civil Engineering",
     level: "UNDERGRADUATE",
     place: "Wah Campus",
-    highlight: "CGPA 3.95 / 4.00 (Gold Medalist)",
+    highlight: "3.95 / 4.00 CGPA · Awarded Department Gold Medal",
     description:
       "A foundation in civil engineering, with an interest in structures and the built environment.",
   },
@@ -55,9 +55,9 @@ const labels = (entry.data.media || []).map((path) =>
           {details.level} <span> / {entry.data.dateDisplay}</span>
         </p>
         <h1>{details.title}</h1>
+        <p class="highlight">{details.highlight}</p>
         <p class="institution">{entry.data.organization}</p>
         <p class="location">{details.place}</p>
-        <p class="highlight">{details.highlight}</p>
         <p class="intro">{details.description}</p>
         <div class="education-details">
           <slot />

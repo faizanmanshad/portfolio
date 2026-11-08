@@ -1,28 +1,28 @@
 ---
-title: "Management Trainee Engineer (Internship)"
+title: "Site Intern"
 shortTitle: "SIMCO"
 type: "Professional Experience"
 domains: ["Site Engineering", "Construction Management", "Quantity Surveying", "Quality Control"]
 tools: ["Engineering Drawings", "Site Layout & Leveling", "Quantity & Cost Estimation", "Site Management", "Quality Control"]
 dateStart: "2024-07-01"
 dateEnd: "2024-07-30"
-dateDisplay: "Jul 2024"
+dateDisplay: "2024"
 ongoing: false
 organization: "Shoukat Iqbal Mir & Co. (SIMCO)"
 location: "Pakistan"
-role: "Management Trainee Engineer"
+role: "Site Intern"
 priority: 4
 verificationStatus: "official-document"
 media:
   - "06-internship-certificate/display/internship-cert-simco.webp"
   - "06-internship-certificate/display/simco-site-image-1.webp"
   - "06-internship-certificate/display/simco-site-image-2.webp"
-summary: "Completed intensive field training as a Management Trainee Engineer covering engineering drawing interpretation, site layout and leveling, quantity/cost estimation, site and HR management, and on-site quality control."
+summary: "Completed intensive field training as a Site Intern covering engineering drawing interpretation, site layout and leveling, quantity/cost estimation, site and HR management, and on-site quality control."
 ---
 
 <section class="scope-panel" aria-labelledby="key-responsibilities--field-training">
   <h2 id="key-responsibilities--field-training">Key Responsibilities &amp; Field Training</h2>
-  <p>Completed a field engineering internship as a Management Trainee Engineer with <strong>Shoukat Iqbal Mir &amp; Co. (SIMCO)</strong> at Resolve and NSTP Tower, gaining hands-on experience in multi-story reinforced concrete construction and site operations.</p>
+  <p>Completed a field engineering internship as a Site Intern with <strong>Shoukat Iqbal Mir &amp; Co. (SIMCO)</strong> at Resolve and NSTP Tower, gaining hands-on experience in multi-story reinforced concrete construction and site operations.</p>
   <details>
     <summary>Engineering Drawings Interpretation</summary>
     <p>Reviewed structural and architectural construction drawings on site to verify rebar placement, column/beam dimensions, and formwork alignment.</p>

@@ -23,7 +23,9 @@ const professionalTraining = development
   .sort((a: any, b: any) => new Date(b.data.dateStart).getTime() - new Date(a.data.dateStart).getTime());
 const conferences = journey.filter((item: any) => item.data.type === "Conference" || item.id === "uw-pofs-joint-conference");
 const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service" && item.data.type !== "Conference" && item.id !== "uw-pofs-joint-conference");
-const volunteering = journey.filter((item: any) => item.data.type === "Community Service");
+const volunteering = journey
+  .filter((item: any) => item.data.type === "Community Service")
+  .sort((a: any, b: any) => (a.data.priority ?? 99) - (b.data.priority ?? 99));
 
 const sectionItems = [
   { id: "personal-information", name: "Personal Information" },
@@ -192,7 +194,11 @@ import { SITE_METADATA } from "../../consts";
               <span class="record-date">{item.data.dateDisplay}</span>
               <div>
                 <h3>{item.data.shortTitle || item.data.title}</h3>
-                <p class="muted">{item.data.organization}</p>
+                <p class="muted">
+                  {item.id === "bs-civil-engineering"
+                    ? `3.95 / 4.00 CGPA · Awarded Department Gold Medal · ${item.data.organization}`
+                    : `${item.data.organization}${item.data.summary ? ` · ${item.data.summary}` : ''}`}
+                </p>
               </div>
               <span class="record-arrow" aria-hidden="true">↗</span>
             </a>
@@ -314,6 +320,14 @@ import { SITE_METADATA } from "../../consts";
             <ul class="skill-list">
               <li>
                 <span class="skill-icon">+</span>
+                <span>Building Information Modeling (BIM) <small>(LOD 200–350)</small></span>
+              </li>
+              <li>
+                <span class="skill-icon">+</span>
+                <span>Steel Detailing & Fabrication Drawings <small>(Shop & GA Drawings)</small></span>
+              </li>
+              <li>
+                <span class="skill-icon">+</span>
                 <span>Structural Analysis & Design <small>(ETABS · SAFE · RISA-2D)</small></span>
               </li>
               <li>
@@ -322,23 +336,7 @@ import { SITE_METADATA } from "../../consts";
               </li>
               <li>
                 <span class="skill-icon">+</span>
-                <span>High-Rise Structural Modeling & Lateral Load Analysis</span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
                 <span>Foundation Design & Soil Mechanics <small>(Mat & Footings)</small></span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
-                <span>Modular Steel Bridge Detailing & Structural Framing</span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
-                <span>Reinforcement Detailing & Bar Bending Schedules <small>(BBS)</small></span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
-                <span>Construction Scheduling & Critical Path Method <small>(Primavera P6)</small></span>
               </li>
               <li>
                 <span class="skill-icon">+</span>
@@ -346,11 +344,11 @@ import { SITE_METADATA } from "../../consts";
               </li>
               <li>
                 <span class="skill-icon">+</span>
-                <span>On-Site QA/QC, Rebar Inspection & Formwork Verification</span>
+                <span>Construction Scheduling <small>(Primavera P6)</small></span>
               </li>
               <li>
                 <span class="skill-icon">+</span>
-                <span>Site Leveling, Benchmarking & Grid Setting-Out</span>
+                <span>On-Site QA/QC, Rebar Inspection & Formwork Verification</span>
               </li>
             </ul>
           </div>
@@ -367,6 +365,18 @@ import { SITE_METADATA } from "../../consts";
               </li>
               <li>
                 <span class="skill-icon">+</span>
+                <span>AutoCAD 2D <small>(Engineering Drafting & Construction Detailing)</small></span>
+              </li>
+              <li>
+                <span class="skill-icon">+</span>
+                <span>OpenSpace <small>(360° Reality Capture & Progress Tracking)</small></span>
+              </li>
+              <li>
+                <span class="skill-icon">+</span>
+                <span>Unity <small>(BIM-to-AR Ground Plane & Marker)</small></span>
+              </li>
+              <li>
+                <span class="skill-icon">+</span>
                 <span>CSI ETABS <small>(3D Dynamic Analysis & Seismic Design)</small></span>
               </li>
               <li>
@@ -379,27 +389,11 @@ import { SITE_METADATA } from "../../consts";
               </li>
               <li>
                 <span class="skill-icon">+</span>
-                <span>AutoCAD 2D <small>(Engineering Drafting & Construction Detailing)</small></span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
                 <span>Primavera P6 <small>(Construction Project Scheduling & Planning)</small></span>
               </li>
               <li>
                 <span class="skill-icon">+</span>
-                <span>OpenSpace <small>(360° Reality Capture & Progress Tracking)</small></span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
-                <span>Multimodal Augmented Reality <small>(BIM-to-AR Ground Plane & Marker)</small></span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
-                <span>Microsoft Excel <small>(Parametric Structural Calculation Spreadsheets)</small></span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
-                <span>GIS & Remote Sensing Foundations <small>(ArcGIS)</small></span>
+                <span>Microsoft Office Suite <small>(Excel · Word · PowerPoint)</small></span>
               </li>
             </ul>
           </div>
@@ -420,19 +414,11 @@ import { SITE_METADATA } from "../../consts";
               </li>
               <li>
                 <span class="skill-icon">+</span>
-                <span>Public Speaking & Conference Presentations</span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
                 <span>Critical Thinking & Analytical Problem-Solving</span>
               </li>
               <li>
                 <span class="skill-icon">+</span>
                 <span>Team Leadership & Fellowship Mentorship <small>(OMLAS · ASPIRE)</small></span>
-              </li>
-              <li>
-                <span class="skill-icon">+</span>
-                <span>Project Stakeholder & Field Team Communication</span>
               </li>
               <li>
                 <span class="skill-icon">+</span>

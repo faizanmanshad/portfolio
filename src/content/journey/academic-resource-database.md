@@ -3,9 +3,10 @@ title: "Academic Resource Database"
 shortTitle: "Academic Resource Database"
 type: "Community Service"
 domains: ["Academics", "Peer Learning", "Civil Engineering"]
-dateStart: "2023-01-01"
+dateStart: "2022-01-01"
+dateEnd: "2026-06-30"
 dateDisplay: "2022 - 2026"
-priority: 10
+priority: 1
 summary: "Kashan Shafiq started our eight-semester coursework archive. I organised past papers and recorded study sessions for classmates and juniors."
 driveEmbed: "1m2kdWPX0X7Dn5LIPxeV_mcUl_yowBMoo"
 links:

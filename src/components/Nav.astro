@@ -68,18 +68,12 @@ const navLinks = [
     </span>
   </button>
 
-  <!-- Explore / Index toggle -->
-  <div class="nav-mode-switch" role="group" aria-label="View mode">
-    <a href="/" class="mode-btn" aria-label="Explore mode" id="mode-explore">
-      EXPLORE
-    </a>
-    <span class="mode-divider" aria-hidden="true">
-      ·
-    </span>
+  <!-- Academic link -->
+  <div class="nav-mode-switch">
     <a
       href="/academic/"
       class="mode-btn"
-      aria-label="Index mode"
+      aria-label="Academic mode"
       id="mode-index"
     >
       ACADEMIC
@@ -105,10 +99,6 @@ const navLinks = [
       </li>
     ))}
     <li class="mobile-mode-row">
-      <a href="/" id="mode-explore-mobile" class="nav-mobile-link mode-mobile">
-        EXPLORE
-      </a>
-      <span aria-hidden="true">·</span>
       <a
         href="/academic/"
         id="mode-index-mobile"
@@ -299,13 +289,11 @@ const navLinks = [
     color: var(--c-index-muted);
   }
 
-  html[data-active-mode="explore"] #mode-explore,
   html[data-active-mode="academic"] #mode-index {
     color: var(--c-accent) !important;
   }
 
   /* Subtle underline on active mode */
-  html[data-active-mode="explore"] #mode-explore::after,
   html[data-active-mode="academic"] #mode-index::after {
     content: "";
     position: absolute;
@@ -413,7 +401,6 @@ const navLinks = [
     display: inline;
   }
 
-  html[data-active-mode="explore"] #mode-explore-mobile,
   html[data-active-mode="academic"] #mode-index-mobile {
     color: var(--c-accent) !important;
   }

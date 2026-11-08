@@ -5,7 +5,7 @@ type: "Community Service"
 domains: ["Community", "Volunteering"]
 dateStart: "2024-09-01"
 dateDisplay: "2024"
-priority: 1
+priority: 2
 summary: "Community service with the Civil Engineering department in 2024."
 media: ["02-community-service/display/community-service-certificate.webp"]
 ---
