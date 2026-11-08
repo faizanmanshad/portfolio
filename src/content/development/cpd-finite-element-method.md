@@ -6,7 +6,7 @@ organization: "CUI Wah / Pakistan Engineering Council (PEC)"
 domains: ["Structural Analysis", "FEM", "Computational Mechanics"]
 dateStart: "2025-05-15"
 dateDisplay: "2025"
-priority: 2
+priority: 4
 summary: "Modern computational structural analysis, meshing, boundary conditions, and FE formulation."
 media: ["04-certifications-professional-development/display/cpd-finite-element-method.webp"]
 verificationStatus: "official-document"

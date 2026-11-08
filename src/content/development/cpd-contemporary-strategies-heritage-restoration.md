@@ -6,7 +6,7 @@ organization: "CUI Wah / Pakistan Engineering Council (PEC)"
 domains: ["Heritage Conservation", "Structural Rehabilitation", "Materials"]
 dateStart: "2025-02-20"
 dateDisplay: "2025"
-priority: 8
+priority: 5
 summary: "Historical masonry preservation, non-invasive remediation, and heritage structure maintenance strategies."
 media: ["04-certifications-professional-development/display/cpd-contemporary-strategies-for-the-restoration-and-preservation-of-national-heritages.webp"]
 verificationStatus: "official-document"

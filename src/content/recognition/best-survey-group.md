@@ -6,7 +6,7 @@ domains: ["Surveying", "Field Work"]
 dateStart: "2024-08-19"
 dateDisplay: "2024"
 organization: "COMSATS University"
-priority: 5
+priority: 3
 verificationStatus: "official-document"
 media:
   - "06-internship-certificate/display/survey-best-group-certificate.webp"

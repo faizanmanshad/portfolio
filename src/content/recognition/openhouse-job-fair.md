@@ -6,7 +6,7 @@ domains: ["Civil Engineering", "Exhibition"]
 dateStart: "2026-06-03"
 dateDisplay: "2026"
 organization: "COMSATS University"
-priority: 4
+priority: 2
 verificationStatus: "official-document"
 media:
   - "01-honors-awards/display/3rd-position-openhouse-job-fair.webp"

@@ -3,7 +3,7 @@ title: "Gold Medalist"
 shortTitle: "Gold Medal"
 type: "Academic Award"
 domains: ["Civil Engineering", "Academics"]
-dateStart: "2026-06-01"
+dateStart: "2026-07-20"
 dateDisplay: "2026"
 organization: "COMSATS University Islamabad, Wah Campus"
 location: "Wah Cantt, Pakistan"

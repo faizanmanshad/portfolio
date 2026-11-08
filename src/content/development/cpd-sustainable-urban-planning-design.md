@@ -6,7 +6,7 @@ organization: "CUI Wah / Pakistan Engineering Council (PEC)"
 domains: ["Urban Planning", "Sustainability", "Infrastructure"]
 dateStart: "2025-09-24"
 dateDisplay: "2025"
-priority: 7
+priority: 3
 summary: "Resilient urban systems, low-impact development strategies, environmental zoning, and smart cities."
 media: ["04-certifications-professional-development/display/cpd-sustainable-urban-planning-and-design.webp"]
 verificationStatus: "official-document"

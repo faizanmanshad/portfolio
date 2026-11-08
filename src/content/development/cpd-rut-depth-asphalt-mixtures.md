@@ -6,7 +6,7 @@ organization: "CUI Wah / Pakistan Engineering Council (PEC)"
 domains: ["Pavement Engineering", "Transportation", "Material Science"]
 dateStart: "2024-12-12"
 dateDisplay: "2024"
-priority: 5
+priority: 6
 summary: "Pavement distress evaluation, asphalt rheology, and sustainable road performance modeling."
 media: ["04-certifications-professional-development/display/cpd-modeling-and-analyzing-rut-depth-in-asphalt-mixtures-for-sustainable-road-performance.webp"]
 verificationStatus: "official-document"

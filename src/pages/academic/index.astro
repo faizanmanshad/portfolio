@@ -18,7 +18,9 @@ const development = sort(await getCollection("development"));
 const certifications = development
   .filter((item: any) => item.data.type === "Certification")
   .sort((a: any, b: any) => new Date(b.data.dateStart).getTime() - new Date(a.data.dateStart).getTime());
-const professionalTraining = development.filter((item: any) => item.data.type === "Professional Training");
+const professionalTraining = development
+  .filter((item: any) => item.data.type === "Professional Training")
+  .sort((a: any, b: any) => new Date(b.data.dateStart).getTime() - new Date(a.data.dateStart).getTime());
 const conferences = journey.filter((item: any) => item.data.type === "Conference" || item.id === "uw-pofs-joint-conference");
 const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service" && item.data.type !== "Conference" && item.id !== "uw-pofs-joint-conference");
 const volunteering = journey.filter((item: any) => item.data.type === "Community Service");

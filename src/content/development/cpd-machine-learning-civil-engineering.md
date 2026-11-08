@@ -6,7 +6,7 @@ organization: "CUI Wah / Pakistan Engineering Council (PEC)"
 domains: ["Machine Learning", "Civil Engineering", "Predictive Modeling"]
 dateStart: "2022-10-13"
 dateDisplay: "2022"
-priority: 3
+priority: 11
 summary: "Predictive algorithms, material property estimation, and machine learning applications in civil engineering systems."
 media: ["04-certifications-professional-development/display/cpd-impact-of-machine-learning-in-the-field-of-civil-engineering.webp"]
 verificationStatus: "official-document"
