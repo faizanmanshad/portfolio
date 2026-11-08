@@ -29,7 +29,7 @@ const labels = (entry.data.media || []).map((path) => {
 
 const archiveHref =
   entry.collection === "development"
-    ? "/academic/#certifications"
+    ? (entry.data.type === "Professional Training" ? "/academic/#training" : "/academic/#certifications")
     : entry.data.type === "Community Service"
     ? "/academic/#volunteering"
     : entry.data.type === "Conference"

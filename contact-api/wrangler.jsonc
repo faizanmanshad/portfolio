@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-contact",
+  "main": "worker.mjs",
+  "compatibility_date": "2025-10-01",
+  "ratelimits": [{
+    "name": "CONTACT_LIMIT",
+    "namespace_id": "1098",
+    "simple": { "limit": 5, "period": 60 }
+  }]
+}

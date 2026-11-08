@@ -11,7 +11,7 @@ export const SITE_METADATA = {
   // Default metadata used when a specific page doesn't provide its own
   default: {
     title: "Faizan Manshad",
-    description: "Civil engineer and digital construction researcher specializing in BIM, structural design, and emerging technologies that connect physical structures with intelligent digital models.",
+    description: "Faizan Manshad’s civil engineering portfolio, including Revit drawings, construction experience and research on mobile augmented reality.",
   },
 
   // Specific page metadata
@@ -30,3 +30,6 @@ export const SITE_METADATA = {
     description: "Contact Faizan Manshad about civil engineering, BIM, digital construction and research.",
   }
 };
+
+export const contactEmail = "contactfaizanmanshad@gmail.com";
+export const linkedInProfile = "https://www.linkedin.com/in/faizanmanshad/";

@@ -13,11 +13,23 @@ media:
 summary: "Comprehensive structural engineering design of a three-story reinforced concrete school building on a 120' x 180' plot adhering to ACI 318-14 and ASCE 7."
 ---
 
-Conducted for Reinforced Concrete Design I, this project executed the full structural member sizing and reinforcement detailing for a three-story institutional building on a 120' x 180' plot.
-
-### Key Engineering Scope
-
-- **Structural Grid & Gravity Loads:** Established structural framing layouts and performed dead and live load takeoffs for classrooms, corridors, and roof decks.
-- **One-Way Floor Slabs:** Designed continuous one-way floor and roof slabs for flexural capacity, minimum deflection thickness, and shrinkage steel.
-- **Continuous Beams:** Calculated flexural tension steel, compression steel for doubly reinforced sections, and shear stirrup spacing along critical spans.
-- **Columns & Detailing:** Sized exterior square tied columns and interior circular spiral columns using P-M interaction diagrams, drafting bar schedules and lap splice details.
+<section class="scope-panel" aria-labelledby="key-engineering-scope">
+  <h2 id="key-engineering-scope">Key Engineering Scope</h2>
+  <p>Conducted for Reinforced Concrete Design I, this project executed the full structural member sizing and reinforcement detailing for a three-story institutional building on a 120' x 180' plot.</p>
+  <details>
+    <summary>Structural Grid &amp; Gravity Loads</summary>
+    <p>Established structural framing layouts and performed dead and live load takeoffs for classrooms, corridors, and roof decks.</p>
+  </details>
+  <details>
+    <summary>One-Way Floor Slabs</summary>
+    <p>Designed continuous one-way floor and roof slabs for flexural capacity, minimum deflection thickness, and shrinkage steel.</p>
+  </details>
+  <details>
+    <summary>Continuous Beams</summary>
+    <p>Calculated flexural tension steel, compression steel for doubly reinforced sections, and shear stirrup spacing along critical spans.</p>
+  </details>
+  <details>
+    <summary>Columns &amp; Detailing</summary>
+    <p>Sized exterior square tied columns and interior circular spiral columns using P-M interaction diagrams, drafting bar schedules and lap splice details.</p>
+  </details>
+</section>

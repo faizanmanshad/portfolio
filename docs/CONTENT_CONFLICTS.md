@@ -2,6 +2,5 @@
 
 | Field | Source A | Source B | Public Impact | Status | User Resolution |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| Mount Khalid internship dates | `Faizan_Master_Academic_and_Professional_Portfolio-Comprehensive.md` (missing) | `Academic Porfolio.md` (missing) | High | Unresolved | Pending |
-
-| Degree dates | BIM Portfolio opening pages: 2022–2026 | Current Academic page: 2021–Present | High | Deferred to Academic content review | Pending |
+| Mount Khalid year | Original letter dated 26 August 2024 | Faizan confirms the year should be 2025 | Experience dates | Year corrected to 2025; exact dates omitted | Updated letter pending |
+| Degree dates | Degree certificate and transcript | BS education page | Education | Confirmed | 2022–2026 |

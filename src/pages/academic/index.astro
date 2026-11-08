@@ -1,4 +1,5 @@
 ---
+import { contactEmail, linkedInProfile } from "../../consts";
 import Layout from "../../layouts/Layout.astro";
 import AcademicShowMore from "../../components/AcademicShowMore.astro";
 import { Image } from 'astro:assets';
@@ -23,7 +24,7 @@ const extracurriculars = journey.filter((item: any) => item.data.type !== "Commu
 const volunteering = journey.filter((item: any) => item.data.type === "Community Service");
 
 const sectionItems = [
-  { id: "profile", name: "Profile" },
+  { id: "personal-information", name: "Personal Information" },
   { id: "education", name: "Education" },
   { id: "research", name: "Research" },
   { id: "practice", name: "Experience" },
@@ -37,10 +38,10 @@ const sectionItems = [
   { id: "volunteering", name: "Volunteering" },
   { id: "languages", name: "Languages" },
 ];
+const sectionNumbers = new Map(sectionItems.map(({ id }, i) => [id, String(i + 1).padStart(2, "0")]));
 const groupsUpper = [
   {
     id: "practice",
-    number: "03",
     title: "Professional Experience",
     link: "/work/",
     label: "All experience",
@@ -48,7 +49,6 @@ const groupsUpper = [
   },
   {
     id: "projects",
-    number: "04",
     title: "Academic Projects",
     link: "/projects/",
     label: "All academic projects",
@@ -56,7 +56,6 @@ const groupsUpper = [
   },
   {
     id: "certifications",
-    number: "05",
     title: "Certifications",
     link: "/academic/#certifications",
     label: `${certifications.length} verified credentials`,
@@ -64,7 +63,6 @@ const groupsUpper = [
   },
   {
     id: "training",
-    number: "06",
     title: "Professional Training & CPD",
     link: "/academic/#training",
     label: "PEC CPD & technical workshops",
@@ -72,7 +70,6 @@ const groupsUpper = [
   },
   {
     id: "conferences",
-    number: "07",
     title: "Conferences",
     link: "/academic/#conferences",
     label: "Academic & industry events",
@@ -80,7 +77,6 @@ const groupsUpper = [
   },
   {
     id: "recognition",
-    number: "08",
     title: "Honors & Awards",
     link: "/recognition/",
     label: "Full recognition record",
@@ -90,7 +86,6 @@ const groupsUpper = [
 const groupsLower = [
   {
     id: "extracurriculars",
-    number: "10",
     title: "Extracurricular Activities",
     link: "/about/",
     label: "More about me",
@@ -98,7 +93,6 @@ const groupsLower = [
   },
   {
     id: "volunteering",
-    number: "11",
     title: "Volunteering & Community Services",
     link: "/about/",
     label: "More about me",
@@ -117,14 +111,14 @@ import { SITE_METADATA } from "../../consts";
       <div class="mobile-section-picker">
         <label for="academic-section">SECTIONS</label>
         <select id="academic-section">
-          {sectionItems.map((sec, i) => <option value={sec.id}>{String(i).padStart(2, "0")} / {sec.name}</option>)}
+          {sectionItems.map((sec) => <option value={sec.id}>{sectionNumbers.get(sec.id)} / {sec.name}</option>)}
         </select>
       </div>
       <p class="eyebrow">ON THIS PAGE</p>
       <nav>
-        {sectionItems.map((sec, i) => (
+        {sectionItems.map((sec) => (
           <a href={`#${sec.id}`} data-section-link>
-            <span>{String(i).padStart(2, "0")}</span>
+            <span>{sectionNumbers.get(sec.id)}</span>
             {sec.name}
           </a>
         ))}
@@ -138,20 +132,17 @@ import { SITE_METADATA } from "../../consts";
       </p>
     </aside>
     <div class="dossier-content">
-      <header id="profile" class="profile" data-academic-section>
+      <header id="profile" class="profile">
         <div>
           <p class="eyebrow">ACADEMIC PROFILE / FAIZAN MANSHAD</p>
           <h1>
             Faizan Manshad<span>.</span>
           </h1>
           <p class="profile-deck">
-            Civil engineering,
-            <br />
-            informed by digital practice.
+            Civil engineering and building information modelling
           </p>
           <p class="muted intro">
-            Exploring the connections between building information modelling,
-            construction technology, and augmented reality.
+            I draft pedestrian bridges in Revit and review site photos to track construction progress. For my final year project, our team tested ways to view a building layout in augmented reality.
           </p>
           <div class="profile-actions">
             <a class="primary-action" href="/contact/">
@@ -168,10 +159,25 @@ import { SITE_METADATA } from "../../consts";
           <figcaption>STRUCTURES / INFORMATION / IDEAS</figcaption>
         </figure>
       </header>
+      <section id="personal-information" class="personal-info" data-academic-section aria-labelledby="personal-info-title">
+        <div class="section-top">
+          <h2 id="personal-info-title"><span>{sectionNumbers.get("personal-information")} /</span> Personal Information</h2>
+        </div>
+        <dl>
+          <div><dt>Location</dt><dd>Taxila, Pakistan</dd></div>
+          <div><dt>Direct email</dt><dd><a href={`mailto:${contactEmail}`}>{contactEmail}</a></dd></div>
+          <div><dt>LinkedIn</dt><dd><a href={linkedInProfile}>linkedin.com/in/faizanmanshad ↗</a></dd></div>
+        </dl>
+        <p class="personal-summary">
+          I’m a civil engineering graduate with an interest in how structures are designed, drawn and built.
+          My work in building information modelling has made me curious about how engineering teams use drawings and models on site.
+          Through further study and practice, I want to develop that understanding and bring it into the projects I work on.
+        </p>
+      </section>
       <section id="education" data-academic-section>
         <div class="section-top">
           <h2>
-            <span>01 /</span> Education
+            <span>{sectionNumbers.get("education")} /</span> Education
           </h2>
         </div>
         <div class="record-list" id="education-records" data-academic-items>
@@ -202,7 +208,7 @@ import { SITE_METADATA } from "../../consts";
       <section id="research" data-academic-section>
         <div class="section-top">
           <h2>
-            <span>02 /</span> Research & experimentation
+            <span>{sectionNumbers.get("research")} /</span> Research & experimentation
           </h2>
           <a href="/research/">Research archive ↗</a>
         </div>
@@ -246,7 +252,7 @@ import { SITE_METADATA } from "../../consts";
         <section id={group.id} data-academic-section>
           <div class="section-top">
             <h2>
-              <span>{group.number} /</span> {group.title}
+              <span>{sectionNumbers.get(group.id)} /</span> {group.title}
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
@@ -290,7 +296,7 @@ import { SITE_METADATA } from "../../consts";
       <section id="skills" data-academic-section>
         <div class="section-top">
           <h2>
-            <span>09 /</span> Skills
+            <span>{sectionNumbers.get("skills")} /</span> Skills
           </h2>
           <span class="section-badge">Core Competencies & Toolset</span>
         </div>
@@ -443,7 +449,7 @@ import { SITE_METADATA } from "../../consts";
         <section id={group.id} data-academic-section>
           <div class="section-top">
             <h2>
-              <span>{group.number} /</span> {group.title}
+              <span>{sectionNumbers.get(group.id)} /</span> {group.title}
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
@@ -486,7 +492,7 @@ import { SITE_METADATA } from "../../consts";
       <section id="languages" data-academic-section>
         <div class="section-top">
           <h2>
-            <span>12 /</span> Languages
+            <span>{sectionNumbers.get("languages")} /</span> Languages
           </h2>
           <span class="section-badge">Bilingual Competence</span>
         </div>
@@ -497,12 +503,10 @@ import { SITE_METADATA } from "../../consts";
               <span class="lang-level">Native / Mother Tongue</span>
             </div>
             <p class="muted">
-              Native proficiency in speaking, reading, and writing. Primary language for interpersonal communication, regional discourse, and community engagement.
+              Urdu is my first language. I speak, read and write it.
             </p>
             <div class="lang-tags">
               <span>Native Speaker</span>
-              <span>Fluent Oratory</span>
-              <span>Technical & Social Discourse</span>
             </div>
           </div>
           <div class="language-card">
@@ -511,7 +515,7 @@ import { SITE_METADATA } from "../../consts";
               <span class="lang-level">Full Professional Proficiency (Fluent)</span>
             </div>
             <p class="muted">
-              Fluent command in technical research writing, structural engineering reporting, international BIM collaboration, and academic presentations.
+              I use English for engineering reports, research writing, presentations and communication with the drafting team.
             </p>
             <div class="lang-tags">
               <span>Full Professional Working</span>
@@ -721,6 +725,37 @@ import { SITE_METADATA } from "../../consts";
   .intro {
     margin-top: 19px;
     max-width: 440px;
+  }
+  .personal-info { container-type: inline-size; }
+  .personal-info dl {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 1.2fr;
+    gap: 1rem 1.5rem;
+    padding: 1.1rem 0;
+    margin: .6rem 0 1rem;
+    border-bottom: 1px solid #ffffff25;
+  }
+  .personal-info dt {
+    font: 10px/1.5 var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #a1a79e;
+  }
+  .personal-info dd {
+    margin: .35rem 0 0;
+    font-size: .95rem;
+    overflow-wrap: anywhere;
+  }
+  .personal-info a { text-decoration: underline; text-underline-offset: .2em; }
+  .personal-info a:hover { color: #ef895a; }
+  .personal-summary {
+    max-width: 86ch;
+    color: #bdc2b8;
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  @container (max-width: 650px) {
+    .personal-info dl { grid-template-columns: 1fr; }
   }
   .profile-actions {
     display: flex;

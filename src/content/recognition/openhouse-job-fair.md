@@ -3,15 +3,15 @@ title: "3rd Position - OpenHouse Job Fair"
 shortTitle: "OpenHouse Job Fair"
 type: "Project Exhibition"
 domains: ["Civil Engineering", "Exhibition"]
-dateStart: "2024-01-01"
-dateDisplay: "2024"
+dateStart: "2026-06-03"
+dateDisplay: "2026"
 organization: "COMSATS University"
 priority: 4
 verificationStatus: "official-document"
 media:
   - "01-honors-awards/display/3rd-position-openhouse-job-fair.webp"
   - "01-honors-awards/display/3rd-position-open-house-certificate-recieving.webp"
-summary: "Secured 3rd position for final year project exhibition at the OpenHouse Job Fair."
+summary: "Our final year project placed third in Civil Engineering at the Spring 2026 Open House & Job Fair."
 ---
 
-Presented the Final Year Project at the annual OpenHouse Job Fair, securing 3rd position among competing civil engineering projects for innovation and technical depth.
+We presented our final year project at COMSATS Wah on 3 June 2026. It placed third in the Civil Engineering department’s final year project category.

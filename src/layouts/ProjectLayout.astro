@@ -284,4 +284,57 @@ const backLinkLabel = entry.collection === 'experience' ? 'Professional Experien
     border-radius: 8px;
     border: 1px solid var(--c-border);
   }
+
+
+
+
+
+  .project-content :global(.scope-panel) {
+    padding: clamp(18px, 2vw, 28px);
+    background: #171c18;
+    border: 1px solid #ffffff22;
+    border-top: 3px solid #c89d78;
+    border-radius: 6px;
+  }
+  .project-content :global(.scope-panel h2) {
+    margin: 0 0 .8rem;
+    border: 0;
+    padding: 0;
+    color: #ede8e1;
+    font-size: 1.35rem;
+  }
+  .project-content :global(.scope-panel details) {
+    border-top: 1px solid #ffffff22;
+  }
+  .project-content :global(.scope-panel summary) {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1em;
+    padding: .95rem 0;
+    font-weight: 550;
+    line-height: 1.4;
+  }
+  .project-content :global(.scope-panel summary::-webkit-details-marker) { display: none; }
+  .project-content :global(.scope-panel summary::after) {
+    content: "";
+    width: 8px;
+    height: 8px;
+    flex: none;
+    margin-right: 4px;
+    border-right: 1.5px solid #ed8851;
+    border-bottom: 1.5px solid #ed8851;
+    transform: rotate(45deg);
+  }
+  .project-content :global(.scope-panel details[open] summary::after) { transform: rotate(225deg); }
+  .project-content :global(.scope-panel summary:hover),
+  .project-content :global(.scope-panel summary:focus-visible) { color: #ed8851; }
+  .project-content :global(.scope-panel summary:focus-visible) { outline: 2px solid #ed8851; outline-offset: 2px; }
+  .project-content :global(.scope-panel details p) {
+    border-left: 2px solid #c89d78;
+    padding-left: 1rem;
+    margin: 0 0 1.1rem;
+  }
 </style>

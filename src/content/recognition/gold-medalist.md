@@ -8,8 +8,8 @@ dateDisplay: "2026"
 organization: "COMSATS University Islamabad, Wah Campus"
 location: "Wah Cantt, Pakistan"
 priority: 1
-verificationStatus: "official-document"
+verificationStatus: "user-reported"
 summary: "Awarded Gold Medal for academic excellence in the BS Civil Engineering program."
 ---
 
-Awarded the Gold Medal for securing the highest academic standing in the BS Civil Engineering program at COMSATS University Islamabad, Wah Campus.
+I received the Department Gold Medal in Civil Engineering at COMSATS Wah. My final CGPA was 3.95 out of 4.00.

@@ -6,24 +6,16 @@ domains: ["Academics", "Peer Learning", "Civil Engineering"]
 dateStart: "2023-01-01"
 dateDisplay: "2022 – Present"
 priority: 10
-summary: "A peer-to-peer academic initiative for Civil Engineering undergraduates, initiated by Kashan Shafiq with co-contributions by Faizan Manshad, compiling 8 semesters of coursework, digitized past exams, and recorded study playlists so students can prepare without eleventh-hour scrambling."
+summary: "Kashan Shafiq started our eight-semester coursework archive. I organised past papers and recorded study sessions for classmates and juniors."
 driveEmbed: "1m2kdWPX0X7Dn5LIPxeV_mcUl_yowBMoo"
 links:
   - label: "Open in Google Drive"
     url: "https://drive.google.com/drive/folders/1m2kdWPX0X7Dn5LIPxeV_mcUl_yowBMoo?usp=sharing"
 ---
 
-The **Civil Engineering Academic Resource Database (FA22)** is a student-led academic archive established to support undergraduate peers and incoming juniors throughout their degree. Rather than scrambling at the last minute during exam weeks for notes and solutions, this initiative organized resources in advance into a centralized Google Drive repository alongside a collection of unlisted peer-learning video walkthroughs.
+Kashan Shafiq started the FA22 archive so students could find course materials in one place. I digitised past exams and recorded study sessions with classmates. Haider Ali taught the rebar modelling sessions.
 
-## Purpose & Why We Created It
-
-Entering university or preparing for challenging midterms and finals often leaves students hunting for past papers, lecture slides, and sample numerical solutions at the eleventh hour. 
-
-This repository was set up so that:
-- **Incoming juniors** have a clear roadmap and early access to lecture notes, lab manuals, and exam patterns before semester rush.
-- **Classmates** could review difficult problem solutions and software workflows on their own time, especially when preparing for exams late at night.
-
-## Repository Contents (Google Drive)
+## What’s in the archive
 
 The Google Drive repository is structured semester-by-semester across the undergraduate degree:
 

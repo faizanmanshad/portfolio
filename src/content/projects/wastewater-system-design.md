@@ -15,11 +15,23 @@ media:
 summary: "Hydraulic design and Dynamic Wave simulation of a combined sewerage system for a 102-hectare urban catchment in Wah Cantt using EPA SWMM."
 ---
 
-This project developed the hydraulic network and stormwater drainage model for an approximately 102-hectare urban catchment in Wah Cantt using EPA SWMM.
-
-### Key Engineering Scope
-
-- **Flow & Population Estimation:** Projected a 20-year design population of 3,835 residents and estimated peak sanitary flows using Harmon's peaking factor.
-- **Dynamic Simulation:** Analyzed dual meteorological scenarios comprising typical 30 mm/hr rainfall and an extreme 60 mm/hr monsoon event.
-- **Topographic Optimization:** Overcame steep terrain slopes (1,590 ft to 1,543 ft), maintaining self-cleansing velocity (≥ 2.5 ft/s) while preventing high-velocity scouring.
-- **System Calibration:** Revised conduit slopes, pipe diameters, and added drop manholes in EPA SWMM, resolving node flooding and hydraulic surcharging.
+<section class="scope-panel" aria-labelledby="key-engineering-scope">
+  <h2 id="key-engineering-scope">Key Engineering Scope</h2>
+  <p>This project developed the hydraulic network and stormwater drainage model for an approximately 102-hectare urban catchment in Wah Cantt using EPA SWMM.</p>
+  <details>
+    <summary>Flow &amp; Population Estimation</summary>
+    <p>Projected a 20-year design population of 3,835 residents and estimated peak sanitary flows using Harmon's peaking factor.</p>
+  </details>
+  <details>
+    <summary>Dynamic Simulation</summary>
+    <p>Analyzed dual meteorological scenarios comprising typical 30 mm/hr rainfall and an extreme 60 mm/hr monsoon event.</p>
+  </details>
+  <details>
+    <summary>Topographic Optimization</summary>
+    <p>Overcame steep terrain slopes (1,590 ft to 1,543 ft), maintaining self-cleansing velocity (≥ 2.5 ft/s) while preventing high-velocity scouring.</p>
+  </details>
+  <details>
+    <summary>System Calibration</summary>
+    <p>Revised conduit slopes, pipe diameters, and added drop manholes in EPA SWMM, resolving node flooding and hydraulic surcharging.</p>
+  </details>
+</section>

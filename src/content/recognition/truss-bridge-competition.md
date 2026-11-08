@@ -3,8 +3,8 @@ title: "2nd Position - Truss Bridge Competition"
 shortTitle: "Truss Bridge Comp"
 type: "Competition"
 domains: ["Structural Engineering"]
-dateStart: "2023-01-01"
-dateDisplay: "2023"
+dateStart: "2022-12-15"
+dateDisplay: "2022"
 organization: "COMSATS University"
 priority: 3
 verificationStatus: "official-document"
@@ -12,7 +12,7 @@ media:
   - "01-honors-awards/display/2nd-position-truss-bridge-competition.webp"
   - "01-honors-awards/display/2nd-position-truss-bridge-competition-2.webp"
   - "01-honors-awards/display/2nd-truss-bridge-competition-certificate-recieving.webp"
-summary: "Secured 2nd position in the structural Truss Bridge design and load-testing competition."
+summary: "Our team placed second in the truss bridge competition at COMSATS Wah."
 ---
 
-Designed, analyzed, and constructed a structural truss bridge model, securing 2nd position in the university-wide structural engineering competition based on efficiency and load-bearing capacity.
+We designed and built a model truss bridge for the competition on 15 December 2022. Our team finished second.

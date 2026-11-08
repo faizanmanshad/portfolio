@@ -6,8 +6,8 @@ domains: ["Extracurricular"]
 dateStart: "2025-12-19"
 dateDisplay: "2025"
 priority: 3
-summary: "Completed the OMLAS Fellowship Program 2025 for Champions, showing excellent commitment."
+summary: "Completed the One Million Leaders Asia Fellowship Program for Champions."
 media: ["03-extracurricular-activities/display/omlascertificate.webp"]
 ---
 
-Awarded the OMLAS Certificate.
+I completed the November–December 2025 fellowship and received my certificate on 19 December.

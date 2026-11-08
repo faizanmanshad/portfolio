@@ -14,11 +14,23 @@ media:
 summary: "Investigation of critical geometric design features and road safety audit along the Taxila GT Road corridor, featuring 3D alignment redesign in AutoCAD Civil 3D."
 ---
 
-This study performed a geometric audit of the Taxila GT Road corridor (N-5), evaluating alignment deficiencies that influence traffic accidents and modeling optimized roadway geometry.
-
-### Key Engineering Scope
-
-- **Corridor & Elevation Extraction:** Extracted digital terrain models and existing corridor alignments using Google Earth and Civil 3D surface modeling.
-- **Alignment & Curve Audit:** Audited 11 critical horizontal curves, transition spirals, and stopping sight distances against AASHTO Green Book criteria.
-- **Superelevation Optimization:** Recalculated required superelevation rates (emax = 6%) and transition runoff lengths for speeds from 37 mph to 50 mph.
-- **3D Corridor Modeling:** Developed redesigned road assemblies, paved shoulders, and grade profiles in Civil 3D to mitigate identified collision hotspots.
+<section class="scope-panel" aria-labelledby="key-engineering-scope">
+  <h2 id="key-engineering-scope">Key Engineering Scope</h2>
+  <p>This study performed a geometric audit of the Taxila GT Road corridor (N-5), evaluating alignment deficiencies that influence traffic accidents and modeling optimized roadway geometry.</p>
+  <details>
+    <summary>Corridor &amp; Elevation Extraction</summary>
+    <p>Extracted digital terrain models and existing corridor alignments using Google Earth and Civil 3D surface modeling.</p>
+  </details>
+  <details>
+    <summary>Alignment &amp; Curve Audit</summary>
+    <p>Audited 11 critical horizontal curves, transition spirals, and stopping sight distances against AASHTO Green Book criteria.</p>
+  </details>
+  <details>
+    <summary>Superelevation Optimization</summary>
+    <p>Recalculated required superelevation rates (emax = 6%) and transition runoff lengths for speeds from 37 mph to 50 mph.</p>
+  </details>
+  <details>
+    <summary>3D Corridor Modeling</summary>
+    <p>Developed redesigned road assemblies, paved shoulders, and grade profiles in Civil 3D to mitigate identified collision hotspots.</p>
+  </details>
+</section>

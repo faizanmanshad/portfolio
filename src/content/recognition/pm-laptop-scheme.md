@@ -10,7 +10,7 @@ priority: 2
 verificationStatus: "official-document"
 media:
   - "06-internship-certificate/display/primeminister-laptop-scheme.webp"
-summary: "Awarded a laptop under the Prime Minister's Youth Laptop Scheme for outstanding academic performance."
+summary: "I received a laptop through the Prime Minister’s Youth Laptop Scheme."
 ---
 
-Selected for the Prime Minister Laptop Scheme, a merit-based initiative recognizing high-achieving students across the country.
+I was selected for the Prime Minister’s Youth Laptop Scheme in 2023.

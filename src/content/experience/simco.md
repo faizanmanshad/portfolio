@@ -9,7 +9,7 @@ dateEnd: "2024-07-30"
 dateDisplay: "Jul 2024"
 ongoing: false
 organization: "Shoukat Iqbal Mir & Co. (SIMCO)"
-location: "Faisal Hills, Taxila, Pakistan"
+location: "Pakistan"
 role: "Management Trainee Engineer"
 priority: 4
 verificationStatus: "official-document"
@@ -20,13 +20,27 @@ media:
 summary: "Completed intensive field training as a Management Trainee Engineer covering engineering drawing interpretation, site layout and leveling, quantity/cost estimation, site and HR management, and on-site quality control."
 ---
 
-Completed a field engineering internship as a Management Trainee Engineer with **Shoukat Iqbal Mir & Co. (SIMCO)** in Faisal Hills, Taxila, gaining hands-on experience in multi-story reinforced concrete construction and site operations.
-
-### Key Responsibilities & Field Training
-
-- **Engineering Drawings Interpretation:** Reviewed structural and architectural construction drawings on site to verify rebar placement, column/beam dimensions, and formwork alignment.
-- **Site Layout & Leveling:** Assisted site surveyors and engineers in setting out structural grids, transferring benchmarks, and verifying slab and foundation levels.
-- **Quantity & Cost Estimation:** Performed material takeoffs for concrete pours, reinforcement steel, and shuttering works to support site procurement and billing.
-- **Site & HR Management:** Coordinated daily labor deployment, tracked crew productivity across active formwork and concreting zones, and supported site supervision.
-- **Quality Control:** Monitored concrete mixing, pouring, curing, and reinforcement cover blocks to ensure compliance with project specifications.
-
+<section class="scope-panel" aria-labelledby="key-responsibilities--field-training">
+  <h2 id="key-responsibilities--field-training">Key Responsibilities &amp; Field Training</h2>
+  <p>Completed a field engineering internship as a Management Trainee Engineer with <strong>Shoukat Iqbal Mir &amp; Co. (SIMCO)</strong> at Resolve and NSTP Tower, gaining hands-on experience in multi-story reinforced concrete construction and site operations.</p>
+  <details>
+    <summary>Engineering Drawings Interpretation</summary>
+    <p>Reviewed structural and architectural construction drawings on site to verify rebar placement, column/beam dimensions, and formwork alignment.</p>
+  </details>
+  <details>
+    <summary>Site Layout &amp; Leveling</summary>
+    <p>Assisted site surveyors and engineers in setting out structural grids, transferring benchmarks, and verifying slab and foundation levels.</p>
+  </details>
+  <details>
+    <summary>Quantity &amp; Cost Estimation</summary>
+    <p>Performed material takeoffs for concrete pours, reinforcement steel, and shuttering works to support site procurement and billing.</p>
+  </details>
+  <details>
+    <summary>Site &amp; HR Management</summary>
+    <p>Coordinated daily labor deployment, tracked crew productivity across active formwork and concreting zones, and supported site supervision.</p>
+  </details>
+  <details>
+    <summary>Quality Control</summary>
+    <p>Monitored concrete mixing, pouring, curing, and reinforcement cover blocks to ensure compliance with project specifications.</p>
+  </details>
+</section>

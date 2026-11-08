@@ -13,11 +13,23 @@ media:
 summary: "Experimental determination of soil shear parameters (c, φ) via direct shear testing and computation of allowable bearing capacity for shallow column footings."
 ---
 
-Conducted for Geotechnical and Foundation Engineering, this laboratory investigation evaluated the allowable bearing capacity of subgrade soil to support a structural column footing.
-
-### Key Engineering Scope
-
-- **Direct Shear Laboratory Testing:** Performed consolidated drained direct shear tests on soil samples under normal stresses of 50, 100, and 150 kPa per ASTM D3080.
-- **Shear Strength Parameters:** Plotted Mohr-Coulomb failure envelopes to extract apparent cohesion (c) and angle of internal friction (Φ).
-- **Terzaghi Bearing Calculations:** Computed ultimate bearing capacity (qu) using Terzaghi's square footing equation and empirical bearing capacity factors.
-- **Foundation Sizing:** Applied a safety factor (FS = 3.0) to establish allowable soil bearing capacity (qa), recommending required column footing dimensions.
+<section class="scope-panel" aria-labelledby="key-engineering-scope">
+  <h2 id="key-engineering-scope">Key Engineering Scope</h2>
+  <p>Conducted for Geotechnical and Foundation Engineering, this laboratory investigation evaluated the allowable bearing capacity of subgrade soil to support a structural column footing.</p>
+  <details>
+    <summary>Direct Shear Laboratory Testing</summary>
+    <p>Performed consolidated drained direct shear tests on soil samples under normal stresses of 50, 100, and 150 kPa per ASTM D3080.</p>
+  </details>
+  <details>
+    <summary>Shear Strength Parameters</summary>
+    <p>Plotted Mohr-Coulomb failure envelopes to extract apparent cohesion (c) and angle of internal friction (Φ).</p>
+  </details>
+  <details>
+    <summary>Terzaghi Bearing Calculations</summary>
+    <p>Computed ultimate bearing capacity (qu) using Terzaghi's square footing equation and empirical bearing capacity factors.</p>
+  </details>
+  <details>
+    <summary>Foundation Sizing</summary>
+    <p>Applied a safety factor (FS = 3.0) to establish allowable soil bearing capacity (qa), recommending required column footing dimensions.</p>
+  </details>
+</section>

@@ -29,9 +29,7 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
         <h1 class="page-title">
           Academic <span class="accent-text">Research</span>
         </h1>
-        <p class="page-deck">
-          Scientific investigations into emerging construction technology, mixed reality spatial computing, and Building Information Modelling (BIM) deployment workflows.
-        </p>
+        <p class="page-deck">Our final year project explored how to view a building layout on site using an Android phone. You can read the preprint and see our methods and figures here.</p>
       </div>
 
       <!-- Quick Publication Metrics -->
@@ -114,13 +112,11 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
 
             <!-- Abstract Paragraph -->
             <div class="abstract-box">
-              <span class="abstract-label mono">EXECUTIVE ABSTRACT</span>
+              <span class="abstract-label mono">PROJECT SUMMARY</span>
               <p class="abstract-text">
                 {primaryStudy.data.summary || 'A standardized multimodal BIM-to-AR deployment framework supporting marker-based, ground-plane, and location-based AR workflows for real-time construction layout verification and spatial visualization.'}
               </p>
-              <p class="abstract-subtext">
-                Moving beyond desktop BIM interfaces, this investigation solves geometric fidelity loss and spatial calibration drift when projecting complex Autodesk Revit models onto real-world construction environments through mobile augmented reality.
-              </p>
+              <p class="abstract-subtext">Our physical tests showed how each prototype handled model placement. We did not measure a construction layout tolerance.</p>
             </div>
 
             <!-- Toolstack Matrix -->
@@ -132,7 +128,7 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
                 <span class="tool-chip">Vuforia Engine</span>
                 <span class="tool-chip">Google ARCore</span>
                 <span class="tool-chip">Cesium for Unity</span>
-                <span class="tool-chip">FBX Geometry Optimization</span>
+                <span class="tool-chip">FBX export</span>
                 <span class="tool-chip">C# Scripting</span>
               </div>
             </div>
@@ -159,10 +155,8 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
     <section class="framework-section gsap-stagger-item" aria-label="The 3 Multimodal Deployment Modes">
       <div class="section-title-wrap">
         <span class="section-kicker mono">02.1 / CORE CONTRIBUTION</span>
-        <h2 class="section-heading">Three-Tier Multimodal AR Deployment Framework</h2>
-        <p class="section-desc">
-          To overcome diverse site conditions and hardware constraints, the research implements three distinct tracking paradigms tailored for specific construction verification stages.
-        </p>
+        <h2 class="section-heading">Three ways to place the model</h2>
+        <p class="section-desc">We tested the building layout with three ways of placing it on a phone screen.</p>
       </div>
 
       <div class="pillars-grid">
@@ -170,7 +164,7 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
         <article class="pillar-card">
           <div class="pillar-header">
             <span class="pillar-num mono">01</span>
-            <span class="pillar-tag mono">MILLIMETER PRECISION</span>
+            <span class="pillar-tag mono">PRINTED MARKER</span>
           </div>
           <div class="pillar-icon-box" aria-hidden="true">
             <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
@@ -181,21 +175,14 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
           </div>
           <h3 class="pillar-title">Marker-Based Target Tracking</h3>
           <p class="pillar-tech mono">Vuforia Engine · 2D Plan Benchmarks</p>
-          <p class="pillar-desc">
-            Uses physical print targets, surveyor benchmark plates, or structural drawings to lock 3D BIM components with sub-centimeter alignment. Ideal for critical structural joint checks and rebar cage verification.
-          </p>
-          <ul class="pillar-features">
-            <li>Zero spatial drift over prolonged inspection</li>
-            <li>Direct reference to physical surveyor points</li>
-            <li>Instant model re-alignment upon camera re-entry</li>
-          </ul>
+          <p class="pillar-desc">The phone recognises a printed target and uses it as a reference for the building model.</p>
         </article>
 
         <!-- Pillar 02 -->
         <article class="pillar-card pillar-card--featured">
           <div class="pillar-header">
             <span class="pillar-num mono">02</span>
-            <span class="pillar-tag mono">1:1 SITE OVERLAY</span>
+            <span class="pillar-tag mono">GROUND PLANE</span>
           </div>
           <div class="pillar-icon-box" aria-hidden="true">
             <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
@@ -206,21 +193,14 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
           </div>
           <h3 class="pillar-title">Ground-Plane Surface AR</h3>
           <p class="pillar-tech mono">Google ARCore · Surface Raycasting</p>
-          <p class="pillar-desc">
-            Detects horizontal and vertical physical surfaces (concrete slabs, masonry walls, rough excavation planes) to project 1:1 scale architectural and structural elements without requiring physical markers.
-          </p>
-          <ul class="pillar-features">
-            <li>Rapid walk-through on bare slab environments</li>
-            <li>Interactive scale, rotation, and elevation slider</li>
-            <li>Immediate detection of MEP conduit clashes</li>
-          </ul>
+          <p class="pillar-desc">The user places the model on a detected surface and adjusts it on screen.</p>
         </article>
 
         <!-- Pillar 03 -->
         <article class="pillar-card">
           <div class="pillar-header">
             <span class="pillar-num mono">03</span>
-            <span class="pillar-tag mono">MACRO GEODETIC</span>
+            <span class="pillar-tag mono">GEOGRAPHIC COORDINATES</span>
           </div>
           <div class="pillar-icon-box" aria-hidden="true">
             <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
@@ -231,14 +211,7 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
           </div>
           <h3 class="pillar-title">Geospatial Location-Based AR</h3>
           <p class="pillar-tech mono">Cesium for Unity · WGS84 Georeferencing</p>
-          <p class="pillar-desc">
-            Anchors civil infrastructure models to real-world latitude, longitude, and ellipsoidal height coordinates. Visualizes site earthworks, road alignments, and stormwater pipe networks over broad distances.
-          </p>
-          <ul class="pillar-features">
-            <li>True geospatial orientation via GNSS & compass</li>
-            <li>Civil layout inspection before breaking ground</li>
-            <li>Contextual elevation mapping against GIS terrain</li>
-          </ul>
+          <p class="pillar-desc">We used Cesium for Unity to place the model at a specified latitude, longitude and height.</p>
         </article>
       </div>
     </section>
@@ -247,29 +220,23 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
     <section class="pipeline-section gsap-stagger-item" aria-label="Research Methodology Pipeline">
       <div class="section-title-wrap">
         <span class="section-kicker mono">02.2 / METHODOLOGY</span>
-        <h2 class="section-heading">The Digital-to-Physical Translation Pipeline</h2>
-        <p class="section-desc">
-          How structural parameters are extracted from desktop BIM authoring tools and rendered seamlessly on spatial hardware.
-        </p>
+        <h2 class="section-heading">From Revit to Android</h2>
+        <p class="section-desc">We started in Revit and used Unity to build the Android applications.</p>
       </div>
 
       <div class="pipeline-flow">
         <div class="flow-step">
           <div class="step-badge mono">STEP 01</div>
           <h4 class="step-title">Parametric BIM Authoring</h4>
-          <p class="step-desc">
-            Models modeled in Autodesk Revit with LOD 300 accuracy, material definitions, and strict family categorization.
-          </p>
+          <p class="step-desc">We built the architectural model in Revit.</p>
         </div>
 
         <div class="flow-arrow" aria-hidden="true">→</div>
 
         <div class="flow-step">
           <div class="step-badge mono">STEP 02</div>
-          <h4 class="step-title">Geometry Decimation & FBX Transfer</h4>
-          <p class="step-desc">
-            Automated polygon reduction, axis conversion (Z-up to Y-up), and pivot normalization for mobile GPU performance.
-          </p>
+          <h4 class="step-title">FBX export</h4>
+          <p class="step-desc">We exported the geometry as FBX and checked its scale and orientation in Unity.</p>
         </div>
 
         <div class="flow-arrow" aria-hidden="true">→</div>
@@ -277,9 +244,7 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
         <div class="flow-step">
           <div class="step-badge mono">STEP 03</div>
           <h4 class="step-title">Unity Engine AR Integration</h4>
-          <p class="step-desc">
-            Custom C# runtime shaders, occlusion culling, tracking state handlers, and spatial touch interaction controls.
-          </p>
+          <p class="step-desc">We set up tracking and added C# controls for interacting with the model.</p>
         </div>
 
         <div class="flow-arrow" aria-hidden="true">→</div>
@@ -287,9 +252,7 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
         <div class="flow-step">
           <div class="step-badge mono">STEP 04</div>
           <h4 class="step-title">On-Site Experimental Testing</h4>
-          <p class="step-desc">
-            Field testing across sunlight variations, marker degradation thresholds, and comparative dimensional tolerance checks.
-          </p>
+          <p class="step-desc">We installed the prototypes on Android devices and compared how each placed the layout.</p>
         </div>
       </div>
     </section>
