@@ -1,65 +1,64 @@
 ---
 import { getImage } from "astro:assets";
 import researchCover from "../../assets/research-cover.png";
+
 const cover = await getImage({
   src: researchCover,
   width: 1200,
   format: "webp",
 });
+
 const figures = [
   {
     src: cover.src,
-    title: "Research overview",
-    caption:
-      "An illustration connecting the three BIM-to-AR deployment approaches.",
-    source:
-      "AI-assisted illustration inspired by the manuscript; not a test result.",
+    title: "Research Overview",
+    caption: "Multimodal BIM-to-AR framework architecture diagram.",
+    source: "AI-assisted illustration inspired by the manuscript; not a test result.",
     width: 1200,
     height: 800,
+    fit: "cover",
   },
   {
     src: "/images/research/marker-based.webp",
-    title: "Marker-based AR",
-    caption: "BIM model on an image target.",
+    title: "Marker-Based AR",
+    caption: "BIM model anchored on a printed 2D image target via Vuforia Engine.",
     source: "Figure 89 · manuscript p. 87",
     width: 442,
     height: 599,
+    fit: "contain",
   },
   {
     src: "/images/research/ground-plane.webp",
-    title: "Ground-plane AR",
-    caption: "Outdoor testing of the ground-plane application.",
+    title: "Ground-Plane AR",
+    caption: "Outdoor testing of the surface raycasting ground-plane prototype via ARCore.",
     source: "Figure 92 · manuscript p. 88",
     width: 373,
     height: 501,
+    fit: "contain",
   },
   {
     src: "/images/research/geospatial.webp",
-    title: "Location-based AR",
-    caption: "Geospatial anchors stabilizing the model.",
+    title: "Location-Based AR",
+    caption: "Geospatial WGS84 anchors stabilizing the model using Cesium for Unity.",
     source: "Figure 101 · manuscript p. 91",
     width: 266,
     height: 576,
+    fit: "contain",
   },
 ];
 ---
 
-<section class="manuscript-gallery" aria-labelledby="manuscript-figures">
-  <p class="figure-label">THE RESEARCH IN VIEW</p>
-  <h2 id="manuscript-figures">Three ways to bring BIM into view.</h2>
-  <p class="gallery-intro">
-    A visual overview, followed by original images from the prototype
-    applications and testing documented in the manuscript. Select any image to
-    take a closer look.
-  </p>
-  <div class="figure-grid">
-    {figures.map((figure) => (
-      <figure>
+<div class="hero-carousel" aria-label="Research Figures Carousel" aria-roledescription="carousel" data-research-carousel>
+  <div class="image-frame">
+    {figures.map((figure, idx) => (
+      <figure hidden={idx !== 0} data-carousel-slide={idx}>
         <button
           type="button"
           class="figure-trigger"
+          data-figure-index={idx}
+          data-figure-src={figure.src}
           data-figure-title={figure.title}
-          data-figure-caption={`${figure.caption} ${figure.source}`}
+          data-figure-caption={`${figure.caption} (${figure.source})`}
           aria-label={`Enlarge ${figure.title}`}
           aria-haspopup="dialog"
         >
@@ -68,21 +67,40 @@ const figures = [
             alt={figure.caption}
             width={figure.width}
             height={figure.height}
-            loading="lazy"
+            class:list={["carousel-image", { "is-cover": figure.fit === "cover" }]}
+            loading={idx === 0 ? "eager" : "lazy"}
+            decoding={idx === 0 ? "sync" : "async"}
           />
-          <span class="enlarge-mark" aria-hidden="true">
-            ⤢
-          </span>
+          <span class="enlarge-badge mono" aria-hidden="true">⤢</span>
         </button>
-        <figcaption>
-          <h3>{figure.title}</h3>
-          <p>{figure.caption}</p>
-          <small>{figure.source}</small>
-        </figcaption>
       </figure>
     ))}
+    <div class="blueprint-scanline" aria-hidden="true"></div>
+    <div class="blueprint-crosshair top-left" aria-hidden="true"></div>
+    <div class="blueprint-crosshair bottom-right" aria-hidden="true"></div>
   </div>
-</section>
+
+  <div class="visual-caption">
+    <span class="caption-tag mono" data-slide-label>
+      FIG. 01 — {figures[0].title.toUpperCase()}
+    </span>
+    <button type="button" class="caption-action mono" data-open-current>
+      INSPECT FIGURE ⤢
+    </button>
+  </div>
+
+  <p class="slide-desc-line" data-slide-desc>{figures[0].caption}</p>
+
+  <div class="hero-carousel-controls">
+    <div class="controls-left">
+      <button type="button" data-prev aria-label="Previous figure">&#8592;</button>
+      <span class="slide-counter mono" data-slide-counter>1 / {figures.length}</span>
+      <button type="button" data-next aria-label="Next figure">&#8594;</button>
+    </div>
+    <button type="button" data-pause aria-label="Pause automatic rotation">Pause</button>
+  </div>
+</div>
+
 <dialog
   class="figure-dialog"
   aria-labelledby="figure-dialog-title"
@@ -99,167 +117,385 @@ const figures = [
     </button>
     <img class="figure-expanded" alt="" />
     <div class="popup-caption">
-      <h2 id="figure-dialog-title"></h2>
+      <div class="popup-caption-header">
+        <h2 id="figure-dialog-title"></h2>
+        <div class="figure-nav">
+          <button type="button" data-modal-prev aria-label="Previous image">&#8592;</button>
+          <span data-modal-count>1 / {figures.length}</span>
+          <button type="button" data-modal-next aria-label="Next image">&#8594;</button>
+        </div>
+      </div>
       <p id="figure-dialog-caption"></p>
     </div>
   </div>
 </dialog>
+
 <script>
-  const dialog = document.querySelector<HTMLDialogElement>(".figure-dialog")!;
-  const panel = dialog.querySelector<HTMLElement>(".figure-popup")!;
-  const enlarged = dialog.querySelector<HTMLImageElement>(".figure-expanded")!;
-  const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-  let origin: HTMLButtonElement | null = null;
-  let closing = false;
-  let previousOverflow = "";
-  let animation: Animation | null = null;
-  function cardTransform() {
-    const card = origin!.getBoundingClientRect();
-    const target = panel.getBoundingClientRect();
-    return `translate(${card.left + card.width / 2 - target.left - target.width / 2}px, ${card.top + card.height / 2 - target.top - target.height / 2}px) scale(${card.width / target.width}, ${card.height / target.height})`;
-  }
-  document
-    .querySelectorAll<HTMLButtonElement>(".figure-trigger")
-    .forEach((button) => {
-      button.addEventListener("click", () => {
-        if (dialog.open) return;
-        origin = button;
-        const image = button.querySelector("img")!;
-        enlarged.src = image.currentSrc || image.src;
-        enlarged.alt = image.alt;
-        enlarged.width = image.naturalWidth || image.width;
-        enlarged.height = image.naturalHeight || image.height;
-        dialog.querySelector("#figure-dialog-title")!.textContent =
-          button.dataset.figureTitle || "";
-        dialog.querySelector("#figure-dialog-caption")!.textContent =
-          button.dataset.figureCaption || "";
-        previousOverflow = document.body.style.overflow;
-        document.body.style.overflow = "hidden";
-        dialog.classList.remove("is-closing");
-        dialog.showModal();
-        animation = panel.animate(
-          [
-            { transform: cardTransform(), opacity: 0 },
-            { transform: "none", opacity: 1 },
-          ],
-          {
-            duration: reduced.matches ? 0 : 300,
-            easing: "cubic-bezier(.2,.75,.25,1)",
-          },
-        );
-      });
+  const carousel = document.querySelector<HTMLElement>("[data-research-carousel]");
+  const dialog = document.querySelector<HTMLDialogElement>(".figure-dialog");
+
+  if (carousel && dialog) {
+    const slides = Array.from(carousel.querySelectorAll<HTMLElement>("[data-carousel-slide]"));
+    const triggers = Array.from(carousel.querySelectorAll<HTMLButtonElement>(".figure-trigger"));
+    const prevBtn = carousel.querySelector<HTMLButtonElement>("[data-prev]")!;
+    const nextBtn = carousel.querySelector<HTMLButtonElement>("[data-next]")!;
+    const pauseBtn = carousel.querySelector<HTMLButtonElement>("[data-pause]")!;
+    const slideLabel = carousel.querySelector<HTMLElement>("[data-slide-label]")!;
+    const slideDesc = carousel.querySelector<HTMLElement>("[data-slide-desc]")!;
+    const slideCounter = carousel.querySelector<HTMLElement>("[data-slide-counter]")!;
+    const openCurrentBtn = carousel.querySelector<HTMLButtonElement>("[data-open-current]")!;
+
+    const panel = dialog.querySelector<HTMLElement>(".figure-popup")!;
+    const enlarged = dialog.querySelector<HTMLImageElement>(".figure-expanded")!;
+    const modalPrev = dialog.querySelector<HTMLButtonElement>("[data-modal-prev]")!;
+    const modalNext = dialog.querySelector<HTMLButtonElement>("[data-modal-next]")!;
+    const modalCount = dialog.querySelector<HTMLElement>("[data-modal-count]")!;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+
+    let index = 0;
+    let paused = reduced.matches;
+    let startX = 0;
+    let modalIndex = 0;
+    let origin: HTMLButtonElement | null = null;
+    let closing = false;
+    let previousOverflow = "";
+    let animation: Animation | null = null;
+
+    const updatePause = () => {
+      pauseBtn.textContent = paused ? "Play" : "Pause";
+      pauseBtn.setAttribute("aria-label", `${paused ? "Start" : "Pause"} automatic rotation`);
+    };
+    updatePause();
+
+    const show = (next: number) => {
+      slides[index].hidden = true;
+      index = (next + slides.length) % slides.length;
+      slides[index].hidden = false;
+      const activeTrigger = triggers[index];
+      const title = activeTrigger?.dataset.figureTitle || `Figure ${index + 1}`;
+      const imgAlt = activeTrigger?.querySelector("img")?.alt || "";
+      slideLabel.textContent = `FIG. ${String(index + 1).padStart(2, "0")} — ${title.toUpperCase()}`;
+      slideDesc.textContent = imgAlt;
+      slideCounter.textContent = `${index + 1} / ${slides.length}`;
+    };
+
+    prevBtn.addEventListener("click", () => show(index - 1));
+    nextBtn.addEventListener("click", () => show(index + 1));
+    pauseBtn.addEventListener("click", () => {
+      paused = !paused;
+      updatePause();
     });
-  async function closeFigure() {
-    if (!dialog.open || closing) return;
-    closing = true;
-    animation?.cancel();
-    dialog.classList.add("is-closing");
-    animation = panel.animate(
-      [
-        { transform: "none", opacity: 1 },
-        { transform: cardTransform(), opacity: 0 },
-      ],
-      {
-        duration: reduced.matches ? 0 : 240,
-        easing: "cubic-bezier(.4,0,.6,1)",
-        fill: "forwards",
-      },
-    );
-    try {
-      await animation.finished;
-    } catch {}
-    dialog.close();
-    animation.cancel();
-    document.body.style.overflow = previousOverflow;
-    origin?.focus({ preventScroll: true });
-    closing = false;
+
+    carousel.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+    }, { passive: true });
+
+    carousel.addEventListener("touchend", (e) => {
+      const delta = e.changedTouches[0].clientX - startX;
+      if (Math.abs(delta) > 50) {
+        paused = true;
+        updatePause();
+        show(index + (delta < 0 ? 1 : -1));
+      }
+    }, { passive: true });
+
+    const timer = window.setInterval(() => {
+      if (!carousel.isConnected) {
+        clearInterval(timer);
+        return;
+      }
+      if (!paused && !document.hidden && !dialog.open && !carousel.matches(":hover, :focus-within")) {
+        show(index + 1);
+      }
+    }, 6000);
+
+    function cardTransform() {
+      if (!origin) return "none";
+      const card = origin.getBoundingClientRect();
+      const target = panel.getBoundingClientRect();
+      if (!target.width || !target.height) return "none";
+      return `translate(${card.left + card.width / 2 - target.left - target.width / 2}px, ${card.top + card.height / 2 - target.top - target.height / 2}px) scale(${card.width / target.width}, ${card.height / target.height})`;
+    }
+
+    function populateModal(nextIdx: number) {
+      modalIndex = (nextIdx + triggers.length) % triggers.length;
+      const button = triggers[modalIndex];
+      const image = button.querySelector("img")!;
+      enlarged.src = button.dataset.figureSrc || image.currentSrc || image.src;
+      enlarged.alt = image.alt;
+      dialog!.querySelector("#figure-dialog-title")!.textContent = button.dataset.figureTitle || "";
+      dialog!.querySelector("#figure-dialog-caption")!.textContent = button.dataset.figureCaption || "";
+      modalCount.textContent = `${modalIndex + 1} / ${triggers.length}`;
+      show(modalIndex);
+    }
+
+    function openLightbox(targetIdx: number, sourceBtn: HTMLButtonElement) {
+      if (dialog!.open) return;
+      origin = sourceBtn;
+      populateModal(targetIdx);
+      previousOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      dialog!.classList.remove("is-closing");
+      dialog!.showModal();
+      animation = panel.animate(
+        [
+          { transform: cardTransform(), opacity: 0 },
+          { transform: "none", opacity: 1 },
+        ],
+        {
+          duration: reduced.matches ? 0 : 280,
+          easing: "cubic-bezier(.2,.75,.25,1)",
+        }
+      );
+    }
+
+    triggers.forEach((button, i) => {
+      button.addEventListener("click", () => openLightbox(i, button));
+    });
+
+    openCurrentBtn.addEventListener("click", () => {
+      openLightbox(index, triggers[index] || openCurrentBtn);
+    });
+
+    modalPrev.addEventListener("click", () => populateModal(modalIndex - 1));
+    modalNext.addEventListener("click", () => populateModal(modalIndex + 1));
+
+    async function closeFigure() {
+      if (!dialog?.open || closing) return;
+      closing = true;
+      animation?.cancel();
+      dialog.classList.add("is-closing");
+      animation = panel.animate(
+        [
+          { transform: "none", opacity: 1 },
+          { transform: cardTransform(), opacity: 0 },
+        ],
+        {
+          duration: reduced.matches ? 0 : 220,
+          easing: "cubic-bezier(.4,0,.6,1)",
+          fill: "forwards",
+        }
+      );
+      try {
+        await animation.finished;
+      } catch {}
+      dialog.close();
+      animation.cancel();
+      document.body.style.overflow = previousOverflow;
+      origin?.focus({ preventScroll: true });
+      closing = false;
+    }
+
+    dialog.querySelector(".figure-close")!.addEventListener("click", closeFigure);
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) closeFigure();
+    });
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+      closeFigure();
+    });
+    window.addEventListener("keydown", (event) => {
+      if (!dialog.open) return;
+      if (event.key === "ArrowLeft") populateModal(modalIndex - 1);
+      if (event.key === "ArrowRight") populateModal(modalIndex + 1);
+    });
   }
-  dialog.querySelector(".figure-close")!.addEventListener("click", closeFigure);
-  dialog.addEventListener("click", (event) => {
-    if (event.target === dialog) closeFigure();
-  });
-  dialog.addEventListener("cancel", (event) => {
-    event.preventDefault();
-    closeFigure();
-  });
 </script>
+
 <style>
-  .manuscript-gallery {
-    margin: 55px 0 25px;
-    padding-top: 30px;
-    border-top: 1px solid #ffffff28;
+  .hero-carousel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .figure-label {
-    font: 11px var(--font-mono);
-    letter-spacing: 0.1em;
-    color: #e98550;
+
+  .image-frame {
+    position: relative;
+    background: #0d100e;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--r-sm);
+    overflow: hidden;
+    aspect-ratio: 16/10;
   }
-  .manuscript-gallery h2 {
-    font-size: clamp(24px, 3vw, 36px);
-    letter-spacing: -0.03em;
-    margin: 15px 0;
-  }
-  .gallery-intro {
-    color: #b0b6ad;
-    max-width: 650px;
-    line-height: 1.7;
-  }
-  .figure-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 32px 24px;
-    margin-top: 28px;
-  }
-  figure {
+
+  .image-frame figure {
     margin: 0;
-    min-width: 0;
+    width: 100%;
+    height: 100%;
+    animation: document-in 0.3s ease;
   }
+
+  .image-frame figure[hidden] {
+    display: none;
+  }
+
   .figure-trigger {
     position: relative;
-    width: 100%;
-    height: 350px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #192019;
-    border: 1px solid #ffffff20;
-    padding: 14px;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
     cursor: zoom-in;
+    touch-action: pan-y;
   }
-  .figure-trigger img {
-    display: block;
+
+  .carousel-image {
     width: 100%;
     height: 100%;
     object-fit: contain;
-  }
-  .enlarge-mark {
-    position: absolute;
-    right: 12px;
-    bottom: 12px;
-    color: #ede8e1;
-    background: #101412df;
-    font-size: 20px;
-    padding: 2px 8px;
-  }
-  figcaption h3 {
-    font-size: 19px;
-    margin: 18px 0 8px;
-  }
-  figcaption p {
-    font-size: 14px;
-    color: #b0b6ad;
-    line-height: 1.6;
-  }
-  figcaption small {
     display: block;
-    font: 10px/1.8 var(--font-mono);
-    color: #b0b6ad;
-    margin-top: 10px;
+    padding: 10px;
+    transition: transform 0.4s var(--ease-out), filter 0.4s var(--ease-out);
+    filter: brightness(0.95) contrast(1.04);
   }
+
+  .carousel-image.is-cover {
+    object-fit: cover;
+    padding: 0;
+  }
+
+  .figure-trigger:hover .carousel-image {
+    transform: scale(1.02);
+    filter: brightness(1);
+  }
+
+  .enlarge-badge {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    color: #ede8e1;
+    background: rgba(13, 16, 14, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 14px;
+    padding: 2px 7px;
+    z-index: 2;
+  }
+
+  .blueprint-scanline {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(232, 92, 26, 0.04) 3px,
+      rgba(232, 92, 26, 0.04) 4px
+    );
+    pointer-events: none;
+  }
+
+  .blueprint-crosshair {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .blueprint-crosshair.top-left {
+    top: 8px;
+    left: 8px;
+    border-top: 2px solid var(--c-accent);
+    border-left: 2px solid var(--c-accent);
+  }
+
+  .blueprint-crosshair.bottom-right {
+    bottom: 8px;
+    right: 8px;
+    border-bottom: 2px solid var(--c-accent);
+    border-right: 2px solid var(--c-accent);
+  }
+
+  .visual-caption {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .caption-tag {
+    font-size: 10px;
+    color: #8e9587;
+    letter-spacing: 0.04em;
+  }
+
+  .caption-action {
+    font-size: 10px;
+    color: var(--c-accent);
+    letter-spacing: 0.04em;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .caption-action:hover {
+    text-decoration: underline;
+  }
+
+  .slide-desc-line {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #a4ac9d;
+    margin: 0;
+    min-height: 1.5em;
+  }
+
+  .hero-carousel-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 0 2px;
+    font: 11px var(--font-mono);
+    color: #bbc2b5;
+  }
+
+  .controls-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-carousel-controls button {
+    min-width: 34px;
+    min-height: 32px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: var(--r-sm);
+    color: #ede8e1;
+    cursor: pointer;
+    padding: 4px 10px;
+    transition: border-color var(--t-ui), color var(--t-ui);
+  }
+
+  .hero-carousel-controls button:hover {
+    border-color: var(--c-accent);
+    color: var(--c-accent);
+  }
+
+  .slide-counter {
+    font-size: 11px;
+    color: var(--c-muted);
+    min-width: 42px;
+    text-align: center;
+  }
+
+  .hero-carousel-controls [data-pause] {
+    font-size: 10px;
+    color: var(--c-muted);
+  }
+
   button:focus-visible {
     outline: 2px solid #e85c1a;
-    outline-offset: 4px;
+    outline-offset: 3px;
   }
+
+  /* Lightbox Dialog */
   .figure-dialog {
     position: fixed;
     inset: 0;
@@ -274,19 +510,24 @@ const figures = [
     color: #ede8e1;
     overflow: auto;
     overscroll-behavior: contain;
+    z-index: 1000;
   }
+
   .figure-dialog[open] {
     display: flex;
     align-items: center;
     justify-content: center;
   }
+
   .figure-dialog::backdrop {
     background: #070b09e8;
     animation: backdrop-in 0.3s ease;
   }
+
   .figure-dialog.is-closing::backdrop {
     animation: backdrop-out 0.24s ease forwards;
   }
+
   .figure-popup {
     position: relative;
     max-width: 1000px;
@@ -299,6 +540,7 @@ const figures = [
     transform-origin: center;
     overflow: auto;
   }
+
   .figure-expanded {
     display: block;
     width: auto;
@@ -308,20 +550,47 @@ const figures = [
     object-fit: contain;
     margin: auto;
   }
+
   .popup-caption {
     max-width: 800px;
     padding: 14px 4px 2px;
   }
+
+  .popup-caption-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+  }
+
+  .figure-nav {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font: 11px var(--font-mono);
+    color: #bbc2b5;
+  }
+
+  .figure-nav button {
+    background: transparent;
+    border: 1px solid #ffffff25;
+    color: #ede8e1;
+    cursor: pointer;
+    padding: 4px 10px;
+  }
+
   .popup-caption h2 {
     font-size: 19px;
     margin: 0 0 6px;
   }
+
   .popup-caption p {
     font-size: 12px;
     line-height: 1.5;
     color: #b0b6ad;
     margin: 0;
   }
+
   .figure-close {
     position: absolute;
     right: 8px;
@@ -336,26 +605,28 @@ const figures = [
     cursor: pointer;
     z-index: 1;
   }
-  @keyframes backdrop-in {
+
+  @keyframes document-in {
     from {
       opacity: 0;
+      transform: translateX(6px);
     }
     to {
       opacity: 1;
+      transform: none;
     }
   }
+
+  @keyframes backdrop-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
   @keyframes backdrop-out {
-    to {
-      opacity: 0;
-    }
+    to { opacity: 0; }
   }
+
   @media (max-width: 700px) {
-    .figure-grid {
-      grid-template-columns: 1fr;
-    }
-    .figure-trigger {
-      height: 350px;
-    }
     .figure-dialog {
       padding: 12px;
     }
@@ -364,7 +635,9 @@ const figures = [
       max-height: calc(100dvh - 24px);
     }
   }
+
   @media (prefers-reduced-motion: reduce) {
+    .image-frame figure,
     .figure-dialog::backdrop,
     .figure-dialog.is-closing::backdrop {
       animation: none;

@@ -1,7 +1,7 @@
 ---
-import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
 import researchCover from '../../assets/research-cover.png';
 
 const research = await getCollection('research');
@@ -9,251 +9,95 @@ const allItems = research.sort((a, b) => {
   return (a.data.priority || 99) - (b.data.priority || 99);
 });
 
-const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
+const projects = await getCollection('projects');
 ---
 
 <Layout
-  title="Research | Faizan Manshad"
-  description="Academic research, preprints, and multimodal BIM-to-AR frameworks for civil construction."
+  title="Research Experience | Faizan Manshad"
+  description="Academic research, R&D experiments, and technical investigations across civil engineering, BIM workflows, and tool development."
 >
-  <main class="research-page container gsap-stagger-parent">
+  <main class="research-directory-page container gsap-stagger-parent">
     <!-- Header -->
     <header class="page-header">
       <div class="header-eyebrow gsap-stagger-item">
         <span class="blueprint-badge">ARCHIVE // 02</span>
         <span class="eyebrow-sep">/</span>
-        <span class="eyebrow-label">APPLIED INQUIRY & EXPERIMENTATION</span>
-      </div>
-      
-      <div class="header-main gsap-stagger-item">
-        <h1 class="page-title">
-          Academic <span class="accent-text">Research</span>
-        </h1>
-        <p class="page-deck">Our final year project explored how to view a building layout on site using an Android phone. You can read the preprint and see our methods and figures here.</p>
+        <span class="eyebrow-label">APPLIED RESEARCH &amp; R&amp;D</span>
       </div>
 
-      <!-- Quick Publication Metrics -->
-      <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Research Metrics">
-        <div class="metric-item">
-          <span class="metric-num highlight">01</span>
-          <span class="metric-name">FORMAL MANUSCRIPT</span>
-        </div>
-        <div class="metric-item">
-          <span class="metric-num">SSRN</span>
-          <span class="metric-name">PREPRINT ARCHIVE</span>
-        </div>
-        <div class="metric-item">
-          <span class="metric-num">03</span>
-          <span class="metric-name">DEPLOYED AR MODES</span>
-        </div>
-        <div class="metric-item">
-          <span class="metric-num">CORR.</span>
-          <span class="metric-name">AUTHOR DESIGNATION</span>
-        </div>
+      <div class="header-main gsap-stagger-item">
+        <h1 class="page-title">
+          Research <span class="accent-text">Experience</span>
+        </h1>
+        <p class="page-deck">
+          Academic studies, experimental prototypes, and applied R&amp;D across civil engineering, BIM workflows, and software tool development.
+        </p>
       </div>
     </header>
 
-    <!-- Premier Manuscript Showcase -->
-    {primaryStudy && (
-      <section class="manuscript-hero gsap-stagger-item" aria-label="Featured Research Manuscript">
-        <div class="manuscript-card">
-          <!-- Visual & Blueprint Column -->
-          <div class="manuscript-visual-wrap">
-            <a href={`/research/${primaryStudy.id}/`} class="manuscript-visual-link">
-              <div class="image-frame">
-                <Image
-                  src={researchCover}
-                  alt="Multimodal BIM to AR framework diagram and spatial tracking model"
-                  width={1000}
-                  format="webp"
-                  class="cover-image"
-                />
-                <div class="blueprint-scanline" aria-hidden="true"></div>
-                <div class="blueprint-crosshair top-left" aria-hidden="true"></div>
-                <div class="blueprint-crosshair bottom-right" aria-hidden="true"></div>
+    <!-- Research Directory List -->
+    <section class="research-directory" aria-label="Research Experience Directory">
+      <div class="directory-toolbar gsap-stagger-item">
+        <div class="toolbar-title">
+          <span class="toolbar-kicker mono">RESEARCH REGISTER</span>
+          <h2 class="toolbar-heading">All Research ({allItems.length})</h2>
+        </div>
+      </div>
+
+      <div class="research-list gsap-stagger-item">
+        {allItems.map((item, idx) => (
+          <article class="research-card">
+            <a href={`/research/${item.id}/`} class="card-inner">
+              <div class="card-media-col">
+                <div class="card-image-frame">
+                  <Image
+                    src={researchCover}
+                    alt={`${item.data.shortTitle || item.data.title} overview diagram`}
+                    width={900}
+                    format="webp"
+                    class="card-image"
+                  />
+                  <div class="blueprint-scanline" aria-hidden="true"></div>
+                </div>
               </div>
-              <div class="visual-caption">
-                <span class="caption-tag mono">FIG. 01 — MULTIMODAL AR FRAMEWORK ARCHITECTURE</span>
-                <span class="caption-action mono">CLICK TO EXPAND STUDY ↗</span>
+
+              <div class="card-body-col">
+                <div class="card-top-meta">
+                  <div class="card-index-row">
+                    <span class="card-num mono">#{String(idx + 1).padStart(2, '0')}</span>
+                    <span class="card-type mono">
+                      {item.data.type || 'Research Study'}
+                    </span>
+                  </div>
+                  <span class="card-year mono">{item.data.dateDisplay || '2026'}</span>
+                </div>
+
+                <div class="card-main-col">
+                  <h3 class="card-title">{item.data.title}</h3>
+                  <p class="card-org">
+                    {item.data.organization}
+                    {item.data.role ? ` · ${item.data.role}` : ''}
+                  </p>
+
+                  {item.data.summary && (
+                    <p class="card-desc">{item.data.summary}</p>
+                  )}
+                </div>
+
+                <div class="card-bottom-row">
+                  <div class="card-tags">
+                    {item.data.domains?.map((dom: string) => (
+                      <span class="domain-tag mono">{dom}</span>
+                    ))}
+                  </div>
+                  <span class="card-cta mono">
+                    Open Study <span class="card-arrow" aria-hidden="true">↗</span>
+                  </span>
+                </div>
               </div>
             </a>
-
-            <!-- Rapid Badges -->
-            <div class="doi-pill-box">
-              <div class="status-indicator">
-                <span class="pulse-dot"></span>
-                <span class="mono">SSRN DOI: 10.2139/ssrn.6884926</span>
-              </div>
-              <span class="access-pill mono">OPEN ACCESS PREPRINT</span>
-            </div>
-          </div>
-
-          <!-- Manuscript Information Column -->
-          <div class="manuscript-details">
-            <div class="manuscript-meta-tags">
-              <span class="category-badge mono">PREPRINT / RESEARCH MANUSCRIPT</span>
-              <span class="year-badge mono">{primaryStudy.data.dateDisplay || '2026'}</span>
-            </div>
-
-            <h2 class="manuscript-title">
-              <a href={`/research/${primaryStudy.id}/`}>
-                {primaryStudy.data.title}
-              </a>
-            </h2>
-
-            <!-- Author Byline -->
-            <div class="author-byline">
-              <span class="byline-label mono">AUTHORS:</span>
-              <p class="byline-names">
-                Hassan Ashraf, <strong>Faizan Manshad</strong> <span class="corr-badge">(Corresponding Author)</span>, Kashan Shafiq, and Faiz Fareed
-              </p>
-              <p class="byline-affil">COMSATS University Islamabad, Wah Campus · Final Year Project (FYP)</p>
-            </div>
-
-            <!-- Abstract Paragraph -->
-            <div class="abstract-box">
-              <span class="abstract-label mono">PROJECT SUMMARY</span>
-              <p class="abstract-text">
-                {primaryStudy.data.summary || 'A standardized multimodal BIM-to-AR deployment framework supporting marker-based, ground-plane, and location-based AR workflows for real-time construction layout verification and spatial visualization.'}
-              </p>
-              <p class="abstract-subtext">Our physical tests showed how each prototype handled model placement. We did not measure a construction layout tolerance.</p>
-            </div>
-
-            <!-- Toolstack Matrix -->
-            <div class="tools-matrix">
-              <span class="matrix-label mono">TECHNOLOGY PIPELINE</span>
-              <div class="tools-chips">
-                <span class="tool-chip">Autodesk Revit</span>
-                <span class="tool-chip">Unity 3D</span>
-                <span class="tool-chip">Vuforia Engine</span>
-                <span class="tool-chip">Google ARCore</span>
-                <span class="tool-chip">Cesium for Unity</span>
-                <span class="tool-chip">FBX export</span>
-                <span class="tool-chip">C# Scripting</span>
-              </div>
-            </div>
-
-            <!-- CTAs -->
-            <div class="manuscript-actions">
-              <a href={`/research/${primaryStudy.id}/`} class="btn-primary">
-                <span>Explore Research Case Study</span>
-                <span class="btn-arrow" aria-hidden="true">↗</span>
-              </a>
-              {primaryStudy.data.links?.map((link: { url: string; label: string }) => (
-                <a href={link.url} target="_blank" rel="noopener noreferrer" class="btn-secondary">
-                  <span>{link.label}</span>
-                  <span class="btn-arrow" aria-hidden="true">↗</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-    )}
-
-    <!-- Framework Architecture Pillars -->
-    <section class="framework-section gsap-stagger-item" aria-label="The 3 Multimodal Deployment Modes">
-      <div class="section-title-wrap">
-        <span class="section-kicker mono">02.1 / CORE CONTRIBUTION</span>
-        <h2 class="section-heading">Three ways to place the model</h2>
-        <p class="section-desc">We tested the building layout with three ways of placing it on a phone screen.</p>
-      </div>
-
-      <div class="pillars-grid">
-        <!-- Pillar 01 -->
-        <article class="pillar-card">
-          <div class="pillar-header">
-            <span class="pillar-num mono">01</span>
-            <span class="pillar-tag mono">PRINTED MARKER</span>
-          </div>
-          <div class="pillar-icon-box" aria-hidden="true">
-            <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <circle cx="12" cy="12" r="9"/>
-              <path d="M12 3v4M12 17v4M3 12h4M17 12h4"/>
-              <circle cx="12" cy="12" r="2" fill="currentColor"/>
-            </svg>
-          </div>
-          <h3 class="pillar-title">Marker-Based Target Tracking</h3>
-          <p class="pillar-tech mono">Vuforia Engine · 2D Plan Benchmarks</p>
-          <p class="pillar-desc">The phone recognises a printed target and uses it as a reference for the building model.</p>
-        </article>
-
-        <!-- Pillar 02 -->
-        <article class="pillar-card pillar-card--featured">
-          <div class="pillar-header">
-            <span class="pillar-num mono">02</span>
-            <span class="pillar-tag mono">GROUND PLANE</span>
-          </div>
-          <div class="pillar-icon-box" aria-hidden="true">
-            <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <rect x="3" y="14" width="18" height="7" rx="1"/>
-              <path d="M7 14V6l10 4v4"/>
-              <path d="M17 10L7 6"/>
-            </svg>
-          </div>
-          <h3 class="pillar-title">Ground-Plane Surface AR</h3>
-          <p class="pillar-tech mono">Google ARCore · Surface Raycasting</p>
-          <p class="pillar-desc">The user places the model on a detected surface and adjusts it on screen.</p>
-        </article>
-
-        <!-- Pillar 03 -->
-        <article class="pillar-card">
-          <div class="pillar-header">
-            <span class="pillar-num mono">03</span>
-            <span class="pillar-tag mono">GEOGRAPHIC COORDINATES</span>
-          </div>
-          <div class="pillar-icon-box" aria-hidden="true">
-            <svg class="pillar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
-              <circle cx="12" cy="12" r="9"/>
-              <ellipse cx="12" cy="12" rx="4" ry="9"/>
-              <path d="M3 12h18"/>
-            </svg>
-          </div>
-          <h3 class="pillar-title">Geospatial Location-Based AR</h3>
-          <p class="pillar-tech mono">Cesium for Unity · WGS84 Georeferencing</p>
-          <p class="pillar-desc">We used Cesium for Unity to place the model at a specified latitude, longitude and height.</p>
-        </article>
-      </div>
-    </section>
-
-    <!-- Technical Pipeline Workflow -->
-    <section class="pipeline-section gsap-stagger-item" aria-label="Research Methodology Pipeline">
-      <div class="section-title-wrap">
-        <span class="section-kicker mono">02.2 / METHODOLOGY</span>
-        <h2 class="section-heading">From Revit to Android</h2>
-        <p class="section-desc">We started in Revit and used Unity to build the Android applications.</p>
-      </div>
-
-      <div class="pipeline-flow">
-        <div class="flow-step">
-          <div class="step-badge mono">STEP 01</div>
-          <h4 class="step-title">Parametric BIM Authoring</h4>
-          <p class="step-desc">We built the architectural model in Revit.</p>
-        </div>
-
-        <div class="flow-arrow" aria-hidden="true">→</div>
-
-        <div class="flow-step">
-          <div class="step-badge mono">STEP 02</div>
-          <h4 class="step-title">FBX export</h4>
-          <p class="step-desc">We exported the geometry as FBX and checked its scale and orientation in Unity.</p>
-        </div>
-
-        <div class="flow-arrow" aria-hidden="true">→</div>
-
-        <div class="flow-step">
-          <div class="step-badge mono">STEP 03</div>
-          <h4 class="step-title">Unity Engine AR Integration</h4>
-          <p class="step-desc">We set up tracking and added C# controls for interacting with the model.</p>
-        </div>
-
-        <div class="flow-arrow" aria-hidden="true">→</div>
-
-        <div class="flow-step">
-          <div class="step-badge mono">STEP 04</div>
-          <h4 class="step-title">On-Site Experimental Testing</h4>
-          <p class="step-desc">We installed the prototypes on Android devices and compared how each placed the layout.</p>
-        </div>
+          </article>
+        ))}
       </div>
     </section>
 
@@ -263,14 +107,14 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
         <span aria-hidden="true">←</span> Return to Academic Dossier
       </a>
       <a href="/projects/" class="next-link">
-        Explore Academic Projects ({15}) <span aria-hidden="true">→</span>
+        Explore Academic Projects ({projects.length}) <span aria-hidden="true">→</span>
       </a>
     </div>
   </main>
 </Layout>
 
 <style>
-  .research-page {
+  .research-directory-page {
     padding-top: calc(var(--nav-h) + var(--s-12));
     padding-bottom: var(--s-24);
     color: var(--c-text);
@@ -278,7 +122,7 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
 
   /* Header */
   .page-header {
-    margin-bottom: var(--s-12);
+    margin-bottom: var(--s-10);
   }
 
   .header-eyebrow {
@@ -325,96 +169,94 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
     color: var(--c-muted);
     line-height: var(--leading-relaxed);
     max-width: 68ch;
-    margin-bottom: var(--s-8);
+    margin: 0;
   }
 
-  /* Metrics Strip */
-  .metrics-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    align-items: center;
-    gap: var(--s-4);
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--r-md);
-    padding: var(--s-5) var(--s-6);
+  /* Directory Section */
+  .research-directory {
+    margin-bottom: var(--s-16);
   }
 
-  .metric-item {
+  .directory-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: var(--s-6);
+    padding-bottom: var(--s-4);
+    border-bottom: 1px solid var(--c-border);
+  }
+
+  .toolbar-kicker {
+    font-size: 10px;
+    color: var(--c-accent);
+    letter-spacing: var(--tracking-label);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .toolbar-heading {
+    font-size: var(--text-xl);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .research-list {
     display: flex;
     flex-direction: column;
-    gap: var(--s-1);
+    gap: var(--s-5);
   }
 
-  .metric-num {
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
-    font-weight: 600;
-    font-family: var(--font-mono);
-    color: var(--c-text);
-    line-height: 1;
-  }
-
-  .metric-num.highlight {
-    color: var(--c-accent);
-  }
-
-  .metric-name {
-    font: 10px/1.3 var(--font-mono);
-    color: var(--c-muted);
-    letter-spacing: var(--tracking-wide);
-  }
-
-  /* Featured Manuscript Card */
-  .manuscript-hero {
-    margin-bottom: var(--s-20);
-  }
-
-  .manuscript-card {
-    background: radial-gradient(ellipse at top left, #1d2520 0%, #151a17 60%, #101412 100%);
+  .research-card {
+    background: radial-gradient(ellipse at top left, #1b221e 0%, #151a17 70%);
     border: 1px solid rgba(232, 92, 26, 0.35);
     border-radius: var(--r-md);
-    padding: clamp(24px, 4vw, 44px);
+    transition: transform var(--t-ui), border-color var(--t-ui), box-shadow var(--t-ui);
+    width: 100%;
+  }
+
+  .research-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--c-accent);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  .card-inner {
     display: grid;
-    grid-template-columns: 1.1fr 1.3fr;
-    gap: clamp(24px, 4vw, 48px);
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
-    position: relative;
-    overflow: hidden;
-  }
-
-  /* Left Visual */
-  .manuscript-visual-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-4);
-  }
-
-  .manuscript-visual-link {
+    grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+    align-items: stretch;
+    padding: clamp(24px, 3.5vw, 34px);
     text-decoration: none;
     color: inherit;
-    display: block;
-    position: relative;
+    width: 100%;
+    min-height: 290px;
+    gap: clamp(24px, 3.5vw, 40px);
   }
 
-  .image-frame {
+  .card-media-col {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .card-image-frame {
     position: relative;
+    width: 100%;
+    min-height: 220px;
     background: #0d100e;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: var(--r-sm);
     overflow: hidden;
-    aspect-ratio: 16/10;
   }
 
-  .cover-image {
+  .card-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
     transition: transform 0.4s var(--ease-out), filter 0.4s var(--ease-out);
-    filter: brightness(0.92) contrast(1.05);
+    filter: brightness(0.92) contrast(1.04);
   }
 
-  .manuscript-visual-link:hover .cover-image {
+  .research-card:hover .card-image {
     transform: scale(1.03);
     filter: brightness(1);
   }
@@ -432,202 +274,101 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
     pointer-events: none;
   }
 
-  .blueprint-crosshair {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    pointer-events: none;
-  }
-
-  .blueprint-crosshair.top-left {
-    top: 8px;
-    left: 8px;
-    border-top: 2px solid var(--c-accent);
-    border-left: 2px solid var(--c-accent);
-  }
-
-  .blueprint-crosshair.bottom-right {
-    bottom: 8px;
-    right: 8px;
-    border-bottom: 2px solid var(--c-accent);
-    border-right: 2px solid var(--c-accent);
-  }
-
-  .visual-caption {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: var(--s-2);
-  }
-
-  .caption-tag {
-    font-size: 10px;
-    color: #8e9587;
-    letter-spacing: 0.04em;
-  }
-
-  .caption-action {
-    font-size: 10px;
-    color: var(--c-accent);
-    letter-spacing: 0.04em;
-  }
-
-  .doi-pill-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: rgba(0, 0, 0, 0.35);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: var(--r-sm);
-    padding: 8px 12px;
-  }
-
-  .status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: #ede8e1;
-  }
-
-  .pulse-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #62d26f;
-    box-shadow: 0 0 8px #62d26f;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  .access-pill {
-    font-size: 10px;
-    color: #ffd166;
-    letter-spacing: 0.05em;
-  }
-
-  /* Right Details Column */
-  .manuscript-details {
+  .card-body-col {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    gap: var(--s-5);
   }
 
-  .manuscript-meta-tags {
+  .card-top-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-3);
+  }
+
+  .card-index-row {
     display: flex;
     align-items: center;
     gap: var(--s-3);
-    margin-bottom: var(--s-3);
   }
 
-  .category-badge {
-    font-size: 10px;
+  .card-num {
+    font-size: 12px;
     color: var(--c-accent);
-    letter-spacing: var(--tracking-label);
+    font-weight: 600;
   }
 
-  .year-badge {
-    font-size: 10px;
+  .card-year {
+    font-size: 11px;
     color: var(--c-muted);
   }
 
-  .manuscript-title {
-    font-size: clamp(1.4rem, 2.5vw, 1.85rem);
-    font-weight: 500;
-    line-height: 1.25;
-    margin-bottom: var(--s-4);
+  .card-type {
+    display: inline-block;
+    width: fit-content;
+    font-size: 10px;
+    color: #ffd166;
+    background: rgba(255, 209, 102, 0.1);
+    padding: 3px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
   }
 
-  .manuscript-title a {
+  .card-org {
+    font-size: 13px;
+    line-height: 1.5;
+    color: #9fa797;
+    margin: 0;
+  }
+
+  .card-main-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-3);
+  }
+
+  .card-title {
+    font-size: clamp(1.3rem, 2vw, 1.65rem);
+    font-weight: 500;
+    line-height: 1.28;
     color: var(--c-text);
-    text-decoration: none;
+    margin: 0;
     transition: color var(--t-micro);
   }
 
-  .manuscript-title a:hover {
+  .research-card:hover .card-title {
     color: var(--c-accent);
   }
 
-  .author-byline {
-    padding-bottom: var(--s-4);
-    margin-bottom: var(--s-4);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .byline-label {
-    font-size: 9px;
-    color: var(--c-muted);
-    letter-spacing: 0.1em;
-    display: block;
-    margin-bottom: 2px;
-  }
-
-  .byline-names {
-    font-size: 13px;
-    color: #d8decf;
-    margin: 0 0 2px;
-  }
-
-  .corr-badge {
-    color: var(--c-accent);
-    font-weight: 500;
-  }
-
-  .byline-affil {
-    font-size: 11px;
-    color: #8e9587;
-    margin: 0;
-  }
-
-  .abstract-box {
-    margin-bottom: var(--s-5);
-  }
-
-  .abstract-label {
-    font-size: 10px;
-    color: var(--c-accent);
-    letter-spacing: 0.08em;
-    display: block;
-    margin-bottom: 6px;
-  }
-
-  .abstract-text {
+  .card-desc {
     font-size: 14px;
     line-height: 1.65;
     color: #c0c8b9;
-    margin-bottom: var(--s-2);
-  }
-
-  .abstract-subtext {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #8e9587;
     margin: 0;
+    max-width: 72ch;
   }
 
-  .tools-matrix {
-    margin-bottom: var(--s-6);
+  .card-bottom-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  .matrix-label {
-    font-size: 10px;
-    color: var(--c-muted);
-    letter-spacing: 0.08em;
-    display: block;
-    margin-bottom: 8px;
-  }
-
-  .tools-chips {
+  .card-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
   }
 
-  .tool-chip {
-    font: 11px/1.2 var(--font-mono);
+  .domain-tag {
+    font-size: 10px;
     color: #b5beb0;
     background: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.08);
@@ -635,246 +376,29 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
     border-radius: 2px;
   }
 
-  .manuscript-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-3);
-    margin-top: auto;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--c-accent);
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 18px;
-    border-radius: var(--r-sm);
-    font: 12px/1.2 var(--font-mono);
-    letter-spacing: 0.02em;
-    font-weight: 500;
-    transition: background var(--t-ui), transform var(--t-ui);
-  }
-
-  .btn-primary:hover {
-    background: #f06e30;
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ede8e1;
-    text-decoration: none;
-    padding: 10px 18px;
-    border-radius: var(--r-sm);
-    font: 12px/1.2 var(--font-mono);
-    transition: all var(--t-ui);
-  }
-
-  .btn-secondary:hover {
-    border-color: var(--c-accent);
+  .card-cta {
+    font-size: 11px;
     color: var(--c-accent);
-    transform: translateY(-2px);
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    border: 1px solid rgba(232, 92, 26, 0.35);
+    border-radius: var(--r-sm);
+    background: rgba(232, 92, 26, 0.08);
+    white-space: nowrap;
   }
 
-  .btn-arrow {
+  .card-arrow {
     transition: transform var(--t-micro);
   }
 
-  .btn-primary:hover .btn-arrow,
-  .btn-secondary:hover .btn-arrow {
+  .research-card:hover .card-arrow {
     transform: translate(2px, -2px);
   }
 
-  /* Section Headings */
-  .section-title-wrap {
-    margin-bottom: var(--s-8);
-  }
-
-  .section-kicker {
-    font-size: 11px;
-    color: var(--c-accent);
-    letter-spacing: var(--tracking-label);
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .section-heading {
-    font-size: var(--text-xl);
-    font-weight: 500;
-    margin: 0 0 var(--s-2);
-  }
-
-  .section-desc {
-    font-size: var(--text-base);
-    color: var(--c-muted);
-    max-width: 65ch;
-    margin: 0;
-    line-height: var(--leading-relaxed);
-  }
-
-  /* Pillars Grid */
-  .framework-section {
-    margin-bottom: var(--s-20);
-  }
-
-  .pillars-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--s-6);
-  }
-
-  .pillar-card {
-    background: #151a17;
-    border: 1px solid #bcc3a529;
-    border-radius: var(--r-md);
-    padding: 28px;
-    display: flex;
-    flex-direction: column;
-    transition: border-color var(--t-ui), transform var(--t-ui);
-  }
-
-  .pillar-card:hover {
-    border-color: rgba(232, 92, 26, 0.4);
-    transform: translateY(-3px);
-  }
-
-  .pillar-card--featured {
-    border-color: rgba(232, 92, 26, 0.35);
-    background: radial-gradient(ellipse at top, #1e2621 0%, #151a17 80%);
-  }
-
-  .pillar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: var(--s-4);
-  }
-
-  .pillar-num {
-    font-size: 14px;
-    color: var(--c-accent);
-    font-weight: 600;
-  }
-
-  .pillar-tag {
-    font-size: 9px;
-    color: #ffd166;
-    background: rgba(255, 209, 102, 0.1);
-    padding: 2px 6px;
-    border-radius: 2px;
-    letter-spacing: 0.05em;
-  }
-
-  .pillar-icon-box {
-    margin-bottom: var(--s-4);
-    color: var(--c-accent);
-  }
-
-  .pillar-icon {
-    width: 28px;
-    height: 28px;
-  }
-
-  .pillar-title {
-    font-size: 1.15rem;
-    font-weight: 500;
-    margin: 0 0 4px;
-    color: var(--c-text);
-  }
-
-  .pillar-tech {
-    font-size: 11px;
-    color: var(--c-accent);
-    margin: 0 0 var(--s-3);
-  }
-
-  .pillar-desc {
-    font-size: 13px;
-    line-height: 1.6;
-    color: #9fa797;
-    margin-bottom: var(--s-4);
-    flex-grow: 1;
-  }
-
-  .pillar-features {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
-    padding-top: var(--s-3);
-  }
-
-  .pillar-features li {
-    font-size: 12px;
-    color: #8e9587;
-    position: relative;
-    padding-left: 14px;
-    margin-bottom: 6px;
-    line-height: 1.4;
-  }
-
-  .pillar-features li::before {
-    content: "•";
-    position: absolute;
-    left: 0;
-    color: var(--c-accent);
-  }
-
-  /* Pipeline Workflow Flow */
-  .pipeline-section {
-    margin-bottom: var(--s-20);
-  }
-
-  .pipeline-flow {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
-    align-items: center;
-    gap: var(--s-3);
-    background: var(--c-surface);
-    border: 1px solid var(--c-border);
-    border-radius: var(--r-md);
-    padding: 28px 24px;
-  }
-
-  .flow-step {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .step-badge {
-    font-size: 10px;
-    color: var(--c-accent);
-    letter-spacing: 0.06em;
-    margin-bottom: 4px;
-  }
-
-  .step-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--c-text);
-    margin: 0 0 6px;
-  }
-
-  .step-desc {
-    font-size: 12px;
-    color: var(--c-muted);
-    line-height: 1.5;
-    margin: 0;
-  }
-
-  .flow-arrow {
-    color: var(--c-accent);
-    font-size: 18px;
-    opacity: 0.7;
-  }
-
-  /* Footer Navigation */
+  /* Footer Nav */
   .page-footer-nav {
     display: flex;
     justify-content: space-between;
@@ -898,31 +422,15 @@ const primaryStudy = allItems.find(i => i.id === 'bim-to-ar') || allItems[0];
     color: var(--c-accent);
   }
 
-  /* Responsive */
-  @media (max-width: 960px) {
-    .manuscript-card {
+  @media (max-width: 860px) {
+    .card-inner {
       grid-template-columns: 1fr;
+      min-height: auto;
+      gap: var(--s-5);
     }
-    .pillars-grid {
-      grid-template-columns: 1fr;
-    }
-    .pipeline-flow {
-      grid-template-columns: 1fr;
-      gap: var(--s-4);
-    }
-    .flow-arrow {
-      transform: rotate(90deg);
-      text-align: center;
-    }
-    .metrics-bar {
-      grid-template-columns: repeat(2, 1fr);
-      gap: var(--s-6);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .metrics-bar {
-      grid-template-columns: 1fr;
+    .card-image-frame {
+      aspect-ratio: 16/10;
+      min-height: auto;
     }
   }
 </style>

@@ -24,7 +24,7 @@ const volunteering = sort(await getCollection("volunteering"));
 const sectionItems = [
   { id: "personal-information", name: "Personal Information" },
   { id: "education", name: "Education" },
-  { id: "research", name: "Research" },
+  { id: "research", name: "Research Experience" },
   { id: "practice", name: "Experience" },
   { id: "projects", name: "Academic Projects" },
   { id: "certifications", name: "Certifications" },
@@ -210,9 +210,9 @@ import { SITE_METADATA } from "../../consts";
       <section id="research" data-academic-section>
         <div class="section-top">
           <h2>
-            <span>{sectionNumbers.get("research")} /</span> Research & experimentation
+            <span>{sectionNumbers.get("research")} /</span> Research Experience
           </h2>
-          <a href="/research/">Research archive ↗</a>
+          <a href="/research/">All research ↗</a>
         </div>
         <div id="research-records" data-academic-items>
         {research.map((item) => (
@@ -227,10 +227,10 @@ import { SITE_METADATA } from "../../consts";
             </a>
             <div>
               <p class="eyebrow accent">
-                SSRN PREPRINT / {item.data.dateDisplay}
+                SSRN PREPRINT · UNDER REVIEW / {item.data.dateDisplay}
               </p>
               <h3>
-                <a href={`/research/${item.id}/`}>BIM to Augmented Reality</a>
+                <a href={`/research/${item.id}/`}>{item.data.title}</a>
               </h3>
               <p class="muted">{item.data.summary}</p>
               <p class="research-role">{item.data.role} · Final Year Project</p>
