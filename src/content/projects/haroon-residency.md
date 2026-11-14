@@ -1,6 +1,6 @@
 ---
-title: "Haroon Residency BIM & Architectural Modeling"
-shortTitle: "Haroon Residency"
+title: "Integrated Architectural & Structural BIM Modeling of a Multi-Level Residence"
+shortTitle: "Residential BIM Modeling & Documentation"
 type: "Residential Project"
 domains: ["BIM Modeling", "Architectural Modeling", "Solar Study"]
 dateStart: "2025-01-01"
@@ -18,7 +18,7 @@ summary: "Integrated structural and architectural BIM modeling, solar trajectory
 
 <section class="scope-panel" aria-labelledby="key-engineering-scope">
   <h2 id="key-engineering-scope">Key Engineering Scope</h2>
-  <p>Haroon Residency entailed multi-disciplinary digital modeling and technical documentation for a high-end residential project.</p>
+  <p>This residential BIM project (Haroon Residency) entailed multi-disciplinary digital modeling and technical documentation for a modern multi-level residential building.</p>
   <details>
     <summary>Integrated 3D BIM Model</summary>
     <p>Built synchronized architectural and structural assemblies in Autodesk Revit encompassing structural concrete framing and masonry partitions.</p>

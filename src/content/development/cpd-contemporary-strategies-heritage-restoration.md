@@ -1,8 +1,9 @@
 ---
-title: "CPD: Contemporary Strategies for Restoration & Preservation of National Heritages"
+title: "Contemporary Strategies for Restoration & Preservation of National Heritages"
 shortTitle: "Heritage Restoration & Preservation"
 type: "Professional Training"
-organization: "CUI Wah / Pakistan Engineering Council (PEC)"
+organization: "COMSATS University Islamabad, Wah Campus · Pakistan Engineering Council (PEC)"
+location: "Wah Cantt, Pakistan"
 domains: ["Heritage Conservation", "Structural Rehabilitation", "Materials"]
 dateStart: "2025-02-20"
 dateDisplay: "2025"
@@ -12,4 +13,4 @@ media: ["04-certifications-professional-development/display/cpd-contemporary-str
 verificationStatus: "official-document"
 ---
 
-Attended One-Day PEC-accredited CPD Seminar on Contemporary Strategies for the Restoration and Preservation of National Heritages, presented by Prof. Dr. Anwar Khitab at CUI Wah Campus.
+Attended One-Day Continuing Professional Development (CPD) seminar accredited by the Pakistan Engineering Council (PEC) on Contemporary Strategies for the Restoration and Preservation of National Heritages, presented by Prof. Dr. Anwar Khitab at COMSATS University Islamabad (CUI), Wah Campus.

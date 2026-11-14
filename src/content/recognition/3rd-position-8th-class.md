@@ -1,6 +1,6 @@
 ---
-title: "3rd Position in Annual Examination"
-shortTitle: "3rd Position (8th Grade)"
+title: "3rd Position — Grade 8 Annual Academic Examination"
+shortTitle: "3rd Position — Grade 8 Annual Examination"
 type: "Academic Distinction"
 domains: ["Academic Distinction", "Bahria College Karsaz"]
 dateStart: "2018-05-01"

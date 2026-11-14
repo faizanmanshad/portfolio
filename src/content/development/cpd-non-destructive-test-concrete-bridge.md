@@ -1,8 +1,9 @@
 ---
-title: "CPD: Non-Destructive Test Methods for Concrete Bridge"
+title: "Non-Destructive Test Methods for Concrete Bridge"
 shortTitle: "Non-Destructive Testing (NDT)"
 type: "Professional Training"
-organization: "CUI Wah / Pakistan Engineering Council (PEC)"
+organization: "COMSATS University Islamabad, Wah Campus · Pakistan Engineering Council (PEC)"
+location: "Wah Cantt, Pakistan"
 domains: ["Bridge Engineering", "NDT", "Structural Health Monitoring"]
 dateStart: "2024-05-30"
 dateDisplay: "2024"
@@ -12,4 +13,4 @@ media: ["04-certifications-professional-development/display/cpd-non-destructive-
 verificationStatus: "official-document"
 ---
 
-Attended One-Day PEC-accredited CPD Seminar on Non-Destructive Test Methods for Concrete Bridge, presented by Dr. Sardar Kashif ur Rehman at CUI Wah Campus.
+Attended One-Day Continuing Professional Development (CPD) seminar accredited by the Pakistan Engineering Council (PEC) on Non-Destructive Test Methods for Concrete Bridge, presented by Dr. Sardar Kashif ur Rehman at COMSATS University Islamabad (CUI), Wah Campus.

@@ -1,6 +1,6 @@
 ---
-title: "Gold Medalist"
-shortTitle: "Gold Medal"
+title: "Department Gold Medalist — 1st Position in BS Civil Engineering"
+shortTitle: "Department Gold Medal (1st in BS Civil Engineering)"
 type: "Academic Award"
 domains: ["Civil Engineering", "Academics"]
 dateStart: "2026-07-20"

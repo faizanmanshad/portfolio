@@ -1,6 +1,6 @@
 ---
-title: "Prime Minister Laptop Scheme"
-shortTitle: "PM Laptop Award"
+title: "Prime Minister’s Youth Laptop Scheme — National Merit Award"
+shortTitle: "Prime Minister’s Youth Laptop Merit Award"
 type: "Award"
 domains: ["Academics"]
 dateStart: "2023-01-01"

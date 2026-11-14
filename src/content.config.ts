@@ -13,6 +13,7 @@ const commonSchema = z.object({
   dateDisplay: z.string().optional(),
   ongoing: z.boolean().default(false),
   organization: z.string().optional(),
+  orgOrigin: z.string().optional(),
   location: z.string().optional(),
   role: z.string().optional(),
   featured: z.boolean().default(false),

@@ -67,9 +67,9 @@ const groupsUpper = [
   },
   {
     id: "training",
-    title: "Professional Training & CPD",
+    title: "Professional Training",
     link: "/academic/#training",
-    label: "PEC CPD & technical workshops",
+    label: "Technical seminars & workshops",
     items: professionalTraining,
   },
   {
@@ -264,7 +264,7 @@ import { SITE_METADATA } from "../../consts";
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
-          <div id={`${group.id}-records`} data-academic-items class={`record-list ${group.id === 'extracurriculars' || group.id === 'projects' || group.id === 'certifications' || group.id === 'training' ? 'grid-list' : ''}`}>
+          <div id={`${group.id}-records`} data-academic-items class={`record-list ${group.id === 'projects' || group.id === 'certifications' || group.id === 'training' ? 'grid-list' : ''}`}>
             {group.items.map((item: any) => (
               <a
                 class="dossier-record"
@@ -273,22 +273,67 @@ import { SITE_METADATA } from "../../consts";
               >
                 <span class="record-date">{item.data.dateDisplay}</span>
                 <div>
-                  <h3>
-                    {item.data.organization && group.id === "practice"
-                      ? item.data.organization
-                      : item.data.shortTitle || item.data.title}
-                  </h3>
-                  <p class="muted">
-                    {group.id === "practice"
-                      ? `${item.data.role}. ${item.data.summary || ""}`
-                      : group.id === "certifications"
-                      ? `${item.data.organization ? item.data.organization + ' · ' : ''}${item.data.summary || ''}`
-                      : group.id === "training"
-                      ? item.data.summary || item.data.domains?.join(" / ") || ''
-                      : item.data.summary ||
-                        item.data.domains?.join(" / ") ||
-                        item.data.type}
-                  </p>
+                  {group.id === "practice" ? (
+                    <>
+                      <div class="record-head-row">
+                        <h3>{item.data.role || item.data.title}</h3>
+                        {item.data.location && (
+                          <span class="record-location">{item.data.location}</span>
+                        )}
+                      </div>
+                      {item.data.organization && (
+                        <p class="practice-company">
+                          {item.data.organization}
+                          {item.data.orgOrigin && (
+                            <span class="org-origin"> ({item.data.orgOrigin})</span>
+                          )}
+                        </p>
+                      )}
+                      <p class="muted">{item.data.summary || ""}</p>
+                    </>
+                  ) : group.id === "conferences" ? (
+                    <>
+                      <div class="record-head-row">
+                        <h3>{item.data.shortTitle || item.data.title}</h3>
+                        {item.data.location && (
+                          <span class="record-location">{item.data.location}</span>
+                        )}
+                      </div>
+                      <p class="muted">
+                        {item.data.summary ||
+                          item.data.domains?.join(" / ") ||
+                          item.data.type}
+                      </p>
+                    </>
+                  ) : group.id === "recognition" ? (
+                    <>
+                      <h3>{item.data.title}</h3>
+                      <p class="muted">
+                        {item.data.summary ||
+                          item.data.domains?.join(" / ") ||
+                          item.data.type}
+                      </p>
+                    </>
+                  ) : group.id === "certifications" || group.id === "training" ? (
+                    <>
+                      <h3>{item.data.shortTitle || item.data.title}</h3>
+                      {item.data.organization && (
+                        <p class="record-org">{item.data.organization}</p>
+                      )}
+                      <p class="muted">
+                        {item.data.summary || item.data.domains?.join(" / ") || ""}
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <h3>{item.data.shortTitle || item.data.title}</h3>
+                      <p class="muted">
+                        {item.data.summary ||
+                          item.data.domains?.join(" / ") ||
+                          item.data.type}
+                      </p>
+                    </>
+                  )}
                 </div>
                 <span class="record-arrow" aria-hidden="true">
                   ↗
@@ -441,7 +486,7 @@ import { SITE_METADATA } from "../../consts";
             </h2>
             <a href={group.link}>{group.label} ↗</a>
           </div>
-          <div id={`${group.id}-records`} data-academic-items class={`record-list ${group.id === 'extracurriculars' || group.id === 'projects' || group.id === 'certifications' || group.id === 'training' ? 'grid-list' : ''}`}>
+          <div id={`${group.id}-records`} data-academic-items class={`record-list ${group.id === 'extracurriculars' ? 'grid-list' : ''}`}>
             {group.items.map((item: any) => (
               <a
                 class="dossier-record"
@@ -450,21 +495,11 @@ import { SITE_METADATA } from "../../consts";
               >
                 <span class="record-date">{item.data.dateDisplay}</span>
                 <div>
-                  <h3>
-                    {item.data.organization && group.id === "practice"
-                      ? item.data.organization
-                      : item.data.shortTitle || item.data.title}
-                  </h3>
+                  <h3>{item.data.shortTitle || item.data.title}</h3>
                   <p class="muted">
-                    {group.id === "practice"
-                      ? `${item.data.role}. ${item.data.summary || ""}`
-                      : group.id === "certifications"
-                      ? `${item.data.organization ? item.data.organization + ' · ' : ''}${item.data.summary || ''}`
-                      : group.id === "training"
-                      ? item.data.summary || item.data.domains?.join(" / ") || ''
-                      : item.data.summary ||
-                        item.data.domains?.join(" / ") ||
-                        item.data.type}
+                    {item.data.summary ||
+                      item.data.domains?.join(" / ") ||
+                      item.data.type}
                   </p>
                 </div>
                 <span class="record-arrow" aria-hidden="true">
@@ -964,6 +999,35 @@ import { SITE_METADATA } from "../../consts";
     font-size: 14px;
     margin-top: 6px;
     max-width: 650px;
+  }
+  .record-head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .record-location {
+    font: 11px/1.6 var(--font-mono);
+    color: #a1a79e;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .dossier-record .practice-company {
+    font-size: 14.5px;
+    font-weight: 500;
+    color: #d8ddd4;
+    margin-top: 4px;
+  }
+  .org-origin {
+    font-weight: 400;
+    color: #8c9288;
+  }
+  .dossier-record .record-org {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #c8cfc4;
+    margin-top: 4px;
   }
   .record-arrow {
     color: #ed8958;

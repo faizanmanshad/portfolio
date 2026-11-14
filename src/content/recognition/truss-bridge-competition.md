@@ -1,6 +1,6 @@
 ---
-title: "2nd Position - Truss Bridge Competition"
-shortTitle: "Truss Bridge Comp"
+title: "2nd Position — Structural Truss Bridge Design Competition"
+shortTitle: "2nd Position — Truss Bridge Design Competition"
 type: "Competition"
 domains: ["Structural Engineering"]
 dateStart: "2022-12-15"

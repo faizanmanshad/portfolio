@@ -1,8 +1,9 @@
 ---
-title: "CPD: Variation Orders as per FIDIC Conditions of Contract"
+title: "Variation Orders as per FIDIC Conditions of Contract"
 shortTitle: "Variation Orders (FIDIC)"
 type: "Professional Training"
-organization: "CUI Wah / Pakistan Engineering Council (PEC)"
+organization: "COMSATS University Islamabad, Wah Campus · Pakistan Engineering Council (PEC)"
+location: "Wah Cantt, Pakistan"
 domains: ["Construction Contracts", "FIDIC", "Project Management"]
 dateStart: "2025-10-08"
 dateDisplay: "2025"
@@ -12,4 +13,4 @@ media: ["04-certifications-professional-development/display/cpd-variation-orders
 verificationStatus: "official-document"
 ---
 
-Attended One-Day PEC-accredited CPD Seminar on Variation Orders as per FIDIC Conditions of Contract, presented by Engr. Sadaqat Hussain at CUI Wah Campus.
+Attended One-Day Continuing Professional Development (CPD) seminar accredited by the Pakistan Engineering Council (PEC) on Variation Orders as per FIDIC Conditions of Contract, presented by Engr. Sadaqat Hussain at COMSATS University Islamabad (CUI), Wah Campus.

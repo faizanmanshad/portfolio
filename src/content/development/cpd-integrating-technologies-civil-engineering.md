@@ -1,8 +1,9 @@
 ---
-title: "CPD: Integrating Technologies in Civil Engineering"
+title: "Integrating Technologies in Civil Engineering"
 shortTitle: "Integrating Technologies"
 type: "Professional Training"
-organization: "CUI Wah / Pakistan Engineering Council (PEC)"
+organization: "COMSATS University Islamabad, Wah Campus · Pakistan Engineering Council (PEC)"
+location: "Wah Cantt, Pakistan"
 domains: ["Digital Construction", "Construction Tech", "Automation"]
 dateStart: "2023-09-27"
 dateDisplay: "2023"
@@ -12,4 +13,4 @@ media: ["04-certifications-professional-development/display/cpd-integrating-tech
 verificationStatus: "official-document"
 ---
 
-Attended PEC-accredited CPD Seminar on Integrating Technologies in Civil Engineering, presented by Dr. Naveed Anwar at CUI Wah Campus.
+Attended Continuing Professional Development (CPD) seminar accredited by the Pakistan Engineering Council (PEC) on Integrating Technologies in Civil Engineering, presented by Dr. Naveed Anwar at COMSATS University Islamabad (CUI), Wah Campus.

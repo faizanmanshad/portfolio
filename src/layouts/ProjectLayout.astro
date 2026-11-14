@@ -34,6 +34,21 @@ const backLinkLabel = entry.collection === 'experience' ? 'Professional Experien
       {data.deck && <p class="project-deck">{data.deck}</p>}
       
       <div class="project-details">
+        {data.organization && (
+          <div class="detail-group">
+            <span class="detail-label text-muted mono">ORGANIZATION</span>
+            <span class="detail-value">
+              {data.organization}
+              {data.orgOrigin && <span class="detail-origin"> ({data.orgOrigin})</span>}
+            </span>
+          </div>
+        )}
+        {data.location && (
+          <div class="detail-group">
+            <span class="detail-label text-muted mono">LOCATION</span>
+            <span class="detail-value">{data.location}</span>
+          </div>
+        )}
         {data.domains && data.domains.length > 0 && (
           <div class="detail-group">
             <span class="detail-label text-muted mono">DOMAIN</span>
@@ -144,6 +159,11 @@ const backLinkLabel = entry.collection === 'experience' ? 'Professional Experien
   .detail-value {
     font-size: 0.9375rem;
     font-weight: 500;
+  }
+
+  .detail-origin {
+    font-weight: 400;
+    color: var(--c-text-muted);
   }
 
   .project-links {

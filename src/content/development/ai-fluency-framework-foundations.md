@@ -2,7 +2,7 @@
 title: "AI Fluency: Framework & Foundations"
 shortTitle: "AI Fluency Certification"
 type: "Certification"
-organization: "Anthropic / UCC / HEA"
+organization: "Anthropic · University College Cork · Higher Education Authority"
 domains: ["Artificial Intelligence", "Digital Practice"]
 dateStart: "2026-04-15"
 dateDisplay: "2026"

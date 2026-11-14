@@ -1,6 +1,6 @@
 ---
-title: "Tahir Residency BIM & Architectural Modeling"
-shortTitle: "Tahir Residency"
+title: "BIM Modeling & Solar Orientation Study of a Residential Project"
+shortTitle: "BIM Modeling of a Residential Project"
 type: "Residential Project"
 domains: ["BIM Modeling", "Architectural Modeling", "Solar Study"]
 dateStart: "2025-01-01"
@@ -18,7 +18,7 @@ summary: "Comprehensive structural and architectural modeling, solar orientation
 
 <section class="scope-panel" aria-labelledby="tahir-scope">
   <h2 id="tahir-scope">Key Engineering Scope</h2>
-  <p>Tahir Residency executed end-to-end parametric modeling and technical documentation for a contemporary multi-level residential dwelling.</p>
+  <p>This residential BIM project (Tahir Residency) executed end-to-end parametric modeling and technical documentation for a contemporary multi-level residential dwelling.</p>
   <details>
     <summary>Parametric Architectural Modeling</summary>
     <p>Developed architectural envelopes, internal layouts, curtain glazing, and custom families in Autodesk Revit.</p>

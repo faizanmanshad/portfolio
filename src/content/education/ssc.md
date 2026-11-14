@@ -1,6 +1,6 @@
 ---
-title: "Secondary / School Education: Secondary School Certificate (SSC)"
-shortTitle: "SSC (Computer Science)"
+title: "Secondary School — Grades 9–10 (SSC Computer Science)"
+shortTitle: "Secondary School / Grades 9–10 (SSC Computer Science)"
 type: "Certificate"
 dateDisplay: "2018 - 2020"
 priority: 3

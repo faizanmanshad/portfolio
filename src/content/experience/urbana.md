@@ -8,6 +8,7 @@ dateStart: "2026-06-20"
 dateDisplay: "Jun 2026 - Present"
 ongoing: true
 organization: "Urbana"
+orgOrigin: "Australian-based company"
 location: "Remote, Australia"
 role: "Revit Drafter"
 priority: 2
@@ -24,7 +25,7 @@ summary: "Drafting parametric Revit BIM models and preparing coordinated General
 
 <section class="scope-panel" aria-labelledby="key-responsibilities--drafting-scope">
   <h2 id="key-responsibilities--drafting-scope">Key Responsibilities &amp; Drafting Scope</h2>
-  <p>Working as a remote Revit Drafter (20 hours per week) with <a href="https://urbana.au/">Urbana</a> (<a href="https://urbana.au/quick-links/team/#Faizan-Manshad">Team Profile</a>), supporting modular public infrastructure projects across Australia, including prefabricated pedestrian footbridges, access boardwalks, and park structures.</p>
+  <p>Working as a remote Revit Drafter (20 hours per week) with <a href="https://urbana.au/">Urbana</a> (Australian-based company; <a href="https://urbana.au/quick-links/team/#Faizan-Manshad">Team Profile</a>), supporting modular public infrastructure projects across Australia, including prefabricated pedestrian footbridges, access boardwalks, and park structures.</p>
   <details>
     <summary>Parametric 3D BIM Modeling</summary>
     <p>Develop and update structural models in Autodesk Revit (LOD 300–350), detailing steel truss assemblies, timber/composite decking, balustrade systems, and foundation interfaces.</p>

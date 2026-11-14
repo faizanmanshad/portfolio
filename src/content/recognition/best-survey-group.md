@@ -1,6 +1,6 @@
 ---
-title: "Best Survey Group"
-shortTitle: "Best Survey Group"
+title: "Best Survey Group Award — Undergraduate Field Surveying Camp"
+shortTitle: "Best Survey Group — Field Surveying Camp"
 type: "Award"
 domains: ["Surveying", "Field Work"]
 dateStart: "2024-08-19"

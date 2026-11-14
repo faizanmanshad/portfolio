@@ -1,6 +1,6 @@
 ---
-title: "Intermediate / College Education: Higher Secondary School Certificate (HSSC)"
-shortTitle: "HSSC (Pre-Engineering)"
+title: "Upper Secondary / High School — Grades 11–12 (HSSC Pre-Engineering)"
+shortTitle: "High School / Grades 11–12 (HSSC Pre-Engineering)"
 type: "Certificate"
 dateDisplay: "2020 - 2022"
 priority: 2

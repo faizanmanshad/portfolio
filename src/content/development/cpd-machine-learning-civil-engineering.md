@@ -1,8 +1,9 @@
 ---
-title: "CPD: Impact of Machine Learning in the Field of Civil Engineering"
+title: "Impact of Machine Learning in the Field of Civil Engineering"
 shortTitle: "Machine Learning in Civil"
 type: "Professional Training"
-organization: "CUI Wah / Pakistan Engineering Council (PEC)"
+organization: "COMSATS University Islamabad, Wah Campus · Pakistan Engineering Council (PEC)"
+location: "Wah Cantt, Pakistan"
 domains: ["Machine Learning", "Civil Engineering", "Predictive Modeling"]
 dateStart: "2022-10-13"
 dateDisplay: "2022"
@@ -12,4 +13,4 @@ media: ["04-certifications-professional-development/display/cpd-impact-of-machin
 verificationStatus: "official-document"
 ---
 
-Attended PEC-accredited CPD Seminar on the Impact of Machine Learning in the Field of Civil Engineering, presented by Dr. Muhammad Faisal Javed at CUI Wah Campus.
+Attended Continuing Professional Development (CPD) seminar accredited by the Pakistan Engineering Council (PEC) on the Impact of Machine Learning in the Field of Civil Engineering, presented by Dr. Muhammad Faisal Javed at COMSATS University Islamabad (CUI), Wah Campus.

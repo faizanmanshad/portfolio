@@ -2,7 +2,7 @@
 title: "One-Day Webinar on Application of AI/ML in Civil Engineering"
 shortTitle: "AI/ML in Civil Engineering"
 type: "Professional Training"
-organization: "Pakistan Engineers Forum (PEF - KP/GB)"
+organization: "Pakistan Engineers Forum (PEF)"
 domains: ["Artificial Intelligence", "Civil Engineering"]
 dateStart: "2024-09-12"
 dateDisplay: "2024"

@@ -2,7 +2,8 @@
 title: "One-Day Workshop on Introduction to R"
 shortTitle: "Introduction to R Workshop"
 type: "Professional Training"
-organization: "UNESCO Chair on Knowledge Systems for IWRM / CUI Wah"
+organization: "UNESCO Chair on Knowledge Systems for Integrated Water Resources Management · COMSATS University Islamabad, Wah Campus"
+location: "Wah Cantt, Pakistan"
 domains: ["Data Science", "Statistical Analysis", "Hydrology"]
 dateStart: "2023-11-23"
 dateDisplay: "2023"

@@ -1,8 +1,9 @@
 ---
-title: "CPD: Sustainable Urban Planning and Design"
+title: "Sustainable Urban Planning and Design"
 shortTitle: "Sustainable Urban Planning"
 type: "Professional Training"
-organization: "CUI Wah / Pakistan Engineering Council (PEC)"
+organization: "COMSATS University Islamabad, Wah Campus · Pakistan Engineering Council (PEC)"
+location: "Wah Cantt, Pakistan"
 domains: ["Urban Planning", "Sustainability", "Infrastructure"]
 dateStart: "2025-09-24"
 dateDisplay: "2025"
@@ -12,4 +13,4 @@ media: ["04-certifications-professional-development/display/cpd-sustainable-urba
 verificationStatus: "official-document"
 ---
 
-Attended One-Day PEC-accredited CPD Seminar on Sustainable Urban Planning and Design, presented by Ms. Fauzia Rizwan at CUI Wah Campus.
+Attended One-Day Continuing Professional Development (CPD) seminar accredited by the Pakistan Engineering Council (PEC) on Sustainable Urban Planning and Design, presented by Ms. Fauzia Rizwan at COMSATS University Islamabad (CUI), Wah Campus.

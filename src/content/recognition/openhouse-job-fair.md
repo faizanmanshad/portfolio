@@ -1,6 +1,6 @@
 ---
-title: "3rd Position - OpenHouse Job Fair"
-shortTitle: "OpenHouse Job Fair"
+title: "3rd Position — Final Year Project Exhibition (Open House & Job Fair)"
+shortTitle: "3rd Position — Final Year Project Exhibition"
 type: "Project Exhibition"
 domains: ["Civil Engineering", "Exhibition"]
 dateStart: "2026-06-03"

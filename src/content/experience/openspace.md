@@ -1,5 +1,5 @@
 ---
-title: "Track Delivery Specialist"
+title: "Associate Civil Engineer"
 shortTitle: "OpenSpace"
 type: "Professional Experience"
 domains: ["BIM", "Digital Construction", "Reality Capture"]
@@ -8,8 +8,9 @@ dateStart: "2026-08-17"
 dateDisplay: "Aug 2026 - Present"
 ongoing: true
 organization: "OpenSpace"
+orgOrigin: "US-based company"
 location: "Islamabad, Pakistan"
-role: "Track Delivery Specialist"
+role: "Associate Civil Engineer"
 priority: 1
 verificationStatus: "official-document"
 media:
@@ -22,7 +23,7 @@ summary: "Reviewing 360° reality capture data against design sheets and BIM coo
 
 <section class="scope-panel" aria-labelledby="key-responsibilities--workflow">
   <h2 id="key-responsibilities--workflow">Key Responsibilities &amp; Workflow</h2>
-  <p>Working as a Track Delivery Specialist at <a href="https://www.openspace.ai/">OpenSpace</a>, reviewing high-frequency 360° reality capture site data to verify construction progress and validate trade milestones across commercial building projects.</p>
+  <p>Working as an Associate Civil Engineer at <a href="https://www.openspace.ai/">OpenSpace</a> (US-based company), reviewing high-frequency 360° reality capture site data to verify construction progress and validate trade milestones across commercial building projects.</p>
   <details>
     <summary>Reality Capture Verification</summary>
     <p>Review 360° photographic site walkthroughs, mapping captured field conditions against georeferenced floor plans, CAD sheets, and BIM coordinates.</p>

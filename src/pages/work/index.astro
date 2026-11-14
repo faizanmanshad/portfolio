@@ -108,14 +108,23 @@ const allItems = experience.sort((a, b) => {
                 <div class="card-header">
                   <div class="org-group">
                     <span class="card-index mono">0{idx + 1} //</span>
-                    <h2 class="org-name">{item.data.organization}</h2>
-                    <span class="location-tag mono">{item.data.location}</span>
+                    <h2 class="org-name">{item.data.role || item.data.title}</h2>
                   </div>
-                  <span class="date-pill mono">{item.data.dateDisplay}</span>
+                  <div class="header-right">
+                    {item.data.location && (
+                      <span class="location-tag mono">{item.data.location}</span>
+                    )}
+                    <span class="date-pill mono">{item.data.dateDisplay}</span>
+                  </div>
                 </div>
 
                 <div class="role-bar">
-                  <span class="role-title">{item.data.role}</span>
+                  <span class="role-title">
+                    {item.data.organization}
+                    {item.data.orgOrigin && (
+                      <span class="org-origin"> ({item.data.orgOrigin})</span>
+                    )}
+                  </span>
                   {item.data.ongoing && (
                     <span class="status-live mono">
                       <span class="live-dot"></span> CURRENT ROLE
@@ -400,7 +409,16 @@ const allItems = experience.sort((a, b) => {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
+    gap: var(--s-3);
     margin-bottom: var(--s-3);
+  }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .org-group {
@@ -440,12 +458,18 @@ const allItems = experience.sort((a, b) => {
     align-items: center;
     gap: var(--s-4);
     margin-bottom: var(--s-4);
+    flex-wrap: wrap;
   }
 
   .role-title {
     font-size: 1.15rem;
     color: var(--c-accent);
     font-weight: 500;
+  }
+
+  .org-origin {
+    font-weight: 400;
+    color: #8e9587;
   }
 
   .status-live {

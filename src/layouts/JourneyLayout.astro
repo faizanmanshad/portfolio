@@ -38,7 +38,7 @@ const archiveHref =
 
 const archiveLabel =
   entry.collection === "development"
-    ? "Certifications & Training"
+    ? (entry.data.type === "Professional Training" ? "Professional Training" : "Certifications")
     : entry.data.type === "Community Service"
     ? "Volunteering & Community Services"
     : entry.data.type === "Conference"
@@ -86,8 +86,25 @@ const isAcademicDatabase = entry.id === "academic-resource-database" || !!entry.
             <span> / {entry.data.dateDisplay}</span>
           </p>
           <h1>{entry.data.title}</h1>
-          {entry.data.type && <p class="institution">{entry.data.type}</p>}
-          {entry.data.domains && entry.data.domains.length > 0 && entry.data.domains.join(", ") !== entry.data.type && (
+          {entry.data.organization ? (
+            <p class="institution">{entry.data.organization}</p>
+          ) : (
+            entry.data.type && <p class="institution">{entry.data.type}</p>
+          )}
+          {(entry.data.organization || entry.data.location) && (
+            <p class="location">
+              {[
+                entry.data.organization ? entry.data.type : null,
+                entry.data.location,
+                !entry.data.location && entry.data.domains && entry.data.domains.length > 0 && entry.data.domains.join(", ") !== entry.data.type
+                  ? entry.data.domains.join(", ")
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+          )}
+          {!entry.data.organization && !entry.data.location && entry.data.domains && entry.data.domains.length > 0 && entry.data.domains.join(", ") !== entry.data.type && (
             <p class="location">{entry.data.domains.join(", ")}</p>
           )}
           <p class="intro">{entry.data.summary}</p>

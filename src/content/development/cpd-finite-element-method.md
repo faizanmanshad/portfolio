@@ -1,8 +1,9 @@
 ---
-title: "CPD: Finite Element Method: A Modern Tool for Structural Analysis"
+title: "Finite Element Method: A Modern Tool for Structural Analysis"
 shortTitle: "Finite Element Method (FEM)"
 type: "Professional Training"
-organization: "CUI Wah / Pakistan Engineering Council (PEC)"
+organization: "COMSATS University Islamabad, Wah Campus · Pakistan Engineering Council (PEC)"
+location: "Wah Cantt, Pakistan"
 domains: ["Structural Analysis", "FEM", "Computational Mechanics"]
 dateStart: "2025-05-15"
 dateDisplay: "2025"
@@ -12,4 +13,4 @@ media: ["04-certifications-professional-development/display/cpd-finite-element-m
 verificationStatus: "official-document"
 ---
 
-Attended One-Day PEC-accredited CPD Seminar on the Finite Element Method: A Modern Tool for Structural Analysis in Civil Engineering, presented by Dr. Engr. Zahid Shabir at CUI Wah Campus.
+Attended One-Day Continuing Professional Development (CPD) seminar accredited by the Pakistan Engineering Council (PEC) on the Finite Element Method: A Modern Tool for Structural Analysis in Civil Engineering, presented by Dr. Engr. Zahid Shabir at COMSATS University Islamabad (CUI), Wah Campus.
