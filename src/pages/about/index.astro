@@ -4,8 +4,12 @@ import { getCollection } from "astro:content";
 import { Image } from "astro:assets";
 import portrait from "../../assets/faizan.jpg";
 
-const journey = await getCollection("journey");
-const allItems = journey.sort((a, b) => {
+const [extracurriculars, volunteering, conferences] = await Promise.all([
+  getCollection("extracurriculars"),
+  getCollection("volunteering"),
+  getCollection("conferences"),
+]);
+const allItems = [...extracurriculars, ...volunteering, ...conferences].sort((a, b) => {
   return (a.data.priority || 99) - (b.data.priority || 99);
 });
 ---
@@ -148,7 +152,7 @@ const allItems = journey.sort((a, b) => {
 
           return (
             <article class="journey-card" data-category={category}>
-              <a href={`/journey/${item.id}/`} class="card-inner">
+              <a href={`/${item.collection}/${item.id}/`} class="card-inner">
                 <div class="card-top">
                   <div class="card-index-group">
                     <span class="card-num mono">#{String(idx + 1).padStart(2, '0')}</span>

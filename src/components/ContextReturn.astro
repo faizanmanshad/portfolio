@@ -58,11 +58,15 @@
     const parts = current.split("/").filter(Boolean);
     const parent =
       parts.length > 1
-        ? parts[0] === "journey"
+        ? parts[0] === "extracurriculars" || parts[0] === "volunteering"
           ? "/about/"
-          : parts[0] === "experience"
-            ? "/work/"
-            : `/${parts[0]}/`
+          : parts[0] === "certifications" ||
+              parts[0] === "training" ||
+              parts[0] === "conferences"
+            ? `/academic/#${parts[0]}`
+            : parts[0] === "experience"
+              ? "/work/"
+              : `/${parts[0]}/`
         : "/";
     previous = { href: parent, label: labelFor(parent) };
   }

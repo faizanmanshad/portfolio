@@ -18,7 +18,11 @@ const { currentPath = "/", mode = "explore" } = Astro.props;
 const path = `${currentPath.replace(/\/+$/, "")}/`;
 const isActive = (href: string) => path.startsWith(href)
   || (href === "/work/" && path.startsWith("/experience/"))
-  || (href === "/about/" && path.startsWith("/journey/"));
+  || (href === "/about/" && (
+    path.startsWith("/extracurriculars/")
+    || path.startsWith("/volunteering/")
+    || path.startsWith("/conferences/")
+  ));
 
 const navLinks = [
   { label: "Work", href: "/work/" },

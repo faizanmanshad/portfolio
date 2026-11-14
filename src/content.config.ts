@@ -80,13 +80,28 @@ const recognition = defineCollection({
   schema: commonSchema,
 });
 
-const development = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/development" }),
+const certifications = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/certifications" }),
   schema: commonSchema,
 });
 
-const journey = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/journey" }),
+const training = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/training" }),
+  schema: commonSchema,
+});
+
+const conferences = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/conferences" }),
+  schema: commonSchema,
+});
+
+const extracurriculars = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/extracurriculars" }),
+  schema: commonSchema,
+});
+
+const volunteering = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/volunteering" }),
   schema: commonSchema,
 });
 
@@ -100,7 +115,10 @@ export const collections = {
   experience,
   research,
   recognition,
-  development,
-  journey,
+  certifications,
+  training,
+  conferences,
+  extracurriculars,
+  volunteering,
   education,
 };

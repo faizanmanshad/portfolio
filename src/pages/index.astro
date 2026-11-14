@@ -19,7 +19,9 @@ const ar = research.find((item) => item.id === "bim-to-ar")!;
 const journeyCollections = await Promise.all([
   getCollection("education"),
   getCollection("recognition"),
-  getCollection("journey"),
+  getCollection("extracurriculars"),
+  getCollection("volunteering"),
+  getCollection("conferences"),
   getCollection("experience"),
   getCollection("projects"),
   getCollection("research"),
@@ -27,7 +29,9 @@ const journeyCollections = await Promise.all([
 const categoryNames: Record<string, string> = {
   education: "Education",
   recognition: "Recognition",
-  journey: "Community",
+  extracurriculars: "Community",
+  volunteering: "Community",
+  conferences: "Conferences",
   experience: "Professional Experience",
   projects: "Projects",
   research: "Research",
@@ -286,11 +290,41 @@ import { SITE_METADATA } from "../consts";
                   <svg viewBox="0 0 600 320" fill="none">
                     <!-- Structural Grid & Axis Lines -->
                     <g stroke="#b6c1a512" stroke-width="1">
-                      <line x1="96" y1="32" x2="96" y2="275" stroke-dasharray="3 3" />
-                      <line x1="205" y1="32" x2="205" y2="275" stroke-dasharray="3 3" />
-                      <line x1="300" y1="24" x2="300" y2="275" stroke-dasharray="4 4" />
-                      <line x1="395" y1="32" x2="395" y2="275" stroke-dasharray="3 3" />
-                      <line x1="504" y1="32" x2="504" y2="275" stroke-dasharray="3 3" />
+                      <line
+                        x1="96"
+                        y1="32"
+                        x2="96"
+                        y2="275"
+                        stroke-dasharray="3 3"
+                      />
+                      <line
+                        x1="205"
+                        y1="32"
+                        x2="205"
+                        y2="275"
+                        stroke-dasharray="3 3"
+                      />
+                      <line
+                        x1="300"
+                        y1="24"
+                        x2="300"
+                        y2="275"
+                        stroke-dasharray="4 4"
+                      />
+                      <line
+                        x1="395"
+                        y1="32"
+                        x2="395"
+                        y2="275"
+                        stroke-dasharray="3 3"
+                      />
+                      <line
+                        x1="504"
+                        y1="32"
+                        x2="504"
+                        y2="275"
+                        stroke-dasharray="3 3"
+                      />
                       <line x1="45" y1="152" x2="555" y2="152" />
                       <line x1="45" y1="224" x2="555" y2="224" />
                     </g>
@@ -302,7 +336,11 @@ import { SITE_METADATA } from "../consts";
                       stroke="#8b9587"
                       stroke-width="1.4"
                     />
-                    <g stroke="#8b9587" stroke-width="0.9" stroke-opacity="0.55">
+                    <g
+                      stroke="#8b9587"
+                      stroke-width="0.9"
+                      stroke-opacity="0.55"
+                    >
                       <line x1="85" y1="243" x2="515" y2="243" />
                       <line x1="155" y1="224" x2="130" y2="262" />
                       <line x1="230" y1="224" x2="215" y2="262" />
@@ -311,30 +349,124 @@ import { SITE_METADATA } from "../consts";
                       <line x1="445" y1="224" x2="470" y2="262" />
                     </g>
                     <!-- Isolated RC Footing Pads -->
-                    <rect x="82" y="220" width="28" height="8" fill="#26312b" stroke="#c6c1a7" stroke-width="1.2" />
-                    <rect x="191" y="220" width="28" height="8" fill="#26312b" stroke="#c6c1a7" stroke-width="1.2" />
-                    <rect x="286" y="220" width="28" height="8" fill="#26312b" stroke="#e97939" stroke-width="1.4" />
-                    <rect x="381" y="220" width="28" height="8" fill="#26312b" stroke="#c6c1a7" stroke-width="1.2" />
-                    <rect x="490" y="220" width="28" height="8" fill="#26312b" stroke="#c6c1a7" stroke-width="1.2" />
+                    <rect
+                      x="82"
+                      y="220"
+                      width="28"
+                      height="8"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.2"
+                    />
+                    <rect
+                      x="191"
+                      y="220"
+                      width="28"
+                      height="8"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.2"
+                    />
+                    <rect
+                      x="286"
+                      y="220"
+                      width="28"
+                      height="8"
+                      fill="#26312b"
+                      stroke="#e97939"
+                      stroke-width="1.4"
+                    />
+                    <rect
+                      x="381"
+                      y="220"
+                      width="28"
+                      height="8"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.2"
+                    />
+                    <rect
+                      x="490"
+                      y="220"
+                      width="28"
+                      height="8"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.2"
+                    />
 
                     <!-- Left & Right Twin Minaret Structural Frames -->
                     <g stroke="#c6c1a7" stroke-width="1.5">
                       <!-- Left Minaret -->
-                      <rect x="88" y="78" width="16" height="142" fill="#202823" />
+                      <rect
+                        x="88"
+                        y="78"
+                        width="16"
+                        height="142"
+                        fill="#202823"
+                      />
                       <path d="M88 78 L96 46 L104 78 Z" fill="#26312b" />
                       <line x1="96" y1="34" x2="96" y2="46" />
-                      <line x1="83" y1="112" x2="109" y2="112" stroke="#e97939" stroke-width="1.8" />
+                      <line
+                        x1="83"
+                        y1="112"
+                        x2="109"
+                        y2="112"
+                        stroke="#e97939"
+                        stroke-width="1.8"
+                      />
                       <line x1="85" y1="152" x2="107" y2="152" />
-                      <line x1="88" y1="112" x2="104" y2="152" stroke="#8b9587" stroke-width="1" />
-                      <line x1="104" y1="112" x2="88" y2="152" stroke="#8b9587" stroke-width="1" />
+                      <line
+                        x1="88"
+                        y1="112"
+                        x2="104"
+                        y2="152"
+                        stroke="#8b9587"
+                        stroke-width="1"
+                      />
+                      <line
+                        x1="104"
+                        y1="112"
+                        x2="88"
+                        y2="152"
+                        stroke="#8b9587"
+                        stroke-width="1"
+                      />
                       <!-- Right Minaret -->
-                      <rect x="496" y="78" width="16" height="142" fill="#202823" />
+                      <rect
+                        x="496"
+                        y="78"
+                        width="16"
+                        height="142"
+                        fill="#202823"
+                      />
                       <path d="M496 78 L504 46 L512 78 Z" fill="#26312b" />
                       <line x1="504" y1="34" x2="504" y2="46" />
-                      <line x1="491" y1="112" x2="517" y2="112" stroke="#e97939" stroke-width="1.8" />
+                      <line
+                        x1="491"
+                        y1="112"
+                        x2="517"
+                        y2="112"
+                        stroke="#e97939"
+                        stroke-width="1.8"
+                      />
                       <line x1="493" y1="152" x2="515" y2="152" />
-                      <line x1="496" y1="112" x2="512" y2="152" stroke="#8b9587" stroke-width="1" />
-                      <line x1="512" y1="112" x2="496" y2="152" stroke="#8b9587" stroke-width="1" />
+                      <line
+                        x1="496"
+                        y1="112"
+                        x2="512"
+                        y2="152"
+                        stroke="#8b9587"
+                        stroke-width="1"
+                      />
+                      <line
+                        x1="512"
+                        y1="112"
+                        x2="496"
+                        y2="152"
+                        stroke="#8b9587"
+                        stroke-width="1"
+                      />
                     </g>
 
                     <!-- Central Ribbed Mosque Dome & Structural Drum -->
@@ -383,8 +515,22 @@ import { SITE_METADATA } from "../consts";
                       <line x1="262" y1="152" x2="262" y2="220" />
                       <line x1="338" y1="152" x2="338" y2="220" />
                       <line x1="395" y1="152" x2="395" y2="220" />
-                      <line x1="138" y1="184" x2="262" y2="184" stroke="#8b9587" stroke-width="1.2" />
-                      <line x1="338" y1="184" x2="462" y2="184" stroke="#8b9587" stroke-width="1.2" />
+                      <line
+                        x1="138"
+                        y1="184"
+                        x2="262"
+                        y2="184"
+                        stroke="#8b9587"
+                        stroke-width="1.2"
+                      />
+                      <line
+                        x1="338"
+                        y1="184"
+                        x2="462"
+                        y2="184"
+                        stroke="#8b9587"
+                        stroke-width="1.2"
+                      />
                     </g>
 
                     <!-- Flanking Colonnade Pointed Arches -->
@@ -510,11 +656,41 @@ import { SITE_METADATA } from "../consts";
                   <svg viewBox="0 0 600 320" fill="none">
                     <!-- Elevation Datum & Structural Grid Axes -->
                     <g stroke="#b6c1a514" stroke-width="1">
-                      <line x1="125" y1="42" x2="125" y2="265" stroke-dasharray="3 3" />
-                      <line x1="215" y1="42" x2="215" y2="265" stroke-dasharray="3 3" />
-                      <line x1="305" y1="42" x2="305" y2="265" stroke-dasharray="3 3" />
-                      <line x1="395" y1="42" x2="395" y2="265" stroke-dasharray="3 3" />
-                      <line x1="485" y1="42" x2="485" y2="265" stroke-dasharray="3 3" />
+                      <line
+                        x1="125"
+                        y1="42"
+                        x2="125"
+                        y2="265"
+                        stroke-dasharray="3 3"
+                      />
+                      <line
+                        x1="215"
+                        y1="42"
+                        x2="215"
+                        y2="265"
+                        stroke-dasharray="3 3"
+                      />
+                      <line
+                        x1="305"
+                        y1="42"
+                        x2="305"
+                        y2="265"
+                        stroke-dasharray="3 3"
+                      />
+                      <line
+                        x1="395"
+                        y1="42"
+                        x2="395"
+                        y2="265"
+                        stroke-dasharray="3 3"
+                      />
+                      <line
+                        x1="485"
+                        y1="42"
+                        x2="485"
+                        y2="265"
+                        stroke-dasharray="3 3"
+                      />
                       <line x1="65" y1="84" x2="545" y2="84" />
                       <line x1="65" y1="152" x2="545" y2="152" />
                       <line x1="65" y1="220" x2="545" y2="220" />
@@ -550,8 +726,19 @@ import { SITE_METADATA } from "../consts";
                       stroke="#8b9587"
                       stroke-width="1.2"
                     />
-                    <line x1="172" y1="94" x2="172" y2="152" stroke="#8b9587" stroke-width="1" />
-                    <g stroke="#c6c1a7" stroke-width="1.2" stroke-opacity="0.75">
+                    <line
+                      x1="172"
+                      y1="94"
+                      x2="172"
+                      y2="152"
+                      stroke="#8b9587"
+                      stroke-width="1"
+                    />
+                    <g
+                      stroke="#c6c1a7"
+                      stroke-width="1.2"
+                      stroke-opacity="0.75"
+                    >
                       <line x1="224" y1="84" x2="224" y2="152" />
                       <line x1="236" y1="84" x2="236" y2="152" />
                       <line x1="248" y1="84" x2="248" y2="152" />
@@ -570,8 +757,22 @@ import { SITE_METADATA } from "../consts";
                       stroke="#8b9587"
                       stroke-width="1.2"
                     />
-                    <line x1="172" y1="162" x2="172" y2="220" stroke="#8b9587" stroke-width="1" />
-                    <line x1="210" y1="162" x2="210" y2="220" stroke="#8b9587" stroke-width="1" />
+                    <line
+                      x1="172"
+                      y1="162"
+                      x2="172"
+                      y2="220"
+                      stroke="#8b9587"
+                      stroke-width="1"
+                    />
+                    <line
+                      x1="210"
+                      y1="162"
+                      x2="210"
+                      y2="220"
+                      stroke="#8b9587"
+                      stroke-width="1"
+                    />
                     <!-- Cantilevered Roof & Balcony Overhang Slabs -->
                     <path
                       d="M92 84 L120 74 H305 V84 Z"
@@ -600,10 +801,42 @@ import { SITE_METADATA } from "../consts";
                       stroke-width="1.4"
                     />
                     <!-- Structural RC Roof Beam, Floor Slab & Columns -->
-                    <rect x="305" y="78" width="192" height="8" fill="#26312b" stroke="#c6c1a7" stroke-width="1.6" />
-                    <rect x="305" y="148" width="188" height="7" fill="#26312b" stroke="#c6c1a7" stroke-width="1.6" />
-                    <rect x="391" y="86" width="8" height="134" fill="#26312b" stroke="#c6c1a7" stroke-width="1.4" />
-                    <rect x="481" y="86" width="8" height="134" fill="#26312b" stroke="#c6c1a7" stroke-width="1.4" />
+                    <rect
+                      x="305"
+                      y="78"
+                      width="192"
+                      height="8"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.6"
+                    />
+                    <rect
+                      x="305"
+                      y="148"
+                      width="188"
+                      height="7"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.6"
+                    />
+                    <rect
+                      x="391"
+                      y="86"
+                      width="8"
+                      height="134"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.4"
+                    />
+                    <rect
+                      x="481"
+                      y="86"
+                      width="8"
+                      height="134"
+                      fill="#26312b"
+                      stroke="#c6c1a7"
+                      stroke-width="1.4"
+                    />
 
                     <!-- Longitudinal Section Stepped RC Staircase & Handrail (Highlighted) -->
                     <path
@@ -621,14 +854,40 @@ import { SITE_METADATA } from "../consts";
                       stroke-dasharray="4 3"
                     />
                     <!-- Upper Floor Braced BIM Analytical Bay -->
-                    <line x1="399" y1="86" x2="481" y2="148" stroke="#8b9587" stroke-width="1.1" stroke-dasharray="4 4" />
-                    <line x1="481" y1="86" x2="399" y2="148" stroke="#8b9587" stroke-width="1.1" stroke-dasharray="4 4" />
+                    <line
+                      x1="399"
+                      y1="86"
+                      x2="481"
+                      y2="148"
+                      stroke="#8b9587"
+                      stroke-width="1.1"
+                      stroke-dasharray="4 4"
+                    />
+                    <line
+                      x1="481"
+                      y1="86"
+                      x2="399"
+                      y2="148"
+                      stroke="#8b9587"
+                      stroke-width="1.1"
+                      stroke-dasharray="4 4"
+                    />
 
                     <!-- Plinth Beam & Below-Grade Stepped RC Isolated Footings -->
-                    <line x1="78" y1="220" x2="522" y2="220" stroke="#c6c1a7" stroke-width="2.2" />
+                    <line
+                      x1="78"
+                      y1="220"
+                      x2="522"
+                      y2="220"
+                      stroke="#c6c1a7"
+                      stroke-width="2.2"
+                    />
                     <g fill="#232d27" stroke="#c6c1a7" stroke-width="1.4">
                       <path d="M115 220 V236 H103 V246 H147 V236 H135 V220" />
-                      <path d="M295 220 V236 H281 V246 H329 V236 H315 V220" stroke="#e97939" />
+                      <path
+                        d="M295 220 V236 H281 V246 H329 V236 H315 V220"
+                        stroke="#e97939"
+                      />
                       <path d="M385 220 V236 H373 V246 H417 V236 H405 V220" />
                       <path d="M475 220 V236 H463 V246 H507 V236 H495 V220" />
                     </g>
@@ -646,9 +905,24 @@ import { SITE_METADATA } from "../consts";
                     <polygon points="305,40 315,46 305,52" fill="#e97939" />
                     <polygon points="305,264 315,258 305,252" fill="#e97939" />
                     <!-- Right-Side Level Datum Triangles -->
-                    <polygon points="528,84 536,78 520,78" stroke="#e97939" stroke-width="1.3" fill="none" />
-                    <polygon points="528,152 536,146 520,146" stroke="#c6c1a7" stroke-width="1.3" fill="none" />
-                    <polygon points="528,220 536,214 520,214" stroke="#c6c1a7" stroke-width="1.3" fill="none" />
+                    <polygon
+                      points="528,84 536,78 520,78"
+                      stroke="#e97939"
+                      stroke-width="1.3"
+                      fill="none"
+                    />
+                    <polygon
+                      points="528,152 536,146 520,146"
+                      stroke="#c6c1a7"
+                      stroke-width="1.3"
+                      fill="none"
+                    />
+                    <polygon
+                      points="528,220 536,214 520,214"
+                      stroke="#c6c1a7"
+                      stroke-width="1.3"
+                      fill="none"
+                    />
                     <circle cx="305" cy="148" r="4" fill="#e97939" />
                     <circle cx="395" cy="148" r="3.5" fill="#e97939" />
                   </svg>
@@ -693,10 +967,9 @@ import { SITE_METADATA } from "../consts";
                     : id === "truss-bridge-competition"
                       ? "2ND POSITION"
                       : "3RD POSITION";
-              const orgShort =
-                item.data.organization?.includes("COMSATS")
-                  ? "COMSATS UNIVERSITY"
-                  : item.data.organization?.toUpperCase() || "INSTITUTION";
+              const orgShort = item.data.organization?.includes("COMSATS")
+                ? "COMSATS UNIVERSITY"
+                : item.data.organization?.toUpperCase() || "INSTITUTION";
               return (
                 <a class="distinction-plate" href={`/recognition/${item.id}/`}>
                   <div class="distinction-top">
@@ -713,8 +986,22 @@ import { SITE_METADATA } from "../consts";
                     <div class="distinction-emblem" aria-hidden="true">
                       {id === "gold-medalist" ? (
                         <svg viewBox="0 0 48 48" fill="none">
-                          <circle cx="24" cy="24" r="19" stroke="#8b9587" stroke-width="1" stroke-dasharray="3 2" />
-                          <circle cx="24" cy="24" r="13" fill="#232c26" stroke="#c6c1a7" stroke-width="1.4" />
+                          <circle
+                            cx="24"
+                            cy="24"
+                            r="19"
+                            stroke="#8b9587"
+                            stroke-width="1"
+                            stroke-dasharray="3 2"
+                          />
+                          <circle
+                            cx="24"
+                            cy="24"
+                            r="13"
+                            fill="#232c26"
+                            stroke="#c6c1a7"
+                            stroke-width="1.4"
+                          />
                           <polygon
                             points="24,13 27,21 35,24 27,27 24,35 21,27 13,24 21,21"
                             fill="#e9793924"
@@ -725,23 +1012,75 @@ import { SITE_METADATA } from "../consts";
                         </svg>
                       ) : id === "pm-laptop-scheme" ? (
                         <svg viewBox="0 0 48 48" fill="none">
-                          <rect x="11" y="12" width="26" height="17" fill="#232c26" stroke="#c6c1a7" stroke-width="1.4" />
-                          <path d="M7 29 H41 L37 35 H11 Z" fill="#1e2621" stroke="#8b9587" stroke-width="1.3" />
-                          <line x1="16" y1="20" x2="32" y2="20" stroke="#e97939" stroke-width="1.5" />
+                          <rect
+                            x="11"
+                            y="12"
+                            width="26"
+                            height="17"
+                            fill="#232c26"
+                            stroke="#c6c1a7"
+                            stroke-width="1.4"
+                          />
+                          <path
+                            d="M7 29 H41 L37 35 H11 Z"
+                            fill="#1e2621"
+                            stroke="#8b9587"
+                            stroke-width="1.3"
+                          />
+                          <line
+                            x1="16"
+                            y1="20"
+                            x2="32"
+                            y2="20"
+                            stroke="#e97939"
+                            stroke-width="1.5"
+                          />
                           <circle cx="24" cy="20" r="2.5" fill="#e97939" />
                         </svg>
                       ) : id === "truss-bridge-competition" ? (
                         <svg viewBox="0 0 48 48" fill="none">
-                          <polygon points="6,31 15,17 33,17 42,31" fill="#232c26" stroke="#c6c1a7" stroke-width="1.4" />
-                          <polyline points="15,17 24,31 33,17" stroke="#c6c1a7" stroke-width="1.3" />
-                          <line x1="24" y1="9" x2="24" y2="17" stroke="#e97939" stroke-width="1.8" />
+                          <polygon
+                            points="6,31 15,17 33,17 42,31"
+                            fill="#232c26"
+                            stroke="#c6c1a7"
+                            stroke-width="1.4"
+                          />
+                          <polyline
+                            points="15,17 24,31 33,17"
+                            stroke="#c6c1a7"
+                            stroke-width="1.3"
+                          />
+                          <line
+                            x1="24"
+                            y1="9"
+                            x2="24"
+                            y2="17"
+                            stroke="#e97939"
+                            stroke-width="1.8"
+                          />
                           <circle cx="24" cy="17" r="2.5" fill="#e97939" />
                         </svg>
                       ) : (
                         <svg viewBox="0 0 48 48" fill="none">
-                          <polygon points="24,10 38,18 24,26 10,18" fill="#232c26" stroke="#c6c1a7" stroke-width="1.4" />
-                          <polyline points="10,18 10,30 24,38 38,30 38,18" stroke="#8b9587" stroke-width="1.3" />
-                          <line x1="24" y1="26" x2="24" y2="38" stroke="#c6c1a7" stroke-width="1.3" />
+                          <polygon
+                            points="24,10 38,18 24,26 10,18"
+                            fill="#232c26"
+                            stroke="#c6c1a7"
+                            stroke-width="1.4"
+                          />
+                          <polyline
+                            points="10,18 10,30 24,38 38,30 38,18"
+                            stroke="#8b9587"
+                            stroke-width="1.3"
+                          />
+                          <line
+                            x1="24"
+                            y1="26"
+                            x2="24"
+                            y2="38"
+                            stroke="#c6c1a7"
+                            stroke-width="1.3"
+                          />
                           <circle cx="24" cy="18" r="2.5" fill="#e97939" />
                         </svg>
                       )}
@@ -754,7 +1093,9 @@ import { SITE_METADATA } from "../consts";
 
                   <div class="distinction-foot">
                     <span>{orgShort}</span>
-                    <span class="distinction-arrow" aria-hidden="true">↗</span>
+                    <span class="distinction-arrow" aria-hidden="true">
+                      ↗
+                    </span>
                   </div>
                 </a>
               );
@@ -769,7 +1110,9 @@ import { SITE_METADATA } from "../consts";
             <em>to work in BIM.</em>
           </h3>
           <p class="perspective-copy">
-            I graduated from COMSATS Wah with the Department Gold Medal in Civil Engineering. My work now takes me between construction drawings, Revit models and site records.
+            I graduated from COMSATS Wah with the Department Gold Medal in Civil
+            Engineering. My work now takes me between construction drawings,
+            Revit models and site records.
           </p>
           <dl class="perspective-specs">
             <div>
@@ -799,9 +1142,7 @@ import { SITE_METADATA } from "../consts";
 
     <footer class="studio-footer">
       <p class="section-kicker">CONTACT</p>
-      <h2>
-        Get in touch.
-      </h2>
+      <h2>Get in touch.</h2>
       <div>
         <a href="/about/">THE PERSON BEHIND THE WORK ↗</a>
         <a href="/contact/">LET'S CONNECT ↗</a>

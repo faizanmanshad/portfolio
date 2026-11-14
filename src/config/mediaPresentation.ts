@@ -117,6 +117,7 @@ export const mediaPresentationConfig: Record<string, Partial<MediaPresentation>>
   "03-extracurricular-activities/display/civil-mania-uow.webp": { rotation: 90 },
   "03-extracurricular-activities/display/civil-nexus-uow.webp": { rotation: 90 },
   "03-extracurricular-activities/display/omlascertificate.webp": { frameWidth: 320, frameHeight: 420, rotation: 0 },
+  "03-extracurricular-activities/display/world-water-day-certificate.png": { frameWidth: 320, frameHeight: 420, rotation: 0 },
   "03-extracurricular-activities/display/uw-pofs-joint-conference.webp": { rotation: 90 },
 };
 

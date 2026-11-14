@@ -3,8 +3,8 @@ import { getCollection, render } from 'astro:content';
 import JourneyLayout from '../../layouts/JourneyLayout.astro';
 
 export async function getStaticPaths() {
-  const journey = await getCollection('journey');
-  return journey.map(entry => ({
+  const entries = await getCollection('volunteering');
+  return entries.map(entry => ({
     params: { id: entry.id },
     props: { entry },
   }));

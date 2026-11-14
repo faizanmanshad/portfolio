@@ -7,7 +7,7 @@ location: "Wah Cantt, Pakistan"
 domains: ["Conference", "Industry-Academia", "Civil Engineering"]
 dateStart: "2024-12-18"
 dateDisplay: "2024"
-priority: 8
+priority: 9
 summary: "Participated in the 4th University of Wah and Pakistan Ordnance Factories Joint Conference on Academia’s Collaboration with Industrial Organizations (CACIO-2024), held in Wah Cantt, Pakistan."
 media:
   - "03-extracurricular-activities/display/cacio-conference.webp"

@@ -7,25 +7,19 @@ import researchCover from '../../assets/research-cover.png';
 import { getCollection } from "astro:content";
 const sort = (items: any[]) =>
   items.sort((a, b) => (a.data.priority ?? 99) - (b.data.priority ?? 99));
+const sortByDateDesc = (items: any[]) =>
+  items.sort((a, b) => new Date(b.data.dateStart).getTime() - new Date(a.data.dateStart).getTime());
+
 const experience = sort(await getCollection("experience"));
 const projects = sort(await getCollection("projects"));
 const recognition = sort(await getCollection("recognition"));
-const journey = sort(await getCollection("journey"));
 const research = sort(await getCollection("research"));
 const education = sort(await getCollection("education"));
-const development = sort(await getCollection("development"));
-
-const certifications = development
-  .filter((item: any) => item.data.type === "Certification")
-  .sort((a: any, b: any) => new Date(b.data.dateStart).getTime() - new Date(a.data.dateStart).getTime());
-const professionalTraining = development
-  .filter((item: any) => item.data.type === "Professional Training")
-  .sort((a: any, b: any) => new Date(b.data.dateStart).getTime() - new Date(a.data.dateStart).getTime());
-const conferences = journey.filter((item: any) => item.data.type === "Conference" || item.id === "uw-pofs-joint-conference");
-const extracurriculars = journey.filter((item: any) => item.data.type !== "Community Service" && item.data.type !== "Conference" && item.id !== "uw-pofs-joint-conference");
-const volunteering = journey
-  .filter((item: any) => item.data.type === "Community Service")
-  .sort((a: any, b: any) => (a.data.priority ?? 99) - (b.data.priority ?? 99));
+const certifications = sortByDateDesc(await getCollection("certifications"));
+const professionalTraining = sortByDateDesc(await getCollection("training"));
+const conferences = sort(await getCollection("conferences"));
+const extracurriculars = sort(await getCollection("extracurriculars"));
+const volunteering = sort(await getCollection("volunteering"));
 
 const sectionItems = [
   { id: "personal-information", name: "Personal Information" },

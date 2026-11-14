@@ -10,7 +10,7 @@ interface Props {
 
 const { entry } = Astro.props;
 const { data } = entry;
-const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education' || entry.collection === 'journey' || entry.collection === 'projects' || entry.collection === 'experience';
+const isSideBySideEnabled = entry.collection === 'recognition' || entry.collection === 'education' || entry.collection === 'projects' || entry.collection === 'experience';
 const hasMediaContent = data.media && data.media.length > 0;
 const shouldShowSideBySide = hasMediaContent || isSideBySideEnabled;
 

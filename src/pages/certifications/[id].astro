@@ -1,0 +1,19 @@
+---
+import { getCollection, render } from 'astro:content';
+import JourneyLayout from '../../layouts/JourneyLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('certifications');
+  return entries.map(entry => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<JourneyLayout entry={entry}>
+  <Content />
+</JourneyLayout>

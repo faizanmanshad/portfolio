@@ -5,7 +5,12 @@ import MediaGallery from "../components/project/MediaGallery.astro";
 import AcademicDatabaseView from "../components/academic/AcademicDatabaseView.astro";
 
 interface Props {
-  entry: CollectionEntry<"journey"> | CollectionEntry<"development">;
+  entry:
+    | CollectionEntry<"certifications">
+    | CollectionEntry<"training">
+    | CollectionEntry<"conferences">
+    | CollectionEntry<"extracurriculars">
+    | CollectionEntry<"volunteering">;
 }
 
 const { entry } = Astro.props;
@@ -24,26 +29,20 @@ const labels = (entry.data.media || []).map((path) => {
   if (filename === "football-competition-team.webp") return "Football Championship Team";
   if (filename === "cricket-participation.webp") return "Cricket Championship Certificate";
   if (filename === "cricket-championship-team.webp") return "Cricket Championship Team";
+  if (filename === "world-water-day-certificate.png") return "World Water Day 2025 Certificate of Participation";
   return "Certificate / Document";
 });
 
-const archiveHref =
-  entry.collection === "development"
-    ? (entry.data.type === "Professional Training" ? "/academic/#training" : "/academic/#certifications")
-    : entry.data.type === "Community Service"
-    ? "/academic/#volunteering"
-    : entry.data.type === "Conference"
-    ? "/academic/#conferences"
-    : "/academic/#extracurriculars";
+const archiveMap: Record<string, { href: string; label: string }> = {
+  certifications: { href: "/academic/#certifications", label: "Certifications" },
+  training: { href: "/academic/#training", label: "Professional Training" },
+  conferences: { href: "/academic/#conferences", label: "Conferences" },
+  volunteering: { href: "/academic/#volunteering", label: "Volunteering & Community Services" },
+  extracurriculars: { href: "/academic/#extracurriculars", label: "Extracurriculars" },
+};
 
-const archiveLabel =
-  entry.collection === "development"
-    ? (entry.data.type === "Professional Training" ? "Professional Training" : "Certifications")
-    : entry.data.type === "Community Service"
-    ? "Volunteering & Community Services"
-    : entry.data.type === "Conference"
-    ? "Conferences"
-    : "Extracurriculars";
+const { href: archiveHref, label: archiveLabel } =
+  archiveMap[entry.collection] ?? { href: "/academic/#extracurriculars", label: "Extracurriculars" };
 
 const driveFolderId = (() => {
   if (entry.data.driveEmbed) {
