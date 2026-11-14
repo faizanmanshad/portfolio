@@ -21,6 +21,6 @@ We tested all three prototypes on physical Android devices to compare practical 
 
 ### Publication Status
 
-- **Authors:** **Faizan Manshad**, Kashan Shafiq, and Hassan Ashraf (Corresponding Author)
+- **Authors:** **Faizan Manshad**, Kashan Shafiq, Hassan Ashraf (Corresponding Author), and Faiz Fareed
 - **Preprint Archive:** Openly available on SSRN (`DOI: 10.2139/ssrn.6884926`).
 - **Journal Review Status:** Following an earlier unpublished journal submission, the revised manuscript has been resubmitted to another journal and is currently under peer review.
