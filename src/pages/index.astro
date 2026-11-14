@@ -962,11 +962,13 @@ import { SITE_METADATA } from "../consts";
               const badge =
                 id === "gold-medalist"
                   ? "1ST IN DEPARTMENT"
-                  : id === "pm-laptop-scheme"
-                    ? "NATIONAL MERIT"
-                    : id === "truss-bridge-competition"
-                      ? "2ND POSITION"
-                      : "3RD POSITION";
+                  : id === "semester-merit-positions"
+                    ? "1ST & 2ND POSITIONS"
+                    : id === "pm-laptop-scheme"
+                      ? "NATIONAL MERIT"
+                      : id === "truss-bridge-competition"
+                        ? "2ND POSITION"
+                        : "3RD POSITION";
               const orgShort = item.data.organization?.includes("COMSATS")
                 ? "COMSATS UNIVERSITY"
                 : item.data.organization?.toUpperCase() || "INSTITUTION";

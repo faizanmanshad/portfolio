@@ -6,7 +6,7 @@ domains: ["Structural Engineering"]
 dateStart: "2022-12-15"
 dateDisplay: "2022"
 organization: "COMSATS University"
-priority: 5
+priority: 6
 verificationStatus: "official-document"
 media:
   - "01-honors-awards/display/2nd-position-truss-bridge-competition.webp"

@@ -43,7 +43,7 @@ const topHonor = allItems.find(i => i.id === 'gold-medalist') || allItems[0];
       <!-- Quick Metrics Strip -->
       <div class="metrics-bar gsap-stagger-item" role="region" aria-label="Recognition Summary Metrics">
         <div class="metric-item">
-          <span class="metric-num">06</span>
+          <span class="metric-num">{String(allItems.length).padStart(2, '0')}</span>
           <span class="metric-name">RECORDED HONORS</span>
         </div>
         <div class="metric-divider" aria-hidden="true"></div>

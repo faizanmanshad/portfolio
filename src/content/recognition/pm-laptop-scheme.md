@@ -6,7 +6,7 @@ domains: ["Academics"]
 dateStart: "2023-01-01"
 dateDisplay: "2023"
 organization: "Government of Pakistan"
-priority: 4
+priority: 5
 verificationStatus: "official-document"
 media:
   - "06-internship-certificate/display/primeminister-laptop-scheme.webp"
